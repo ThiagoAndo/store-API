@@ -12,7 +12,7 @@ const router = express.Router();
 router.get('/', async (req, res, next) => {
   try {
     const events = await getAll();
-    res.json({ events: events });
+    res.json({ user: events });
   } catch (error) {
     next(error);
   }

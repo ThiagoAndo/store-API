@@ -1,27 +1,28 @@
 const fs = require("node:fs/promises");
-
+const { getUser,newUser } = require("./userActions");
 const { v4: generateId } = require("uuid");
 
 const { NotFoundError } = require("../util/errors");
 
 async function readData() {
-  // const data = await fs.readFile("events.json", "utf8");
-  // return JSON.parse(data);
-  const response = await fetch(
-    "https://library-98cc7-default-rtdb.europe-west1.firebasedatabase.app/events.json"
-  );
+// newUser({
+//   id:'qwerr',
+//   email_address: "ando.norimar@gmail.com",
+//   first_name: "Norimar",
+//   last_name: "Ando",
+//   password: '12345678'
+// })
+  const data = await getUser({
+    email: "ando.norimar@gmail.com",
+    password: "12345678",
+  });
 
-  if (!response.ok) {
-    throw new Error("Could not fetch events data!");
-  }
 
-  const data = await response.json();
 
   return data;
 }
 
 async function writeData(items) {
-
   const response = await fetch(
     "https://library-98cc7-default-rtdb.europe-west1.firebasedatabase.app/events.json",
     {
@@ -38,11 +39,14 @@ async function writeData(items) {
 }
 
 async function getAll() {
+  console.log('chamo')
   const storedData = await readData();
+  console.log(storedData)
+  
   if (!storedData) {
     throw new NotFoundError("Could not find any events.");
   }
-  return storedData.events;
+  return storedData;
 }
 
 async function get(id) {
