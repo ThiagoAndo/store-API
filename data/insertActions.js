@@ -21,10 +21,7 @@ function insertUser(user) {
       @created_at
     )
   `
-  ).run({
-    ...user,
-    created_at: "12/12/24",
-  });
+  ).run(user);
 }
 exports.insertUser = insertUser;
 // export function insertCard({ creation_at, user_id, item_id, qnt }) {

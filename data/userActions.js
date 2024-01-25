@@ -1,34 +1,12 @@
 const sql = require("better-sqlite3");
 const db = sql("e-comerce.db");
 const pkg = require("bcryptjs");
-const { hash, compare } = pkg;
-const uniqid = require("uniqid");
 const { insertUser } = require("./insertActions");
 
-// // import { deleteProduct } from "./productActions.js";
-// // import { deleteCart } from "./cartActions.js";
-// // import getCurrentDate from "./utils/functions.js";
-// import { insertUser } from "./insertActions.js";
-// // import { deleteOrders } from "./ordersActions.js";
-// // import {
-//   // isEmailValid,
-//   // isNameValid,
-//   // isPasswordValid,
-// // } from "./utils/functions.js";
 
 async function newUser(user) {
   const { id, email_address, first_name, last_name, password } = user;
-  // let msn = "";
-  // if (!isEmailValid(email_address)) {
-  //   return { message: "Email is not valid!" };
-  // } else if (!isNameValid(first_name + " " + last_name)) {
-  //   return { message: "Name is not valid!" };
-  // } else if (!isPasswordValid(password)) {
-  //   return { message: "Password is too short!" };
-  // }
-
-  // user.id = uniqid();
-  // user.password = await hash(user.password, 12);
+ 
 
   const conf = await getUser(user.email_address);
   if (conf.message) {
