@@ -12,32 +12,19 @@ const router = express.Router();
 
 
 router.get("/user/:email/:password", async (req, res) => {
+  const user = await getUser({
+    email: req.params.email,
+    password: req.params.password,
+  });
 
-  
-    const event = await getUser({email:req.params.email,password: req.params.password});
-    if(Object.keys(event).length > 0){
-      res.json({ user: event });
-
-    }else{
-      res.json({ event });
-
-    }
+  res.json( user );
 });
 
-router.post('/user/new', async (req, res) => {
-
+router.post("/user/new", async (req, res) => {
   const data = req.body;
-  const event = await newUser(data);
-  console.log(event );
-  if(Object.keys(event).length > 0){
-    res.json({ user: event });
-
-  }else{
-    res.json({ event });
-
-  }
-
-
+  const user = await newUser(data);
+console.log(user)
+  res.json( user );
 });
 
 

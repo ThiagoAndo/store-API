@@ -7,19 +7,28 @@ const { hash, compare } = pkg;
 const uniqid = require("uniqid");
 const { insertUser } = require("./insertActions");
 
-async function getUser({ email, password }) {
+
+
+async function getUser({ email, password, confUser }) {
   const user = db
     .prepare("SELECT * FROM users WHERE email_address = ?")
     .get(email);
-  if (!user) {
-    return { message: "Could not find user" };
-  } else {
-    const isValid = await compare(password, user.password);
-    if (isValid) {
+  switch (confUser) {
+    case "yes":
       return user;
-    } else {
-      return { message: "Wrong Password" };
-    }
+    default:
+      if (!user) {
+        user.message = "Could not find user";
+        return user;
+      } else {
+        const isValid = await compare(password, user.password);
+        if (isValid) {
+          return user;
+        } else {
+          user.message = "Wrong Password";
+          return user;
+        }
+      }
   }
 }
 
@@ -27,11 +36,14 @@ async function newUser(user) {
   const conf = await getUser({
     email: user.email_address,
     password: user.password,
+    confUser: "yes",
   });
-  if (Object.keys(conf).length > 0) {
-    return { message: "user already registered" };
-  } else {
+  console.log(conf);
+  if (!conf) {
     insertUser(user);
+    return user;
+  } else {
+    user.message = "user already registered";
     return user;
   }
 }
