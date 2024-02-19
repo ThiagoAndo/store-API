@@ -1,6 +1,14 @@
 const express = require('express');
 
-const { newUser, getUser, add, replace, remove } = require("../data/event");
+const {
+  newUser,
+  getUser,
+  add,
+  replace,
+  remove,
+} = require("../actions/userActions");
+
+const { getAllProducts } = require("../actions/productActions");
 const {
   isValidText,
   isValidDate,
@@ -9,7 +17,7 @@ const {
 
 const router = express.Router();
 
-
+//User Routes===================================================
 
 router.get("/user/:email/:password", async (req, res) => {
   const user = await getUser({
@@ -17,16 +25,22 @@ router.get("/user/:email/:password", async (req, res) => {
     password: req.params.password,
   });
 
-  res.json( user );
+  res.json(user);
 });
 
 router.post("/user/new", async (req, res) => {
   const data = req.body;
   const user = await newUser(data);
-console.log(user)
-  res.json( user );
+  console.log(user);
+  res.json(user);
 });
 
+//Products Routes===================================================
+router.get("/products", async (req, res) => {
+  const products = getAllProducts();
+
+  res.json(products);
+});
 
 // router.post('/', async (req, res, next) => {
 

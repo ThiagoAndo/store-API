@@ -1,5 +1,6 @@
 const sql = require("better-sqlite3");
 const db = sql("e-comerce.db");
+const { products } = require("../data/productsData");
 // import { getCart } from "./cartActions.js";
 // import getCurrentDate from "./utils/functions.js";
 // import { getProductById, updateProductQnt } from "./productActions.js";
@@ -23,6 +24,7 @@ function insertUser(user) {
   `
   ).run(user);
 }
+
 exports.insertUser = insertUser;
 // export function insertCard({ creation_at, user_id, item_id, qnt }) {
 //   let currentDate = "";
@@ -90,8 +92,7 @@ exports.insertUser = insertUser;
 //   updateProductQnt(cart);
 // }
 
-// export function insertProduct(product) {
-//   const prts = product || products;
+// function insertProduct(products) {
 //   const stmt = db.prepare(`
 //       INSERT INTO products VALUES (
 //          @id,
@@ -114,7 +115,7 @@ exports.insertUser = insertUser;
 //       )
 //    `);
 
-//   for (const product of prts) {
+//   for (const product of products) {
 //     product.id = String(product.id);
 //     stmt.run(product);
 //     for (const img in product.images) {
@@ -125,3 +126,5 @@ exports.insertUser = insertUser;
 //     }
 //   }
 // }
+
+//  db.prepare("DROP TABLE products").run();

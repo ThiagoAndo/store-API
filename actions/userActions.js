@@ -1,38 +1,48 @@
+const fs = require("node:fs/promises");
+const { v4: generateId } = require("uuid");
 const sql = require("better-sqlite3");
 const db = sql("e-comerce.db");
 const pkg = require("bcryptjs");
+const { hash, compare } = pkg;
+const uniqid = require("uniqid");
 const { insertUser } = require("./insertActions");
 
-
-async function newUser(user) {
-  const { id, email_address, first_name, last_name, password } = user;
- 
-
-  const conf = await getUser(user.email_address);
-  if (conf.message) {
-    insertUser(user);
-    console.log("user registered successfully");
-    return { message: "user registered successfully" };
-  } else {
-    console.log("user already registered");
-
-    return { message: "user already registered" };
+async function getUser(user) {
+  const userRet = db
+    .prepare("SELECT * FROM users WHERE email_address = ?")
+    .get(user.email);
+  switch (user.confUser) {
+    case "yes":
+      return userRet;
+    default:
+      if (!userRet) {
+        user.message = "Could not find user";
+        return user;
+      } else {
+        const isValid = await compare(user.password, userRet.password);
+        if (isValid) {
+          user.message = userRet.first_name;
+          return user;
+        } else {
+          user.message = "Wrong Password";
+          return user;
+        }
+      }
   }
 }
 
-async function getUser({ email, password }) {
-  const user = db
-    .prepare("SELECT * FROM users WHERE email_address = ?")
-    .get(email);
-  if (!user) {
-    return { message: "Could not find user" };
+async function newUser(user) {
+  const conf = await getUser({
+    email: user.email_address,
+    password: user.password,
+    confUser: "yes",
+  });
+  if (!conf) {
+    insertUser(user);
+    return user;
   } else {
-    const isValid = await compare(password, user.password);
-    if (isValid) {
-      return user;
-    } else {
-      return { message: "Wrong Password" };
-    }
+    user.message = "user already registered";
+    return user;
   }
 }
 exports.newUser = newUser;

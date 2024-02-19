@@ -7,8 +7,6 @@ const { hash, compare } = pkg;
 const uniqid = require("uniqid");
 const { insertUser } = require("./insertActions");
 
-
-
 async function getUser({ email, password, confUser }) {
   const user = db
     .prepare("SELECT * FROM users WHERE email_address = ?")
