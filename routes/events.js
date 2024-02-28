@@ -24,6 +24,7 @@ router.get("/user/:email/:password", async (req, res) => {
     email: req.params.email,
     password: req.params.password,
   });
+  console.log(user)
 
   res.json(user);
 });
