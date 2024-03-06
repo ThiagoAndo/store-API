@@ -9,6 +9,7 @@ const {
 } = require("../actions/userActions");
 
 const { getAllProducts } = require("../actions/productActions");
+const { getImages } = require("../actions/imageActions");
 const {
   isValidText,
   isValidDate,
@@ -39,8 +40,9 @@ router.post("/user/new", async (req, res) => {
 //Products Routes===================================================
 router.get("/products", async (req, res) => {
   const products = getAllProducts();
+  const images = getImages();
 
-  res.json(products);
+  res.json({products, images});
 });
 
 // router.post('/', async (req, res, next) => {
