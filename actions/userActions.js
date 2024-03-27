@@ -1,10 +1,8 @@
 const fs = require("node:fs/promises");
-const { v4: generateId } = require("uuid");
 const sql = require("better-sqlite3");
 const db = sql("e-comerce.db");
 const pkg = require("bcryptjs");
-const { hash, compare } = pkg;
-const uniqid = require("uniqid");
+const { compare } = pkg;
 const { insertUser } = require("./insertActions");
 
 async function getUser(user) {

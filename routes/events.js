@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require("express");
 
 const {
   newUser,
@@ -25,7 +25,6 @@ router.get("/user/:email/:password", async (req, res) => {
     email: req.params.email,
     password: req.params.password,
   });
-  console.log(user)
 
   res.json(user);
 });
@@ -33,7 +32,6 @@ router.get("/user/:email/:password", async (req, res) => {
 router.post("/user/new", async (req, res) => {
   const data = req.body;
   const user = await newUser(data);
-  console.log(user);
   res.json(user);
 });
 
@@ -42,7 +40,24 @@ router.get("/products", async (req, res) => {
   const products = getAllProducts();
   const images = getImages();
 
-  res.json({products, images});
+  res.json({ products, images });
+});
+
+//Products Routes===================================================
+router.get("/card/:id", async (req, res) => {
+ 
+
+  res.json(user);
+});
+
+router.post("/cart/new", async (req, res) => {
+const { items, id } = req.body;
+  
+   console.log("items");
+   console.log(items);
+      console.log("id");
+      console.log(id);
+  // res.json(user);
 });
 
 // router.post('/', async (req, res, next) => {
