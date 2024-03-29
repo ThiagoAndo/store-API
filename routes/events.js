@@ -44,6 +44,7 @@ router.post("/user/new", async (req, res) => {
 router.get("/products", async (req, res) => {
   const products = getAllProducts();
   const images = getImages();
+
   res.json({ products, images });
 });
 
@@ -51,12 +52,20 @@ router.get("/products", async (req, res) => {
 
 router.get("/cart/:id", async (req, res) => {
   const user_id = req.params.id;
+  console.log("user_id");
+  console.log(user_id);
   const items = getCart(["user_id", "bought"], [user_id, 0]);
   res.json({ items });
 });
 
 router.post("/cart/new", async (req, res) => {
   const { items, id: user_id } = req.body;
+  console.log("user_id");
+  console.log(user_id);
+  console.log("items");
+  console.log(items);
+  console.log("items.length");
+  console.log(items.length);
   if (items.length === 0) {
     deleteCart(user_id);
   } else {
