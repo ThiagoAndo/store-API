@@ -36,7 +36,6 @@ router.get("/user/:email/:password", async (req, res) => {
 
 router.post("/user/new", async (req, res) => {
   const data = req.body;
-  console.log(data);
   const user = await newUser(data);
   res.json(user);
 });
@@ -45,7 +44,6 @@ router.post("/user/new", async (req, res) => {
 router.get("/products", async (req, res) => {
   const products = getAllProducts();
   const images = getImages();
-
   res.json({ products, images });
 });
 
@@ -59,10 +57,6 @@ router.get("/cart/:id", async (req, res) => {
 
 router.post("/cart/new", async (req, res) => {
   const { items, id: user_id } = req.body;
-  console.log('items');
-  console.log(items);
-  console.log('items.length');
-  console.log(items.length);
   if (items.length === 0) {
     deleteCart(user_id);
   } else {
