@@ -59,24 +59,26 @@ router.get("/cart/:id", async (req, res) => {
 
 router.post("/cart/new", async (req, res) => {
   const { items, id: user_id } = req.body;
- console.log(items)
-  if(!items){
-deleteCart(user_id)
-  }else{
-  items.forEach((item) => {
-    const {
-      id: item_id,
-      quantity: qnt,
-      createAt: creation_at,
-      price,
-      name,
-    } = item;
-    checkInsertCart({ user_id, item_id, qnt, creation_at, name, price });
-  });
+  console.log('items');
+  console.log(items);
+  console.log('items.length');
+  console.log(items.length);
+  if (items.length === 0) {
+    deleteCart(user_id);
+  } else {
+    items.forEach((item) => {
+      const {
+        id: item_id,
+        quantity: qnt,
+        createAt: creation_at,
+        price,
+        name,
+      } = item;
+      checkInsertCart({ user_id, item_id, qnt, creation_at, name, price });
+    });
   }
 
-
-  res.status(201).json({ message: "Cart created successufuly" });
+  res.json({ message: "Cart created successufuly" });
 });
 
 // router.post('/', async (req, res, next) => {
