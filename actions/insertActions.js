@@ -8,7 +8,6 @@ const { products } = require("../data/productsData");
 // import { products } from "./productsData.js";
 
 function insertUser(user) {
-  // const currentDate = getCurrentDate();
   db.prepare(
     `
     INSERT INTO users
@@ -25,34 +24,29 @@ function insertUser(user) {
   ).run(user);
 }
 
+function insertCart({ user_id, item_id, qnt, creation_at }) {
+  db.prepare(
+    `
+    INSERT INTO cart
+      ( user_id, item_id, qnt, bought, creation_at)
+    VALUES (
+      @user_id,
+      @item_id,
+      @qnt,
+      @bought,
+      @creation_at
+    )
+  `
+  ).run({
+    user_id,
+    item_id,
+    qnt,
+    bought: 0,
+    creation_at,
+  });
+}
 exports.insertUser = insertUser;
-// export function insertCard({ creation_at, user_id, item_id, qnt }) {
-//   let currentDate = "";
-//   if (!creation_at) {
-//     currentDate = getCurrentDate();
-//   } else {
-//     currentDate = creation_at;
-//   }
-//   db.prepare(
-//     `
-//     INSERT INTO cart
-//       ( user_id, item_id, qnt, bought, creation_at)
-//     VALUES (
-//       @user_id,
-//       @item_id,
-//       @qnt,
-//       @bought,
-//       @creation_at
-//     )
-//   `,
-//   ).run({
-//     user_id,
-//     item_id,
-//     qnt,
-//     bought: 0,
-//     creation_at: currentDate,
-//   });
-// }
+exports.insertCart = insertCart;
 
 // export function insertOrder({ id = null, user_id }) {
 //   let currentDate = getCurrentDate();

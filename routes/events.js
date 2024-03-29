@@ -9,6 +9,7 @@ const {
 } = require("../actions/userActions");
 
 const { getAllProducts } = require("../actions/productActions");
+const { updateCart } = require("../actions/cartActions");
 const { getImages } = require("../actions/imageActions");
 const {
   isValidText,
@@ -43,21 +44,20 @@ router.get("/products", async (req, res) => {
   res.json({ products, images });
 });
 
-//Products Routes===================================================
+//Cart Routes===================================================
 router.get("/card/:id", async (req, res) => {
+  console.log( req.params.id)
  
-
-  res.json(user);
 });
 
 router.post("/cart/new", async (req, res) => {
-const { items, id } = req.body;
-  
-   console.log("items");
-   console.log(items);
-      console.log("id");
-      console.log(id);
-  // res.json(user);
+  const { items, id:user_id } = req.body;
+  items.forEach((item) => {
+    const { id: item_id, quantity:qnt, createAt:creation_at } = item;
+    updateCart({ user_id, item_id, qnt, creation_at });
+  });
+
+  res.status(201);
 });
 
 // router.post('/', async (req, res, next) => {

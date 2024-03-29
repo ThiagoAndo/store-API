@@ -1,4 +1,3 @@
-const fs = require("node:fs/promises");
 const sql = require("better-sqlite3");
 const db = sql("e-comerce.db");
 const pkg = require("bcryptjs");
