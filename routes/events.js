@@ -59,8 +59,8 @@ router.get("/cart/:id", async (req, res) => {
 
 router.post("/cart/new", async (req, res) => {
   const { items, id: user_id } = req.body;
- 
-  if(items.length===0){
+ console.log(items)
+  if(!items){
 deleteCart(user_id)
   }else{
   items.forEach((item) => {
