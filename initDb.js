@@ -35,7 +35,7 @@ db.prepare(
       email_address      TEXT NOT NULL UNIQUE,
       first_name         TEXT NOT NULL,
       last_name          TEXT NOT NULL,
-      created_at         TIMESTAMP,
+      created_at         TIMESTAMP NOT NULL,
       id                 TEXT NOT NULL PRIMARY KEY,
       password           TEXT NOT NULL UNIQUE
       )
@@ -47,8 +47,10 @@ db.prepare(
    CREATE TABLE IF NOT EXISTS cart (
       user_id  TEXT NOT NULL ,
       item_id  TEXT NOT NULL ,
-      qnt      INTEGER,
-      bought   INTEGER,
+      qnt      INTEGER NOT NULL,
+      bought   INTEGER NOT NULL,
+      price   INTEGER NOT NULL,
+      name   TEXT NOT NULL,
       creation_at TIMESTAMP NOT NULL,
       FOREIGN KEY (item_id)
       REFERENCES products (id),
@@ -61,10 +63,10 @@ db.prepare(
   `
    CREATE TABLE IF NOT EXISTS orders (
       invoice_id  INTEGER PRIMARY KEY AUTOINCREMENT,
-      cart_id         INTEGER,
+      cart_id         INTEGER NOT NULL,
       user_id         TEXT NOT NULL,
-      paid_at         TIMESTAMP,
-      total           REAL,
+      paid_at         TIMESTAMP NOT NULL,
+      total           REAL NOT NULL,
       FOREIGN KEY (user_id)
       REFERENCES users (id)
       )

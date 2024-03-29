@@ -9,7 +9,11 @@ const {
 } = require("../actions/userActions");
 
 const { getAllProducts } = require("../actions/productActions");
-const { updateCart } = require("../actions/cartActions");
+const {
+  checkInsertCart,
+  getCart,
+  deleteCart,
+} = require("../actions/cartActions");
 const { getImages } = require("../actions/imageActions");
 const {
   isValidText,
@@ -32,6 +36,7 @@ router.get("/user/:email/:password", async (req, res) => {
 
 router.post("/user/new", async (req, res) => {
   const data = req.body;
+  console.log(data);
   const user = await newUser(data);
   res.json(user);
 });
@@ -45,19 +50,33 @@ router.get("/products", async (req, res) => {
 });
 
 //Cart Routes===================================================
-router.get("/card/:id", async (req, res) => {
-  console.log( req.params.id)
- 
+
+router.get("/cart/:id", async (req, res) => {
+  const user_id = req.params.id;
+  const items = getCart(["user_id", "bought"], [user_id, 0]);
+  res.json({ items });
 });
 
 router.post("/cart/new", async (req, res) => {
-  const { items, id:user_id } = req.body;
+  const { items, id: user_id } = req.body;
+ 
+  if(items.length===0){
+deleteCart(user_id)
+  }else{
   items.forEach((item) => {
-    const { id: item_id, quantity:qnt, createAt:creation_at } = item;
-    updateCart({ user_id, item_id, qnt, creation_at });
+    const {
+      id: item_id,
+      quantity: qnt,
+      createAt: creation_at,
+      price,
+      name,
+    } = item;
+    checkInsertCart({ user_id, item_id, qnt, creation_at, name, price });
   });
+  }
 
-  res.status(201);
+
+  res.status(201).json({ message: "Cart created successufuly" });
 });
 
 // router.post('/', async (req, res, next) => {

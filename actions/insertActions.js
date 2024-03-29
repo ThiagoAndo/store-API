@@ -24,16 +24,18 @@ function insertUser(user) {
   ).run(user);
 }
 
-function insertCart({ user_id, item_id, qnt, creation_at }) {
+function insertCart({ user_id, item_id, qnt, price, name, creation_at }) {
   db.prepare(
     `
     INSERT INTO cart
-      ( user_id, item_id, qnt, bought, creation_at)
+      ( user_id, item_id, qnt, bought, price,name, creation_at)
     VALUES (
       @user_id,
       @item_id,
       @qnt,
       @bought,
+      @price,
+      @name,
       @creation_at
     )
   `
@@ -42,6 +44,8 @@ function insertCart({ user_id, item_id, qnt, creation_at }) {
     item_id,
     qnt,
     bought: 0,
+    price,
+    name,
     creation_at,
   });
 }
@@ -86,39 +90,41 @@ exports.insertCart = insertCart;
 //   updateProductQnt(cart);
 // }
 
-// function insertProduct(products) {
-//   const stmt = db.prepare(`
-//       INSERT INTO products VALUES (
-//          @id,
-//          @title,
-//          @description,
-//          @price,
-//          @discountPercentage,
-//          @rating,
-//          @stock,
-//          @brand,
-//          @category,
-//          @thumbnail
-//       )
-//    `);
+function insertProduct(products) {
+  const stmt = db.prepare(`
+      INSERT INTO products VALUES (
+         @id,
+         @title,
+         @description,
+         @price,
+         @discountPercentage,
+         @rating,
+         @stock,
+         @brand,
+         @category,
+         @thumbnail
+      )
+   `);
 
-//   const stmt2 = db.prepare(`
-//       INSERT INTO images VALUES (
-//          @itemId,
-//          @image
-//       )
-//    `);
+  const stmt2 = db.prepare(`
+      INSERT INTO images VALUES (
+         @itemId,
+         @image
+      )
+   `);
 
-//   for (const product of products) {
-//     product.id = String(product.id);
-//     stmt.run(product);
-//     for (const img in product.images) {
-//       stmt2.run({
-//         itemId: product.id,
-//         image: Object.values(product.images)[img],
-//       });
-//     }
-//   }
-// }
+  for (const product of products) {
+    product.id = String(product.id);
+    stmt.run(product);
+    for (const img in product.images) {
+      stmt2.run({
+        itemId: product.id,
+        image: Object.values(product.images)[img],
+      });
+    }
+  }
+}
+
+// insertProduct(products);
 
 //  db.prepare("DROP TABLE products").run();
