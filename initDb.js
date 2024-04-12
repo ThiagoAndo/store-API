@@ -29,6 +29,7 @@ db.prepare(
 `
 ).run();
 
+
 db.prepare(
   `
    CREATE TABLE IF NOT EXISTS users (
@@ -41,6 +42,21 @@ db.prepare(
       )
 `
 ).run();
+
+db.prepare(
+  `
+   CREATE TABLE IF NOT EXISTS userAddress (
+       id TEXT NOT NULL ,
+       line_one TEXT NOT NULL,
+       line_two TEXT,
+       town_city  TEXT NOT NULL,
+       constry_state TEXT NOT NULL,
+       FOREIGN KEY (id)
+       REFERENCES users (id) 
+         )
+`
+).run();
+
 
 db.prepare(
   `

@@ -24,6 +24,22 @@ function insertUser(user) {
   ).run(user);
 }
 
+function insertUserAdd({ id, line_one, line_two, town_city, constry_state }) {
+  db.prepare(
+    `
+    INSERT INTO userAddress
+      (id, line_one, line_two,town_city, constry_state)
+    VALUES (
+      @id,
+      @line_one,
+      @line_two,
+      @town_city,
+      @constry_state,
+    )
+  `
+  ).run({ id, line_one, line_two, town_city, constry_state });
+}
+
 function insertCart({ user_id, item_id, qnt, price, name, creation_at }) {
   db.prepare(
     `
