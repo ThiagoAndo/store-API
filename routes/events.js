@@ -1,8 +1,11 @@
 const express = require("express");
 
+const { insertUserAdd } = require("../actions/insertActions");
+
 const {
   newUser,
   getUser,
+  getUserAdd,
   add,
   replace,
   remove,
@@ -30,11 +33,11 @@ router.get("/user/:email/:password", async (req, res) => {
     email: req.params.email,
     password: req.params.password,
   });
-
   res.json(user);
 });
 
 router.post("/user/new", async (req, res) => {
+  console.log("reat");
   const data = req.body;
   const user = await newUser(data);
   res.json(user);
@@ -44,27 +47,43 @@ router.post("/user/new", async (req, res) => {
 router.get("/products", async (req, res) => {
   const products = getAllProducts();
   const images = getImages();
-
   res.json({ products, images });
 });
 
-//Cart Routes===================================================
+//User Address===================================================
 
+router.get("/user/add/:id", (req, res) => {
+  const add = getUserAdd(req.params.id);
+  if (add) {
+    res.json(add);
+  } else {
+    res.json({ message: "not registered" });
+  }
+});
+
+router.post("/user/add/:id", (req, res) => {
+  const add = getUserAdd(req.params.id);
+  const id = req.params.id;
+  console.log("add");
+  console.log(add === undefined);
+
+  if (add === undefined) {
+    const ret = insertUserAdd({ id, ...req.body });
+    res.status(201).json(ret);
+  } else {
+    res.status(500).json("Already registered");
+  }
+});
+
+//Cart Routes===================================================
 router.get("/cart/:id", async (req, res) => {
   const user_id = req.params.id;
- 
   const items = getCart(["user_id", "bought"], [user_id, 0]);
   res.json({ items });
 });
 
 router.post("/cart", async (req, res) => {
   const { items, id: user_id } = req.body;
-  console.log("user_id");
-  console.log(user_id);
-  console.log("items");
-  console.log(items);
-  console.log("items.length");
-  console.log(items.length);
   if (items.length === 0) {
     deleteCart(user_id);
   } else {

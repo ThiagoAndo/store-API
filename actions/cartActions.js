@@ -8,6 +8,10 @@ function getCart(query, queryVal) {
     .all(queryVal[0], queryVal[1]);
   return cart || [];
 }
+
+//console.log(getCart(["user_id", "bought"], [`lutuv3zy`, 0]));
+
+
 function checkInsertCart({ user_id, item_id, qnt, price, name, creation_at }) {
   const [product] = getCart(["item_id", "bought"], [item_id, 0]);
   if (product) {
