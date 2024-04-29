@@ -29,6 +29,7 @@ const router = express.Router();
 //User Routes===================================================
 
 router.get("/user/:email/:password", async (req, res) => {
+  console.log("user")
   const user = await getUser({
     email: req.params.email,
     password: req.params.password,
@@ -52,7 +53,9 @@ router.get("/products", async (req, res) => {
 
 //User Address===================================================
 
-router.get("/user/add/:id", (req, res) => {
+router.get("/add/:id", (req, res) => {
+  console.log(req.params.id)
+
   const add = getUserAdd(req.params.id);
   if (add) {
     res.json(add);
@@ -61,7 +64,7 @@ router.get("/user/add/:id", (req, res) => {
   }
 });
 
-router.post("/user/add/:id", (req, res) => {
+router.post("/add/:id", (req, res) => {
   const add = getUserAdd(req.params.id);
   const id = req.params.id;
   console.log("add");

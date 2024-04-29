@@ -25,7 +25,6 @@ function insertUser(user) {
 }
 
 function insertUserAdd({ id, line_one, line_two, town_city, constry_state }) {
- console.log(id, line_one, line_two, town_city, constry_state);
  
   db.prepare(
     `INSERT INTO userAddress
