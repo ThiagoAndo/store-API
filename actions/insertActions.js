@@ -25,16 +25,17 @@ function insertUser(user) {
 }
 
 function insertUserAdd({ id, line_one, line_two, town_city, constry_state }) {
+ console.log(id, line_one, line_two, town_city, constry_state);
+ 
   db.prepare(
-    `
-    INSERT INTO userAddress
+    `INSERT INTO userAddress
       (id, line_one, line_two,town_city, constry_state)
     VALUES (
       @id,
       @line_one,
       @line_two,
       @town_city,
-      @constry_state,
+      @constry_state
     )
   `
   ).run({ id, line_one, line_two, town_city, constry_state });
@@ -42,8 +43,7 @@ function insertUserAdd({ id, line_one, line_two, town_city, constry_state }) {
 
 function insertCart({ user_id, item_id, qnt, price, name, creation_at }) {
   db.prepare(
-    `
-    INSERT INTO cart
+    `INSERT INTO cart
       ( user_id, item_id, qnt, bought, price,name, creation_at)
     VALUES (
       @user_id,

@@ -63,13 +63,16 @@ router.get("/user/add/:id", (req, res) => {
 
 router.post("/user/add/:id", (req, res) => {
   const add = getUserAdd(req.params.id);
+  const id = req.params.id;
+  console.log("add");
+  console.log(add === undefined);
 
-  console.log(req.body);
-     res.status(201).json(req.body);
-
-  // if (!add) {
-  //   res.json(add);
-  // }
+  if (add === undefined) {
+    const ret = insertUserAdd({ id, ...req.body });
+    res.status(201).json(ret);
+  } else {
+    res.status(500).json("Already registered");
+  }
 });
 
 //Cart Routes===================================================
