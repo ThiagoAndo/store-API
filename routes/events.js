@@ -1,5 +1,7 @@
 const express = require("express");
 
+const { insertUser } = require("./insertActions");
+
 const {
   newUser,
   getUser,
@@ -34,14 +36,10 @@ router.get("/user/:email/:password", async (req, res) => {
   res.json(user);
 });
 
-
 router.post("/user/new", async (req, res) => {
   console.log("reat");
-
   const data = req.body;
   const user = await newUser(data);
-  console.log(user);
-
   res.json(user);
 });
 
@@ -54,7 +52,7 @@ router.get("/products", async (req, res) => {
 
 //User Address===================================================
 
-router.get("/user/:id", (req, res) => {
+router.get("/user/add/:id", (req, res) => {
   const add = getUserAdd(req.params.id);
   if (add) {
     res.json(add);
@@ -62,6 +60,14 @@ router.get("/user/:id", (req, res) => {
     res.json({ message: "not registered" });
   }
 });
+
+router.post("/user/add/:id", (req, res) => {
+  const add = getUserAdd(req.params.id);
+  if (!add) {
+    res.json(add);
+  }
+});
+
 
 //Cart Routes===================================================
 router.get("/cart/:id", async (req, res) => {
