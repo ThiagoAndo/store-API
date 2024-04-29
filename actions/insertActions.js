@@ -67,7 +67,7 @@ function insertCart({ user_id, item_id, qnt, price, name, creation_at }) {
 }
 exports.insertUser = insertUser;
 exports.insertCart = insertCart;
-
+exports.insertUserAdd=insertUserAdd
 // export function insertOrder({ id = null, user_id }) {
 //   let currentDate = getCurrentDate();
 //   const cart = getCart(user_id, 0);

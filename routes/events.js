@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { insertUser } = require("./insertActions");
+const { insertUserAdd } = require("../actions/insertActions");
 
 const {
   newUser,
@@ -63,11 +63,14 @@ router.get("/user/add/:id", (req, res) => {
 
 router.post("/user/add/:id", (req, res) => {
   const add = getUserAdd(req.params.id);
-  if (!add) {
-    res.json(add);
-  }
-});
 
+  console.log(req.body);
+     res.status(201).json(req.body);
+
+  // if (!add) {
+  //   res.json(add);
+  // }
+});
 
 //Cart Routes===================================================
 router.get("/cart/:id", async (req, res) => {
