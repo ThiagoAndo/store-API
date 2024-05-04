@@ -1,7 +1,12 @@
 const express = require("express");
 
 const { insertUserAdd } = require("../actions/insertActions");
-const { create, preper } = require("../actions/actions");
+const {
+  createAction,
+  deleteAction,
+  readAction,
+} = require("../actions/actions");
+
 const {
   newUser,
   getUser,
@@ -29,23 +34,21 @@ const router = express.Router();
 //User Routes===================================================
 
 router.get("/user/:email/:password", async (req, res) => {
-  console.log("user");
-  const user = await getUser({
-    email: req.params.email,
-    password: req.params.password,
-  });
-  res.json(user);
+  readAction("users", "email_address=?", [req.params.email]);
+
+  // const user = await getUser({
+  //   email: req.params.email,
+  //   password: req.params.password,
+  // });
+  // res.json(user);
 });
 
 router.post("/user/new", async (req, res) => {
-  const myString = preper("user");
-  console.log(myString);
+  const data = req.body;
 
-  // console.log("reat");
-  // const data = req.body;
-  // const user = await newUser(data);
-  // res.json(user);
-  res.status(201).json({ user: "created" });
+  const ret = create("users", data);
+  console.log(ret);
+  res.status(201).json(ret);
 });
 
 //Products Routes===================================================

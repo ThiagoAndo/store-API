@@ -1,6 +1,6 @@
 const sql = require("better-sqlite3");
 const db = sql("e-comerce.db");
-const { products } = require("../data/productsData");
+const { products } = require("./productsData");
 
 function insertProduct(products) {
   const stmt = db.prepare(`
