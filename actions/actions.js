@@ -9,32 +9,49 @@ const { collNames } = require("../helpers/tbRowNames");
 // import { products } from "./productsData.js";
 
 function preper(table) {
-
   return {
-    coll:  collNames[table],
-    insert: collNames[table].map((coll) => "@" + coll),
+    coll: collNames[table].join(", "),
+    insert: collNames[table].map((coll) => "@" + coll).join(", "),
   };
 }
 
-function create(user) {
-  db.prepare(
-    `
-    INSERT INTO users
-      (email_address, first_name, last_name,id, password, created_at)
-    VALUES (
-      @email_address,
-      @first_name,
-      @last_name,
-      @id,
-      @password,
-      @created_at
-    )
-  `
-  ).run(user);
+function readAction(table, params, valls) {
+  const colls = preper(table);
+  const stmt = db.prepare(`SELECT *  FROM  ${table} WHERE ${params} `);
+
+  const ret = stmt.run(... valls);
+  return ret;
 }
 
-exports.create = create;
-exports.preper = preper;
+function createAction(table, data) {
+  const colls = preper(table);
+  const ret = db
+    .prepare(
+      `
+    INSERT INTO ${table} (
+        ${colls.coll}
+    )
+    VALUES (
+       ${colls.insert}
+    )
+  `
+    )
+    .run(data);
+
+  return ret;
+}
+
+function deleteAction(table, colls, valls) {
+  const stmt = db.prepare(`DELETE  FROM  ${table} WHERE ${colls} `);
+
+  const ret = stmt.run(valls);
+  return ret;
+}
+
+exports.deleteAction = deleteAction;
+exports.readAction = readAction;
+exports.createAction = createAction;
+
 // export function insertOrder({ id = null, user_id }) {
 //   let currentDate = getCurrentDate();
 //   const cart = getCart(user_id, 0);
