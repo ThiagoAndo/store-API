@@ -74,11 +74,9 @@ router.get("/add/:id", (req, res) => {
 router.post("/add/:id", (req, res) => {
   const add = getUserAdd(req.params.id);
   const id = req.params.id;
-  console.log("add");
-  console.log(add === undefined);
 
   if (add === undefined) {
-    const ret = insertUserAdd({ id, ...req.body });
+    const ret = createAction("userAddress", { id, ...req.body });
     res.status(201).json(ret);
   } else {
     res.status(500).json("Already registered");
@@ -100,7 +98,8 @@ router.post("/cart", async (req, res) => {
   const { items, id: user_id } = req.body;
 
   if (items.length === 0) {
-    deleteCart(user_id);
+    deleteAction("cart", " user_id = ? AND bought = ?", [user_id, 0]);
+    res.status(200).json({ message: "Cart deleted" });
   } else {
     items.forEach((item) => {
       const {
@@ -114,7 +113,7 @@ router.post("/cart", async (req, res) => {
     });
   }
 
-  res.json({ message: "Cart created successufuly" });
+  res.status(200).json({ message: "Cart created successufuly" });
 });
 
 // router.post('/', async (req, res, next) => {
