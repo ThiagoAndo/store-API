@@ -43,14 +43,23 @@ function createAction(table, data) {
 
 function deleteAction(table, colls, valls) {
   const stmt = db.prepare(`DELETE  FROM  ${table} WHERE ${colls} `);
-
   const ret = stmt.run(valls);
   return ret;
 }
 
+
+
+function updateAction(table, set ,surch, valls) {
+  const stmt = db.prepare(
+    `UPDATE  ${table}  SET ${set} WHERE ${surch} `
+  );
+  const ret = stmt.run(valls);
+  return ret;
+}
 exports.deleteAction = deleteAction;
-exports.readAction = readAction;
 exports.createAction = createAction;
+exports.updateAction = updateAction;
+exports.readAction = readAction;
 
 // export function insertOrder({ id = null, user_id }) {
 //   let currentDate = getCurrentDate();

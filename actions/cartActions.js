@@ -1,6 +1,7 @@
 const sql = require("better-sqlite3");
 const db = sql("e-comerce.db");
 const { insertCart } = require("./insertActions");
+const {updateAction} =require("../actions/actions")
 
 function getCart(query, queryVal) {
   const cart = db
@@ -15,7 +16,7 @@ function getCart(query, queryVal) {
 function checkInsertCart({ user_id, item_id, qnt, price, name, creation_at }) {
   const [product] = getCart(["item_id", "bought"], [item_id, 0]);
   if (product) {
-    updateCart(["qnt", "item_id"], [qnt, item_id]);
+    updateAction("cart", "qnt = ?","item_id = ?",[qnt, item_id]);
   } else {
     insertCart({
       user_id,
