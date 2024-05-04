@@ -1,11 +1,20 @@
 const sql = require("better-sqlite3");
 const db = sql("e-comerce.db");
 const { products } = require("../data/productsData");
+const { collNames } = require("../helpers/tbRowNames");
 // import { getCart } from "./cartActions.js";
 // import getCurrentDate from "./utils/functions.js";
 // import { getProductById, updateProductQnt } from "./productActions.js";
 // import { updateCartPurchased } from "./cartActions.js";
 // import { products } from "./productsData.js";
+
+function preper(table) {
+
+  return {
+    coll:  collNames[table],
+    insert: collNames[table].map((coll) => "@" + coll),
+  };
+}
 
 function create(user) {
   db.prepare(
@@ -24,7 +33,8 @@ function create(user) {
   ).run(user);
 }
 
-exports.insertUserAdd = insertUserAdd;
+exports.create = create;
+exports.preper = preper;
 // export function insertOrder({ id = null, user_id }) {
 //   let currentDate = getCurrentDate();
 //   const cart = getCart(user_id, 0);
