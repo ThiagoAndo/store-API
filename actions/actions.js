@@ -19,7 +19,7 @@ function readAction(table, params, valls) {
   const colls = preper(table);
   const stmt = db.prepare(`SELECT *  FROM  ${table} WHERE ${params} `);
 
-  const ret = stmt.run(... valls);
+  const ret = stmt.all(... valls);
   return ret;
 }
 
