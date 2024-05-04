@@ -34,13 +34,13 @@ const router = express.Router();
 //User Routes===================================================
 
 router.get("/user/:email/:password", async (req, res) => {
-  readAction("users", "email_address=?", [req.params.email]);
+  const user = readAction("users", "email_address=?", [req.params.email]);
 
   // const user = await getUser({
   //   email: req.params.email,
   //   password: req.params.password,
   // });
-  // res.json(user);
+  res.status(200).json(user);
 });
 
 router.post("/user/new", async (req, res) => {
@@ -88,12 +88,17 @@ router.post("/add/:id", (req, res) => {
 //Cart Routes===================================================
 router.get("/cart/:id", async (req, res) => {
   const user_id = req.params.id;
-  const items = getCart(["user_id", "bought"], [user_id, 0]);
+  const items = readAction("cart", "user_id=? AND bought=?", [
+    req.params.id,
+    0,
+  ]);
+
   res.json({ items });
 });
 
 router.post("/cart", async (req, res) => {
   const { items, id: user_id } = req.body;
+
   if (items.length === 0) {
     deleteCart(user_id);
   } else {
