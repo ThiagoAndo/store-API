@@ -11,4 +11,13 @@ const collNames = {
   cart: ["user_id", "item_id", "qnt", "price", "name", "creation_at"],
 };
 
+function prepareNames(table) {
+  return {
+    coll: collNames[table].join(", "),
+    insert: collNames[table].map((coll) => "@" + coll).join(", "),
+  };
+}
+
+
 exports.collNames = collNames;
+exports.prepareNames = prepareNames;

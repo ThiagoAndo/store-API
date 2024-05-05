@@ -1,25 +1,11 @@
 const sql = require("better-sqlite3");
 const db = sql("e-comerce.db");
 const { products } = require("../data/productsData");
-const { collNames } = require("../helpers/tbRowNames");
-// import { getCart } from "./cartActions.js";
-// import getCurrentDate from "./utils/functions.js";
-// import { getProductById, updateProductQnt } from "./productActions.js";
-// import { updateCartPurchased } from "./cartActions.js";
-// import { products } from "./productsData.js";
-
-function preper(table) {
-  return {
-    coll: collNames[table].join(", "),
-    insert: collNames[table].map((coll) => "@" + coll).join(", "),
-  };
-}
+const { collNames, prepareNames} = require("../helpers/tbRowNames");
 
 function readAction(table, params, valls) {
-  const colls = preper(table);
   const stmt = db.prepare(`SELECT *  FROM  ${table} WHERE ${params} `);
-
-  const ret = stmt.all(... valls);
+  const ret = stmt.all(...valls);
   return ret;
 }
 
@@ -47,12 +33,8 @@ function deleteAction(table, colls, valls) {
   return ret;
 }
 
-
-
-function updateAction(table, set ,surch, valls) {
-  const stmt = db.prepare(
-    `UPDATE  ${table}  SET ${set} WHERE ${surch} `
-  );
+function updateAction(table, set, surch, valls) {
+  const stmt = db.prepare(`UPDATE  ${table}  SET ${set} WHERE ${surch} `);
   const ret = stmt.run(valls);
   return ret;
 }

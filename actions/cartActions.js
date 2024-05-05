@@ -1,7 +1,6 @@
 const sql = require("better-sqlite3");
 const db = sql("e-comerce.db");
-const { insertCart } = require("./insertActions");
-const {updateAction} =require("../actions/actions")
+const { updateAction } = require("../CRUD/actions");
 
 function getCart(query, queryVal) {
   const cart = db
@@ -10,13 +9,10 @@ function getCart(query, queryVal) {
   return cart || [];
 }
 
-//console.log(getCart(["user_id", "bought"], [`lutuv3zy`, 0]));
-
-
 function checkInsertCart({ user_id, item_id, qnt, price, name, creation_at }) {
   const [product] = getCart(["item_id", "bought"], [item_id, 0]);
   if (product) {
-    updateAction("cart", "qnt = ?","item_id = ?",[qnt, item_id]);
+    updateAction("cart", "qnt = ?", "item_id = ?", [qnt, item_id]);
   } else {
     insertCart({
       user_id,
@@ -28,17 +24,6 @@ function checkInsertCart({ user_id, item_id, qnt, price, name, creation_at }) {
     });
   }
 }
-// console.log(getCart(["user_id", "bought"], ["d1s72lklucsilib", 0]));
-
-// checkInsertCart(  {
-//     user_id: 'd1s72lklucsilib',
-//     item_id: '1',
-//     qnt: 24,
-//     bought: 0,
-//     price: 477.8496,
-//     name: 'iPhone 9',
-//     creation_at: '29-03-2024   15:51:24'
-//   });
 
 function updateCart(query, queryVal) {
   const stmt = db.prepare(
@@ -55,7 +40,6 @@ function deleteCart(id) {
   console.log(ret);
 }
 
-// console.log(deleteCart("d1s72lklucsilib"));
 exports.getCart = getCart;
 exports.checkInsertCart = checkInsertCart;
 exports.deleteCart = deleteCart;

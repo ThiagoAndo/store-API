@@ -2,12 +2,10 @@ const sql = require("better-sqlite3");
 const db = sql("e-comerce.db");
 const pkg = require("bcryptjs");
 const { compare } = pkg;
-const { insertUser } = require("./insertActions");
+const { createAction, deleteAction, readAction } = require("../CRUD/actions");
 
 async function getUser(user) {
-  const userRet = db
-    .prepare("SELECT * FROM users WHERE email_address = ?")
-    .get(user.email);
+  const userRet = readAction("users", "email_address=?", [user.email]);
   switch (user.confUser) {
     case "yes":
       return userRet;
@@ -34,21 +32,17 @@ async function newUser(user) {
     confUser: "yes",
   });
   if (!conf) {
-    insertUser(user);
+    create("users", user);
     return user;
   } else {
     user.message = "user already registered";
     return user;
   }
 }
- function getUserAdd(id) {
+function getUserAdd(id) {
   const userRet = db.prepare("SELECT * FROM userAddress WHERE id = ?").get(id);
-  return userRet
+  return userRet;
 }
-
-
-
-
 
 exports.newUser = newUser;
 exports.getUser = getUser;
