@@ -1,10 +1,11 @@
-const { getAllProducts } = require("../actions/productActions");
-const { getImages } = require("../actions/imageActions");
-const { createAction, deleteAction, readAction } = require("../CRUD/actions");
+const { readAction } = require("../CRUD/actions");
 const express = require("express");
+const router = express.Router();
 
-router.get("/products", async (req, res) => {
-  const products = readAction("products", "id", "IS NOT NULL");
-  const images = getImages();
+router.get("/", async (req, res) => {
+  const products = readAction("products", "id != ?", ["-1"]);
+  const images = readAction("images", "item_id != ?", ["-1"]);
+
   res.json({ products, images });
 });
+module.exports = router;
