@@ -18,6 +18,7 @@ const collNames = {
     "user_id", 
     "item_id",
     "qnt", 
+    "bought",
     "price", 
     "name", 
     "creation_at"

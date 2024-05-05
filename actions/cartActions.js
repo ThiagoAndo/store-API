@@ -1,6 +1,6 @@
 const sql = require("better-sqlite3");
 const db = sql("e-comerce.db");
-const { updateAction } = require("../CRUD/actions");
+const { updateAction, createAction } = require("../CRUD/actions");
 
 function getCart(query, queryVal) {
   const cart = db
@@ -10,19 +10,24 @@ function getCart(query, queryVal) {
 }
 
 function checkInsertCart({ user_id, item_id, qnt, price, name, creation_at }) {
-  const [product] = getCart(["item_id", "bought"], [item_id, 0]);
+  let ret;
+  let ret2;
+  const [product] = getCart(["user_id", "bought"], [item_id, 0]);
   if (product) {
-    updateAction("cart", "qnt = ?", "item_id = ?", [qnt, item_id]);
+    ret = updateAction("cart", "qnt = ?", "item_id = ?", [qnt, item_id]);
   } else {
-    insertCart({
+   ret2= createAction("cart", {
       user_id,
       item_id,
       qnt,
+      bought: 0,
       price,
       name,
       creation_at,
     });
   }
+  console.log(ret)
+  return ret
 }
 
 function updateCart(query, queryVal) {
