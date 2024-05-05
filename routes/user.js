@@ -1,12 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { newUser, getUser } = require("../actions/userActions");
-const {
-  createAction,
-  deleteAction,
-  readAction,
-  updateAction,
-} = require("../CRUD/actions");
+const { deleteAction, updateAction } = require("../CRUD/actions");
 
 router.get("/:email/:password", async (req, res) => {
   const user = await getUser({
@@ -29,16 +24,15 @@ router.patch("/", async (req, res) => {
     user.password,
     user.id,
   ]);
-   ret.changes > 0
-     ? res.status(200).json({ message: `Updated user with id ${user.id}` })
-     : res
-         .status(404)
-         .json({ message: `Could not update user with id ${user.id}` });
+  ret.changes > 0
+    ? res.status(200).json({ message: `Updated user with id ${user.id}` })
+    : res
+        .status(404)
+        .json({ message: `Could not update user with id ${user.id}` });
 });
 
 router.delete("/", async (req, res) => {
   const user = req.body;
-
   deleteAction("orders", "user_id = ?", [user.id]);
   deleteAction("cart", "user_id = ?", [user.id]);
   deleteAction("userAddress", "id = ?", [user.id]);
