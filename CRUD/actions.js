@@ -4,7 +4,7 @@ const { prepareNames } = require("../helpers/tbRowNames");
 
 function readAction(table, params, valls) {
   const stmt = db.prepare(`SELECT *  FROM  ${table} WHERE ${params} `);
-  const ret = stmt.get(...valls);
+  const ret = stmt.all(...valls);
   return ret;
 }
 

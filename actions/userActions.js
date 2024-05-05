@@ -5,7 +5,7 @@ const { compare } = pkg;
 const { createAction, readAction } = require("../CRUD/actions");
 
 async function getUser(user) {
-  const userRet = readAction("users", "email_address=?", [user.email]);
+  const [userRet] = readAction("users", "email_address=?", [user.email]);
   if (user?.confUser) {
     return userRet;
   } else {
