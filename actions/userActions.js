@@ -6,7 +6,6 @@ const { createAction, deleteAction, readAction } = require("../CRUD/actions");
 
 async function getUser(user) {
   const userRet = readAction("users", "email_address=?", [user.email]);
-  console.log(user.password);
   if (user?.confUser) {
     return userRet;
   } else {
@@ -15,7 +14,7 @@ async function getUser(user) {
       return user;
     } else {
       const isValid = await compare(user.password, userRet.password);
-      if (true) {
+      if (isValid) {
         return userRet;
       } else {
         user.message = "Wrong Password";
@@ -32,7 +31,6 @@ async function newUser(user) {
     confUser: "yes",
   });
   if (!conf) {
-    user.password = hash(user.password)
     createAction("users", user);
     return user;
   } else {
@@ -46,7 +44,6 @@ function getUserAdd(id) {
   return userRet;
 }
 
-function deleteUser() {}
 
 exports.newUser = newUser;
 exports.getUser = getUser;
