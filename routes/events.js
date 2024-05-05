@@ -1,11 +1,6 @@
 const express = require("express");
 
-const { insertUserAdd } = require("../actions/insertActions");
-const {
-  createAction,
-  deleteAction,
-  readAction,
-} = require("../actions/actions");
+const { createAction, deleteAction, readAction } = require("../CRUD/actions");
 
 const {
   newUser,
@@ -17,11 +12,7 @@ const {
 } = require("../actions/userActions");
 
 const { getAllProducts } = require("../actions/productActions");
-const {
-  checkInsertCart,
-  getCart,
-  deleteCart,
-} = require("../actions/cartActions");
+const { checkInsertCart } = require("../actions/cartActions");
 const { getImages } = require("../actions/imageActions");
 const {
   isValidText,
@@ -34,26 +25,23 @@ const router = express.Router();
 //User Routes===================================================
 
 router.get("/user/:email/:password", async (req, res) => {
-  const user = readAction("users", "email_address=?", [req.params.email]);
-
-  // const user = await getUser({
-  //   email: req.params.email,
-  //   password: req.params.password,
-  // });
+  const user = await getUser({
+    email: req.params.email,
+    password: req.params.password,
+  });
   res.status(200).json(user);
 });
 
 router.post("/user/new", async (req, res) => {
   const data = req.body;
-
-  const ret = create("users", data);
+  const ret = newUser(data);
   console.log(ret);
   res.status(201).json(ret);
 });
 
 //Products Routes===================================================
 router.get("/products", async (req, res) => {
-  const products = getAllProducts();
+    const products = readAction("products", "title = ?", ["is not null"]);
   const images = getImages();
   res.json({ products, images });
 });
@@ -115,87 +103,5 @@ router.post("/cart", async (req, res) => {
 
   res.status(200).json({ message: "Cart created successufuly" });
 });
-
-// router.post('/', async (req, res, next) => {
-
-//   const data = req.body;
-
-//   let errors = {};
-
-//   if (!isValidText(data.title)) {
-//     errors.title = 'Invalid title.';
-//   }
-
-//   if (!isValidText(data.description)) {
-//     errors.description = 'Invalid description.';
-//   }
-
-//   if (!isValidDate(data.date)) {
-//     errors.date = 'Invalid date.';
-//   }
-
-//   if (!isValidImageUrl(data.image)) {
-//     errors.image = 'Invalid image.';
-//   }
-
-//   if (Object.keys(errors).length > 0) {
-//     return res.status(422).json({
-//       message: 'Adding the event failed due to validation errors.',
-//       errors,
-//     });
-//   }
-
-//   try {
-//     await add(data);
-//     res.status(201).json({ message: 'Event saved.', event: data });
-//   } catch (error) {
-//     next(error);
-//   }
-// });
-
-// router.patch('/:id', async (req, res, next) => {
-//   const data = req.body;
-
-//   let errors = {};
-
-//   if (!isValidText(data.title)) {
-//     errors.title = 'Invalid title.';
-//   }
-
-//   if (!isValidText(data.description)) {
-//     errors.description = 'Invalid description.';
-//   }
-
-//   if (!isValidDate(data.date)) {
-//     errors.date = 'Invalid date.';
-//   }
-
-//   if (!isValidImageUrl(data.image)) {
-//     errors.image = 'Invalid image.';
-//   }
-
-//   if (Object.keys(errors).length > 0) {
-//     return res.status(422).json({
-//       message: 'Updating the event failed due to validation errors.',
-//       errors,
-//     });
-//   }
-
-//   try {
-//     await replace(req.params.id, data);
-//     res.json({ message: 'Event updated.', event: data });
-//   } catch (error) {
-//     next(error);
-//   }
-// });
-
-// router.delete('/:id', async (req, res, next) => {
-//   try {
-//     await remove(req.params.id);
-//     res.json({ message: 'Event deleted.' });
-//   } catch (error) {
-//     next(error);
-//   }
-// });
 
 module.exports = router;
