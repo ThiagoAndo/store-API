@@ -1,0 +1,185 @@
+[33mcommit 40125279e83e3806e3b10fb1cf30b1e537870058[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32muser[m[33m)[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Sun May 5 17:43:35 2024 +0100
+
+    working on delete user action
+
+[33mcommit 435204c437eb8b1e6ee46f356323a0587f0c03bf[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Sun May 5 16:51:50 2024 +0100
+
+    Product route OK
+
+[33mcommit 831c32fd1384a7ec33bc4ca77ecb7ce064bcec64[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Sun May 5 16:15:16 2024 +0100
+
+    Preparing rebase'
+
+[33mcommit f0b108fe4ff8d4c722ca4f5a7b2a9537b08dfc31[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Sun May 5 16:20:51 2024 +0100
+
+    Updating Product Route
+
+[33mcommit e07ee9edde5e196f5b2cd1d693585183472e83fe[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Sat May 4 16:06:22 2024 +0100
+
+    update action OK
+
+[33mcommit 5f7c58bdd4aa23ffc1923f15a3784a27ac8cf125[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Sat May 4 14:54:56 2024 +0100
+
+    read action OK
+
+[33mcommit d94a234a94f6d424500d8b8bd9ed59c19298da55[m[33m ([m[1;31morigin/action[m[33m)[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Sat May 4 14:06:08 2024 +0100
+
+    create action OK
+
+[33mcommit e8352f4b96b0622afd321ee0cda18853fef957af[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Sat May 4 12:51:05 2024 +0100
+
+    Adding preper function
+
+[33mcommit 248196bd78047c83de5c2f1214767027e28fefc6[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Sat May 4 12:04:01 2024 +0100
+
+    crating string row names
+
+[33mcommit a9ce7e7e50153a532f8a98de87d14671a9349c12[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Mon Apr 29 21:49:47 2024 +0100
+
+    Address route OK
+
+[33mcommit 822a385362cd8d0635aace3a8db531bca5efa024[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Mon Apr 29 21:44:09 2024 +0100
+
+    adding insert address
+
+[33mcommit 0f93947d6b1701255b8e987dd8f6a70bd2551fe4[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Mon Apr 29 21:16:43 2024 +0100
+
+    adding insert address
+
+[33mcommit ea65ea0c55cd6cab6317886f6b982fe7795f364f[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Mon Apr 29 20:56:38 2024 +0100
+
+    adding insert adrres
+
+[33mcommit bb5a30913d8225ec0e29b563c274fefe374ccce6[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Fri Apr 12 20:58:42 2024 +0100
+
+    Working on user address
+
+[33mcommit 626f6b731f9db5a12b66fa1a8418979dbc23ddcc[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Fri Mar 29 18:37:27 2024 +0000
+
+    Resolving cart issue
+
+[33mcommit ed018a82ea6a263e137ab17fe02bcf271ea521a9[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Fri Mar 29 18:27:05 2024 +0000
+
+    Resolving cart issue
+
+[33mcommit 8ce7d64826df6c5b3fab4f8ecd9e2dca6e1b547b[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Fri Mar 29 18:20:20 2024 +0000
+
+    Resolving cart issue
+
+[33mcommit 3fbb6e6b5dcd52c7819edb35d6ae34f587393897[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Fri Mar 29 18:03:45 2024 +0000
+
+    fix cart recovering issue
+
+[33mcommit b310609147960de2d14847964c4bd0a49dcecd48[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Fri Mar 29 17:48:56 2024 +0000
+
+    last cart issue fix
+
+[33mcommit af4648d4b46e43d19f2bc07cb6cd4d31746bd837[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Fri Mar 29 17:27:15 2024 +0000
+
+    Fix delete cart issue
+
+[33mcommit b3b726504c13b401adf627703d5bd8497d555100[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Fri Mar 29 17:11:03 2024 +0000
+
+    Complet card functions
+
+[33mcommit 090a624a5b51f6112e9de2a0ebcd06e57259c35c[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Fri Mar 29 10:47:07 2024 +0000
+
+    add cart actions route
+
+[33mcommit af216473d25468d41764950cba4972a3b33b5f1d[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Wed Mar 27 15:07:17 2024 +0000
+
+    Add cart router
+
+[33mcommit a85ed315f8a1762f451750e06f530f6f6f8e50eb[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Wed Mar 6 20:45:39 2024 +0000
+
+    add image action,
+
+[33mcommit d271a0874ccbe40ab395c1af5e1b114a7a7fec76[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Wed Feb 28 20:52:48 2024 +0000
+
+    change user action
+
+[33mcommit 4a76badc5de8f2e7da082703e1bf9bbee63bf51d[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Mon Feb 19 20:31:41 2024 +0000
+
+    last commit
+
+[33mcommit 389c57f6456021c9d380a5b7dd907ca8dc020719[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Wed Jan 31 15:48:48 2024 +0000
+
+    add new user
+
+[33mcommit 3c5ba1b9dcb52f8f8622e39a1780f34b380c2eb0[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Thu Jan 25 07:10:57 2024 +0000
+
+    this commit
+
+[33mcommit 85a418ed2758355d192124c16bc27e122ed25852[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Mon Jan 22 15:46:36 2024 +0000
+
+    add user
+
+[33mcommit ae8317bc13c13e8d4a89150ccdbc34a92a801e71[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Sat Dec 16 15:35:24 2023 +0000
+
+    First commit
+
+[33mcommit 5c7d15ed82b3df8332206ad648edd77e395f0114[m
+Author: ThiagoAndo <ando.thiago@gmail.com>
+Date:   Sat Dec 16 15:30:35 2023 +0000
+
+    First commit

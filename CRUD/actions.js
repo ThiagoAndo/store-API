@@ -28,13 +28,13 @@ function createAction(table, data) {
 
 function deleteAction(table, colls, valls) {
   const stmt = db.prepare(`DELETE  FROM  ${table} WHERE ${colls} `);
-  const ret = stmt.run(valls);
+  const ret = stmt.run(... valls);
   return ret;
 }
 
 function updateAction(table, set, surch, valls) {
   const stmt = db.prepare(`UPDATE  ${table}  SET ${set} WHERE ${surch} `);
-  const ret = stmt.run(valls);
+  const ret = stmt.run(... valls);
   return ret;
 }
 exports.deleteAction = deleteAction;
