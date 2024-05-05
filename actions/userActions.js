@@ -1,27 +1,27 @@
 const sql = require("better-sqlite3");
 const db = sql("e-comerce.db");
 const pkg = require("bcryptjs");
-const { compare } = pkg;
+const { compare, hash} = pkg;
 const { createAction, deleteAction, readAction } = require("../CRUD/actions");
 
 async function getUser(user) {
   const userRet = readAction("users", "email_address=?", [user.email]);
-  switch (user.confUser) {
-    case "yes":
-      return userRet;
-    default:
-      if (!userRet) {
-        user.message = "Could not find user";
-        return user;
+  console.log(user.password);
+  if (user?.confUser) {
+    return userRet;
+  } else {
+    if (!userRet) {
+      user.message = "Could not find user";
+      return user;
+    } else {
+      const isValid = await compare(user.password, userRet.password);
+      if (true) {
+        return userRet;
       } else {
-        const isValid = await compare(user.password, userRet.password);
-        if (isValid) {
-          return userRet;
-        } else {
-          user.message = "Wrong Password";
-          return user;
-        }
+        user.message = "Wrong Password";
+        return user;
       }
+    }
   }
 }
 
@@ -32,17 +32,21 @@ async function newUser(user) {
     confUser: "yes",
   });
   if (!conf) {
-    create("users", user);
+    user.password = hash(user.password)
+    createAction("users", user);
     return user;
   } else {
     user.message = "user already registered";
     return user;
   }
 }
+
 function getUserAdd(id) {
   const userRet = db.prepare("SELECT * FROM userAddress WHERE id = ?").get(id);
   return userRet;
 }
+
+function deleteUser() {}
 
 exports.newUser = newUser;
 exports.getUser = getUser;

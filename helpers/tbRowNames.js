@@ -7,8 +7,21 @@ const collNames = {
     "password",
     "created_at",
   ],
-  userAddress: ["id", "line_one", "line_two", "town_city", "constry_state"],
-  cart: ["user_id", "item_id", "qnt", "price", "name", "creation_at"],
+  userAddress: [
+    "id",
+    "line_one",
+    "line_two", 
+    "town_city", 
+    "constry_state"
+  ],
+  cart: [
+    "user_id", 
+    "item_id",
+    "qnt", 
+    "price", 
+    "name", 
+    "creation_at"
+    ],
 };
 
 function prepareNames(table) {
@@ -18,6 +31,4 @@ function prepareNames(table) {
   };
 }
 
-
-exports.collNames = collNames;
 exports.prepareNames = prepareNames;

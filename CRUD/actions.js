@@ -1,16 +1,15 @@
 const sql = require("better-sqlite3");
 const db = sql("e-comerce.db");
-const { products } = require("../data/productsData");
-const { collNames, prepareNames} = require("../helpers/tbRowNames");
+const { prepareNames } = require("../helpers/tbRowNames");
 
 function readAction(table, params, valls) {
   const stmt = db.prepare(`SELECT *  FROM  ${table} WHERE ${params} `);
-  const ret = stmt.all(...valls);
+  const ret = stmt.get(...valls);
   return ret;
 }
 
 function createAction(table, data) {
-  const colls = preper(table);
+  const colls = prepareNames(table);
   const ret = db
     .prepare(
       `

@@ -42,7 +42,7 @@ router.post("/user/new", async (req, res) => {
 //Products Routes===================================================
 router.get("/products", async (req, res) => {
     // const products = readAction("products", "id != ?", ["-1"]);
-  const images = readAction("images", "item_id != ?", ["-1"]);
+  const images = readAction("images", "id != ?", ["-1"]);
   
   res.json({ images });
 });
