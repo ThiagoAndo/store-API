@@ -22,30 +22,6 @@ const {
 
 const router = express.Router();
 
-//User Routes===================================================
-
-router.get("/user/:email/:password", async (req, res) => {
-  const user = await getUser({
-    email: req.params.email,
-    password: req.params.password,
-  });
-  res.status(200).json(user);
-});
-
-router.post("/user/new", async (req, res) => {
-  const data = req.body;
-  const ret = newUser(data);
-  console.log(ret);
-  res.status(201).json(ret);
-});
-
-//Products Routes===================================================
-router.get("/products", async (req, res) => {
-    // const products = readAction("products", "id != ?", ["-1"]);
-  const images = readAction("images", "id != ?", ["-1"]);
-  
-  res.json({ images });
-});
 
 //User Address===================================================
 
