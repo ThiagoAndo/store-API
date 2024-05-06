@@ -4,6 +4,7 @@ const express = require("express");
 const products = require("./routes/product");
 const user = require("./routes/user");
 const cart = require("./routes/cart");
+const add = require("./routes/address");
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use((req, res, next) => {
 app.use("/products", products);
 app.use("/user", user);
 app.use("/cart", cart);
+app.use("/add", add);
 
 app.use((error, req, res, next) => {
   const status = error.status || 500;
