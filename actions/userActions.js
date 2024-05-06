@@ -5,6 +5,15 @@ const { compare } = pkg;
  require("../helpers/routeLock");
 const { createAction, readAction } = require("../CRUD/actions");
 
+const changeAccess = (isSIgnIn) => {
+    allowAccess = true;
+
+  setTimeout(() => {
+    allowAccess = false;
+  }, 5400000);
+};
+ 
+
 async function getUser(user) {
   const [userRet] = readAction("users", "email_address=?", [user.email]);
   if (user?.confUser) {
@@ -15,8 +24,8 @@ async function getUser(user) {
       return user;
     } else {
       const isValid = await compare(user.password, userRet.password);
-      if (true) {
-        allowAccess = true;
+      if (isValid) {
+        changeAccess()
         return userRet;
       } else {
         user.message = "Wrong Password";
