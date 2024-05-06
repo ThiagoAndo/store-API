@@ -26,14 +26,14 @@ function createAction(table, data) {
   return ret;
 }
 
-function deleteAction(table, colls, valls) {
-  const stmt = db.prepare(`DELETE  FROM  ${table} WHERE ${colls} `);
+function deleteAction(table, coll, valls) {
+  const stmt = db.prepare(`DELETE  FROM  ${table} WHERE ${coll} `);
   const ret = stmt.run(... valls);
   return ret;
 }
 
-function updateAction(table, set, surch, valls) {
-  const stmt = db.prepare(`UPDATE  ${table}  SET ${set} WHERE ${surch} `);
+function updateAction(table, coll, surch, valls) {
+  const stmt = db.prepare(`UPDATE  ${table}  SET ${coll} WHERE ${surch} `);
   const ret = stmt.run(... valls);
   return ret;
 }
