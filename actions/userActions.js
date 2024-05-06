@@ -39,11 +39,7 @@ async function newUser(user) {
   }
 }
 
-function getUserAdd(id) {
-  const userRet = db.prepare("SELECT * FROM userAddress WHERE id = ?").get(id);
-  return userRet;
-}
+
 
 exports.newUser = newUser;
 exports.getUser = getUser;
-exports.getUserAdd = getUserAdd;

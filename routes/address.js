@@ -22,13 +22,12 @@ const {
 
 const router = express.Router();
 
-
 //User Address===================================================
 
 router.get("/add/:id", (req, res) => {
   console.log(req.params.id);
 
-  const add = getUserAdd(req.params.id);
+  const add = readAction(req.params.id);
   if (add) {
     res.json(add);
   } else {
@@ -47,6 +46,5 @@ router.post("/add/:id", (req, res) => {
     res.status(500).json("Already registered");
   }
 });
-
 
 module.exports = router;
