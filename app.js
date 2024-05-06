@@ -5,7 +5,6 @@ const products = require("./routes/product");
 const user = require("./routes/user");
 const cart = require("./routes/cart");
 const add = require("./routes/address");
-
 const app = express();
 
 app.use(bodyParser.json());

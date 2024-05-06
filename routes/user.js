@@ -8,6 +8,7 @@ router.get("/:email/:password", async (req, res) => {
     email: req.params.email,
     password: req.params.password,
   });
+
   res.status(200).json(user);
 });
 
