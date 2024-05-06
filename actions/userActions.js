@@ -2,6 +2,7 @@ const sql = require("better-sqlite3");
 const db = sql("e-comerce.db");
 const pkg = require("bcryptjs");
 const { compare } = pkg;
+const { allowAccess } = require("../helpers/routeLock");
 const { createAction, readAction } = require("../CRUD/actions");
 
 async function getUser(user) {
