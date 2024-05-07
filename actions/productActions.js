@@ -1,10 +1,8 @@
 const { v4: generateId } = require("uuid");
 const sql = require("better-sqlite3");
 const db = sql("e-comerce.db");
-// import { insertProduct }  require("./insertActions.js");
-// import { deleteImage }  require("./imageActions.js");
 
- function getAllProducts() {
+function getAllProducts() {
   const products = db.prepare(`SELECT * FROM products`).all();
   return products;
 }
