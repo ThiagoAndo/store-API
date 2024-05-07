@@ -1,18 +1,13 @@
 const { createAction, updateAction, readAction } = require("../CRUD/actions");
 
-function insertOrder( user_id ) {
-
+function insertOrder(user_id) {
   const cart = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
 
-   let creation_at = cart[0].creation_at;
+  let creation_at = cart[0].creation_at;
 
-  // let totalLocal = cart.reduce((sum, cart) => {
-  //   let [price] = getProductById({
-  //     tableCol: "price",
-  //     productRows: cart.item_id,
-  //   });
-  //   return (sum += price.price * cart.qnt);
-  // }, 0);
+  let totalLocal = cart.reduce((sum, cart) => {
+    return (sum += cart.price * cart.qnt);
+  }, 0);
 
   // db.prepare(
   //   `
@@ -35,7 +30,7 @@ function insertOrder( user_id ) {
   // });
 
   // updateCartPurchased(creation_at);
-  return cart;
+  return totalLocal;
 }
 
 exports.insertOrder = insertOrder;
