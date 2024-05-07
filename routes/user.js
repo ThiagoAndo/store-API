@@ -20,10 +20,12 @@ router.post("/", async (req, res) => {
 });
 
 router.patch("/", async (req, res) => {
-  if (!allowAccess)
+  if (!allowAccess) {
     res.status(407).json({
       message: "Client must first authenticate itself with the proxy.",
     });
+    return;
+  }
   const user = req.body;
   const ret = updateAction("users", "password = ?", "id = ?", [
     user.password,
@@ -37,10 +39,12 @@ router.patch("/", async (req, res) => {
 });
 
 router.delete("/", async (req, res) => {
-  if (!allowAccess)
+  if (!allowAccess) {
     res.status(407).json({
       message: "Client must first authenticate itself with the proxy.",
     });
+    return;
+  }
   const user = req.body;
   deleteAction("orders", "user_id = ?", [user.id]);
   deleteAction("cart", "user_id = ?", [user.id]);

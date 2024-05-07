@@ -4,7 +4,7 @@ function insertOrder( user_id ) {
 
   const cart = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
 
-  // let creation_at = cart[0].creation_at;
+   let creation_at = cart[0].creation_at;
 
   // let totalLocal = cart.reduce((sum, cart) => {
   //   let [price] = getProductById({
@@ -35,7 +35,7 @@ function insertOrder( user_id ) {
   // });
 
   // updateCartPurchased(creation_at);
-  return cart
+  return cart;
 }
 
 exports.insertOrder = insertOrder;

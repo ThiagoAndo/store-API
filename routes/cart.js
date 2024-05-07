@@ -5,10 +5,12 @@ const router = express.Router();
 require("../helpers/routeLock");
 
 router.get("/ordered/:id", async (req, res) => {
-  if (!allowAccess)
+  if (!allowAccess) {
     res.status(407).json({
       message: "Client must first authenticate itself with the proxy.",
     });
+    return;
+  }
   const user_id = req.params.id;
   const items = readAction("cart", "user_id=? AND bought=?", [user_id, 1]);
 
@@ -16,10 +18,12 @@ router.get("/ordered/:id", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  if (!allowAccess)
+  if (!allowAccess) {
     res.status(407).json({
       message: "Client must first authenticate itself with the proxy.",
     });
+    return;
+  }
   const user_id = req.params.id;
 
   const items = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
@@ -29,11 +33,13 @@ router.get("/:id", async (req, res) => {
     : res.status(404).json({ message: "Not found" });
 });
 
-
 router.post("/", async (req, res) => {
-if (!allowAccess) res.status(407).json({
-  message: "Client must first authenticate itself with the proxy.",
-});;
+  if (!allowAccess) {
+    res.status(407).json({
+      message: "Client must first authenticate itself with the proxy.",
+    });
+    return;
+  }
 
   const { items, id: user_id } = req.body;
   let ret;
