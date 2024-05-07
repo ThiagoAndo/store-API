@@ -12,19 +12,16 @@ router.get("/ordered/:id", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  console.log(allowAccess);
-  if (allowAccess) {
     const user_id = req.params.id;
 
     const items = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
 
-    res.status(200).json({ items });
-  } else {
-    res.status(407).json({
-      message: "Client must first authenticate itself with the proxy.",
-    });
-  }
+   items.length > 0
+     ? res.status(200).json({ items })
+     : res.status(404).json({ message:"Not found"});
 });
+
+
 
 router.post("/", async (req, res) => {
   const { items, id: user_id } = req.body;
