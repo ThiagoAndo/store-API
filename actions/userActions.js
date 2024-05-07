@@ -25,7 +25,7 @@ async function getUser(user) {
     } else {
       const isValid = await compare(user.password, userRet.password);
       if (isValid) {
-        changeAccess()
+        changeAccess();
         return userRet;
       } else {
         user.message = "Wrong Password";

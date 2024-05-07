@@ -5,6 +5,10 @@ const router = express.Router();
 //User Address===================================================
 
 router.get("/:id", (req, res) => {
+  if (!allowAccess)
+    res.status(407).json({
+      message: "Client must first authenticate itself with the proxy.",
+    });
   const id = req.params.id;
   const add = readAction("userAddress", "id = ?", [id]);
   if (add) {
@@ -15,7 +19,10 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  let retCond;
+  if (!allowAccess)
+    res.status(407).json({
+      message: "Client must first authenticate itself with the proxy.",
+    });
   const id = req.body.id;
   const add = readAction("userAddress", "id = ?", [id]);
   console.log(add);
@@ -29,6 +36,10 @@ router.post("/", (req, res) => {
 
 
 router.patch("/", async (req, res) => {
+  if (!allowAccess)
+    res.status(407).json({
+      message: "Client must first authenticate itself with the proxy.",
+    });
   const address = req.body;
   const ret = updateAction(
     "userAddress",
