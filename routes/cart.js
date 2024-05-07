@@ -60,7 +60,7 @@ if (!allowAccess) res.status(407).json({
         price,
       });
     });
-    res.status(200).json({ message: "Cart created successufuly" });
+    res.status(201).json({ message: "Cart created successufuly" });
   }
 });
 

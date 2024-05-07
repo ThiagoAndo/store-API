@@ -9,26 +9,23 @@ router.get("/:id", (req, res) => {
       message: "Client must first authenticate itself with the proxy.",
     });
   const id = req.params.id;
-  const add = readAction("userAddress", "id = ?", [id]);
+  const add = readAction("orders", "id = ?", [id]);
   if (add) {
-    res.json(add);
+    res.status(200).json(add);
   } else {
-    res.json({ message: "not registered" });
+    res.status(404).json({ message: "No order found" });
   }
 });
 
 router.post("/", (req, res) => {
-  if (!allowAccess)
-    res.status(407).json({
-      message: "Client must first authenticate itself with the proxy.",
-    });
   const id = req.body.id;
-  const add = readAction("userAddress", "id = ?", [id]);
-  console.log(add);
-  if (add.length === 0) {
-    const ret = createAction("userAddress", { ...req.body });
-    if (ret.changes > 0) res.status(201).json(ret);
-  } else {
-    res.status(500).json("Already registered");
-  }
+
+  // if (!allowAccess)
+  //   res.status(407).json({
+  //     message: "Client must first authenticate itself with the proxy.",
+  //   });
+
+  res.status(200).json(id);
 });
+
+module.exports = router;

@@ -1,8 +1,6 @@
-const sql = require("better-sqlite3");
-const db = sql("e-comerce.db");
 const { createAction, updateAction, readAction } = require("../CRUD/actions");
 
-function insertOrder( user_id ="12345") {
+function insertOrder( user_id ) {
 
   const cart = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
 
@@ -40,4 +38,4 @@ function insertOrder( user_id ="12345") {
   return cart
 }
 
-console.log(insertOrder());
+exports.insertOrder = insertOrder;
