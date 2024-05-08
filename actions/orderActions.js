@@ -8,28 +8,30 @@ function insertOrder(user_id) {
   let totalLocal = cart.reduce((sum, cart) => {
     return (sum += cart.price * cart.qnt);
   }, 0);
+  
+    createAction("orders", user);
 
-  // db.prepare(
-  //   `
-  //   INSERT INTO orders
-  //     (invoice_id,cart_id, user_id, paid_at, total)
-  //   VALUES (
-  //     null,
-  //     @cart_id,
-  //     @user_id,
-  //     @paid_at,
-  //     @total
-  //   )
-  // `
-  // ).run({
-  //   id,
-  //   cart_id: creation_at,
-  //   user_id,
-  //   paid_at: currentDate,
-  //   total: totalLocal,
-  // });
+  db.prepare(
+    `
+    INSERT INTO orders
+      (invoice_id,cart_id, user_id, paid_at, total)
+    VALUES (
+      null,
+      @cart_id,
+      @user_id,
+      @paid_at,
+      @total
+    )
+  `
+  ).run({
+    id,
+    cart_id: creation_at,
+    user_id,
+    paid_at: currentDate,
+    total: totalLocal,
+  });
 
-  // updateCartPurchased(creation_at);
+  updateCartPurchased(creation_at);
   return totalLocal;
 }
 
