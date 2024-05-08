@@ -2,16 +2,17 @@ const express = require("express");
 const { readAction } = require("../CRUD/actions");
 const router = express.Router();
 const { insertOrder } = require("../actions/orderActions");
-
 require("../helpers/routeLock");
 
 router.get("/:id", (req, res) => {
-  if (!allowAccess)
+  if (!allowAccess) {
     res.status(407).json({
       message: "Client must first authenticate itself with the proxy.",
     });
+    return;
+  }
   const id = req.params.id;
-  const add = readAction("orders", "id = ?", [id]);
+  const add = readAction("orders", "user_id = ?", [id]);
   if (add) {
     res.status(200).json(add);
   } else {
@@ -27,7 +28,9 @@ router.post("/", (req, res) => {
   //     message: "Client must first authenticate itself with the proxy.",
   //   });
 
-  res.status(200).json(ret);
+  ret.changes > 0
+    ? res.status(201).json({ message: "Invoice created" })
+    : res.status(500).json({ message: "An error has occurred" });
 });
 
 module.exports = router;

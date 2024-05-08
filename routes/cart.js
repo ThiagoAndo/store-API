@@ -12,7 +12,7 @@ router.get("/ordered/:id", async (req, res) => {
     return;
   }
   const user_id = req.params.id;
-  const items = readAction("cart", "user_id=? AND bought=?", [user_id, 1]);
+  const items = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
 
   res.status(200).json({ items });
 });
@@ -26,7 +26,7 @@ router.get("/:id", async (req, res) => {
   }
   const user_id = req.params.id;
 
-  const items = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
+  const items = readAction("cart", "user_id=? AND bought=?", [user_id, 1]);
 
   items.length > 0
     ? res.status(200).json({ items })
@@ -47,7 +47,7 @@ router.post("/", async (req, res) => {
     ret = deleteAction("cart", " user_id = ? AND bought = ?", [user_id, 0]);
     ret.changes > 0
       ? res.status(200).json({ message: "Cart deleted" })
-      : res.status(404);
+      : res.status(500).json({ message: "An error has occurred" });
   } else {
     items.forEach((item) => {
       const {

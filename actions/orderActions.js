@@ -1,38 +1,22 @@
 const { createAction, updateAction, readAction } = require("../CRUD/actions");
+const { getCurrentDate } = require("../helpers/dateFunc");
 
 function insertOrder(user_id) {
   const cart = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
 
-  let creation_at = cart[0].creation_at;
-
-  let totalLocal = cart.reduce((sum, cart) => {
-    return (sum += cart.price * cart.qnt);
-  }, 0);
-  
-    createAction("orders", user);
-
-  db.prepare(
-    `
-    INSERT INTO orders
-      (invoice_id,cart_id, user_id, paid_at, total)
-    VALUES (
-      null,
-      @cart_id,
-      @user_id,
-      @paid_at,
-      @total
-    )
-  `
-  ).run({
-    id,
-    cart_id: creation_at,
+  const invoice = {
+    invoice_id: null,
+    cart_id: cart[0].creation_at,
     user_id,
-    paid_at: currentDate,
-    total: totalLocal,
-  });
+    paid_at: getCurrentDate(),
+    total: cart.reduce((sum, cart) => {
+      return (sum += cart.price * cart.qnt);
+    }, 0),
+  };
 
-  updateCartPurchased(creation_at);
-  return totalLocal;
+  updateAction("cart", "bought = ?", "user_id=? ", [1, user_id]);
+  return createAction("orders", invoice);
+
 }
 
 exports.insertOrder = insertOrder;

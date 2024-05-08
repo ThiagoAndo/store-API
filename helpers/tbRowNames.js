@@ -23,6 +23,14 @@ const collNames = {
     "name", 
     "creation_at"
     ],
+      orders: [
+    "invoice_id",
+    "cart_id",
+    "user_id", 
+    "paid_at", 
+    "total"
+  ],
+    
 };
 
 function prepareNames(table) {
