@@ -6,12 +6,7 @@ require("../helpers/routeLock");
 
 
 router.get("/:id", async (req, res) => {
-  if (!allowAccess) {
-    res.status(407).json({
-      message: "Client must first authenticate itself with the proxy.",
-    });
-    return;
-  }
+  
   const user_id = req.params.id;
 
   const items = readAction("cart", "user_id=? AND bought=?", [user_id, 1]);
