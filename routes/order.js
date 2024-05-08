@@ -23,10 +23,12 @@ router.get("/:id", (req, res) => {
 router.post("/", (req, res) => {
   const id = req.body.id;
   const ret = insertOrder(id);
-  // if (!allowAccess)
-  //   res.status(407).json({
-  //     message: "Client must first authenticate itself with the proxy.",
-  //   });
+  if (!allowAccess){
+    res.status(407).json({
+      message: "Client must first authenticate itself with the proxy.",
+    });
+return
+  }
 
   ret.changes > 0
     ? res.status(201).json({ message: "Invoice created" })
