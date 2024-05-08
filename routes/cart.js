@@ -4,18 +4,6 @@ const { checkInsertCart } = require("../actions/cartActions");
 const router = express.Router();
 require("../helpers/routeLock");
 
-router.get("/ordered/:id", async (req, res) => {
-  if (!allowAccess) {
-    res.status(407).json({
-      message: "Client must first authenticate itself with the proxy.",
-    });
-    return;
-  }
-  const user_id = req.params.id;
-  const items = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
-
-  res.status(200).json({ items });
-});
 
 router.get("/:id", async (req, res) => {
   if (!allowAccess) {
