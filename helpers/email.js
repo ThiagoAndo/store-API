@@ -34,10 +34,10 @@ require("dotenv").config();
 `
      ) +
      `
-TOTAL INVOICE: ${(formatValue(value), email)} 
+TOTAL INVOICE: ${(formatValue(value))} 
   `;
 
-   sendEmail(mailMsg.replaceAll(",", "  "));
+   sendEmail(mailMsg.replaceAll(",", "  "), email);
  }
 
 
