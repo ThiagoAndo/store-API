@@ -10,7 +10,8 @@ function checkInsertCart({ user_id, item_id, qnt, price, name, creation_at }) {
     0,
     item_id,
   ]);
-  if (product) {
+
+  if (product && product?.qnt != qnt) {
     ret = updateAction("cart", "qnt = ?", "item_id = ? AND user_id=? ", [
       qnt,
       item_id,
@@ -27,7 +28,6 @@ function checkInsertCart({ user_id, item_id, qnt, price, name, creation_at }) {
       creation_at,
     });
   }
-  console.log(ret);
   return ret;
 }
 

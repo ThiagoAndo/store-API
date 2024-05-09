@@ -25,7 +25,7 @@ function buildMail(cart, name, value, email) {
       (item) =>
         `NAME: ${item.name}
       
-  PRICE:  ${item.price}
+  PRICE:  ${formatValue(+item.price)}
     
   QUANTITY:  ${item?.qnt || item?.quantity}
       
@@ -34,7 +34,7 @@ function buildMail(cart, name, value, email) {
 `
     ) +
     `
-TOTAL INVOICE: ${formatValue(value)} 
+TOTAL INVOICE: ${formatValue(+value)} 
   `;
 
   sendEmail(mailMsg.replaceAll(",", "  "), email);
