@@ -1,49 +1,24 @@
 const { createAction, updateAction, readAction } = require("../CRUD/actions");
 const { getCurrentDate } = require("../helpers/dateFunc");
-const { sendEmail } = require("../helpers/email");
+const { buildMail } = require("../helpers/email");
 
 function insertOrder(user_id, name) {
   const cart = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
 
-  const invMsg = {
-    prt: `NEXT STORE
-
-  Dear ${name}, Thank You for your purchase on our online store.
-  your items will be delivery very soon.
-
-  ORDER INFO:
-
-  ${cart.map(
-  (item) =>
- `NAME: ${item.name}
-      
-  PRICE:  ${item.price}
-    
-  QUANTITY:  ${item.qnt}
-      
-----------------------------------
-
-`
-)}
-  `,
+  const invoice = {
+    invoice_id: null,
+    cart_id: cart[0].creation_at,
+    user_id,
+    paid_at: getCurrentDate(),
+    total: cart.reduce((sum, cart) => {
+      return (sum += cart.price * cart.qnt);
+    }, 0),
   };
-  console.log(invMsg.prt);
-  // console.log(cart[0].creation_at);
-  // let ret;
-  // const invoice = {
-  //   invoice_id: null,
-  //   cart_id: cart[0].creation_at,
-  //   user_id,
-  //   paid_at: getCurrentDate(),
-  //   total: cart.reduce((sum, cart) => {
-  //     return (sum += cart.price * cart.qnt);
-  //   }, 0),
-  // };
 
-  // updateAction("cart", "bought = ?", "user_id=? ", [1, user_id]);
-  // ret = createAction("orders", invoice);
-  // ret.changes > 0 ? sendEmail() : null;
-  return cart;
+  updateAction("cart", "bought = ?", "user_id=? ", [1, user_id]);
+  const ret = createAction("orders", invoice);
+  ret.changes > 0 ? buildMail(cart, name, invoice.total) : null;
+  return ret;
 }
 
 exports.insertOrder = insertOrder;
