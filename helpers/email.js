@@ -1,16 +1,16 @@
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
- function formatValue(value) {
-   return new Intl.NumberFormat("de-DE", {
-     style: "currency",
-     currency: "EUR",
-   }).format(value);
- }
+function formatValue(value) {
+  return new Intl.NumberFormat("de-DE", {
+    style: "currency",
+    currency: "EUR",
+  }).format(value);
+}
 
- function buildMail(cart, name, value, email) {
-   const mailMsg =
-     `NEXT STORE
+function buildMail(cart, name, value, email) {
+  const mailMsg =
+    `NEXT STORE
 
   Dear ${name}
   
@@ -21,25 +21,24 @@ require("dotenv").config();
   ORDER INFO:
 
   ` +
-     cart.map(
-       (item) =>
-         `NAME: ${item.name}
+    cart.map(
+      (item) =>
+        `NAME: ${item.name}
       
   PRICE:  ${item.price}
     
-  QUANTITY:  ${item.qnt}
+  QUANTITY:  ${item?.qnt || item?.quantity}
       
 ----------------------------------
 
 `
-     ) +
-     `
-TOTAL INVOICE: ${(formatValue(value))} 
+    ) +
+    `
+TOTAL INVOICE: ${formatValue(value)} 
   `;
 
-   sendEmail(mailMsg.replaceAll(",", "  "), email);
- }
-
+  sendEmail(mailMsg.replaceAll(",", "  "), email);
+}
 
 function sendEmail(body, email) {
   const transporter = nodemailer.createTransport({

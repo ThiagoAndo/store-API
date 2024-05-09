@@ -24,17 +24,16 @@ router.post("/", (req, res) => {
   const id = req.body.id;
   const name = req.body.name;
   const email = req.body.email;
-  if (!allowAccess) {
-    res.status(407).json({
-      message: "Client must first authenticate itself with the proxy.",
-    });
-    return;
-  }
-  const ret = insertOrder(id, name, email);
+  const cart = req.body?.cart || false;
+  const ret = insertOrder(id, name, email, cart);
 
-  ret.changes > 0
-    ? res.status(201).json({ message: "Invoice created" })
-    : res.status(500).json({ message: "An error has occurred" });
+  // ret.changes > 0
+  //   ? res.status(201).json({ message: "Invoice created" })
+  //   : res.status(500).json({ message: "An error has occurred" });
+    
+    res.status(200).json({ message: "Invoice created" })
+
+
 });
 
 module.exports = router;

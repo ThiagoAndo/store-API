@@ -27,6 +27,7 @@ router.post("/", async (req, res) => {
     return;
   }
   const { items, id: user_id } = req.body;
+  console.log(items)
   let ret;
   if (items.length === 0) {
     ret = deleteAction("cart", " user_id = ? AND bought = ?", [user_id, 0]);
