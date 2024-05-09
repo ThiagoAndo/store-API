@@ -23,12 +23,13 @@ router.get("/:id", (req, res) => {
 router.post("/", (req, res) => {
   const id = req.body.id;
   const name = req.body.name;
-  const ret = insertOrder(id,name);
-  if (!allowAccess){
+  const email = req.body.email;
+  const ret = insertOrder(id, name, email);
+  if (!allowAccess) {
     res.status(407).json({
       message: "Client must first authenticate itself with the proxy.",
     });
-return
+    return;
   }
 
   ret.changes > 0

@@ -2,7 +2,7 @@ const { createAction, updateAction, readAction } = require("../CRUD/actions");
 const { getCurrentDate } = require("../helpers/dateFunc");
 const { buildMail } = require("../helpers/email");
 
-function insertOrder(user_id, name) {
+function insertOrder(user_id, name, email) {
   const cart = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
 
   const invoice = {
@@ -17,7 +17,7 @@ function insertOrder(user_id, name) {
 
   updateAction("cart", "bought = ?", "user_id=? ", [1, user_id]);
   const ret = createAction("orders", invoice);
-  ret.changes > 0 ? buildMail(cart, name, invoice.total) : null;
+  ret.changes > 0 ? buildMail(cart, name, invoice.total, email) : null;
   return ret;
 }
 

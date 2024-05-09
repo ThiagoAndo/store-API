@@ -8,7 +8,7 @@ require("dotenv").config();
    }).format(value);
  }
 
- function buildMail(cart, name, value) {
+ function buildMail(cart, name, value, email) {
    const mailMsg =
      `NEXT STORE
 
@@ -34,14 +34,14 @@ require("dotenv").config();
 `
      ) +
      `
-TOTAL INVOICE: ${formatValue(value)} 
+TOTAL INVOICE: ${(formatValue(value), email)} 
   `;
 
-  sendEmail(mailMsg.replaceAll(",", "  "));
+   sendEmail(mailMsg.replaceAll(",", "  "));
  }
 
 
-function sendEmail(body) {
+function sendEmail(body, email) {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -52,7 +52,7 @@ function sendEmail(body) {
 
   const mailOptions = {
     from: process.env.EMAIL,
-    to: "ando.thiago@gmail.com",
+    to: email,
     subject: "Sending Email using Node.js",
     text: body,
   };
