@@ -9,12 +9,12 @@ const router = express.Router();
 require("../helpers/routeLock");
 
 router.get("/:id", async (req, res) => {
-  // if (!allowAccess) {
-  //   res.status(407).json({
-  //     message: "Client must first authenticate itself with the proxy.",
-  //   });
-  //   return;
-  // }
+  if (!allowAccess) {
+    res.status(407).json({
+      message: "Client must first authenticate itself with the proxy.",
+    });
+    return;
+  }
   const user_id = req.params.id;
   const items = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
   items.length > 0
@@ -23,12 +23,12 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  // if (!allowAccess) {
-  //   res.status(407).json({
-  //     message: "Client must first authenticate itself with the proxy.",
-  //   });
-  //   return;
-  // }
+  if (!allowAccess) {
+    res.status(407).json({
+      message: "Client must first authenticate itself with the proxy.",
+    });
+    return;
+  }
   const { item, id: user_id } = req.body;
   let ret;
   const {
@@ -38,7 +38,7 @@ router.post("/", async (req, res) => {
     createAt: creation_at,
   } = item.createAt.payload;
 
-  ret = checkInsertCart("cart", {
+  ret = createAction("cart", {
     user_id,
     item_id,
     qnt: 1,
@@ -55,12 +55,12 @@ router.patch("/", async (req, res) => {
   const { qnt, item_id, user_id } = req.body.cart;
   console.log(req.body);
 
-  // if (!allowAccess) {
-  //   res.status(407).json({
-  //     message: "Client must first authenticate itself with the proxy.",
-  //   });
-  //   return;
-  // }
+  if (!allowAccess) {
+    res.status(407).json({
+      message: "Client must first authenticate itself with the proxy.",
+    });
+    return;
+  }
   ret = updateAction("cart", "qnt = ?", "item_id = ? AND user_id=? ", [
     qnt,
     item_id,
@@ -75,12 +75,12 @@ router.patch("/", async (req, res) => {
 });
 
 router.delete("/", async (req, res) => {
-  // if (!allowAccess) {
-  //   res.status(407).json({
-  //     message: "Client must first authenticate itself with the proxy.",
-  //   });
-  //   return;
-  // }
+  if (!allowAccess) {
+    res.status(407).json({
+      message: "Client must first authenticate itself with the proxy.",
+    });
+    return;
+  }
   let ret;
   switch (req.body.op) {
     case 0:
