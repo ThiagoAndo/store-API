@@ -5,12 +5,12 @@ const { insertOrder } = require("../actions/orderActions");
 require("../helpers/routeLock");
 
 router.get("/:id", (req, res) => {
-  if (!allowAccess) {
-    res.status(407).json({
-      message: "Client must first authenticate itself with the proxy.",
-    });
-    return;
-  }
+  // if (!allowAccess) {
+  //   res.status(407).json({
+  //     message: "Client must first authenticate itself with the proxy.",
+  //   });
+  //   return;
+  // }
   const id = req.params.id;
   const add = readAction("orders", "user_id = ?", [id]);
   if (add) {
@@ -21,17 +21,18 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/", (req, res) => {
+  console.log('order')
+  console.log(req.body);
   const id = req.body.id;
   const name = req.body.name;
   const email = req.body.email;
   const cart = req.body?.cart || false;
   const ret = insertOrder(id, name, email, cart);
 
-  // ret.changes > 0
-  //   ? res.status(201).json({ message: "Invoice created" })
-  //   : res.status(500).json({ message: "An error has occurred" });
+  ret.changes > 0
+    ? res.status(201).json({ message: "Invoice created" })
+    : res.status(500).json({ message: "An error has occurred" });
     
-    res.status(200).json({ message: "Invoice created" })
 
 
 });
