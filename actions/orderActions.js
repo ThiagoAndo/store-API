@@ -10,7 +10,6 @@ function insertOrder(user_id, name, email, cart) {
   } else {
     thisCart = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
   }
-
   const total = thisCart.reduce((sum, cart) => {
     return (sum += +cart.price * (+cart?.qnt || +cart?.quantity));
   }, 0);
@@ -22,7 +21,6 @@ function insertOrder(user_id, name, email, cart) {
     paid_at: getCurrentDate(),
     total,
   };
-  console.log(invoice);
   if (cart) {
     buildMail(thisCart, name, total, email);
     return (ret.changes = 1);

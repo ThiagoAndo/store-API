@@ -7,7 +7,6 @@ const {
 } = require("../CRUD/actions");
 const router = express.Router();
 require("../helpers/routeLock");
-
 router.get("/:id", async (req, res) => {
   if (!allowAccess) {
     res.status(407).json({
@@ -29,32 +28,31 @@ router.post("/", async (req, res) => {
     });
     return;
   }
+
   const { item, id: user_id } = req.body;
   let ret;
   const {
     id: item_id,
-    title: name,
+    name,
     price,
+    quantity,
     createAt: creation_at,
-  } = item.createAt.payload;
+  } = item;
 
   ret = createAction("cart", {
     user_id,
     item_id,
-    qnt: 1,
+    qnt:quantity,
     bought: 0,
     price,
     name,
     creation_at,
   });
-  console.log(ret);
   res.status(201).json({ message: "Cart created successufuly" });
 });
 
 router.patch("/", async (req, res) => {
   const { qnt, item_id, user_id } = req.body.cart;
-  console.log(req.body);
-
   if (!allowAccess) {
     res.status(407).json({
       message: "Client must first authenticate itself with the proxy.",

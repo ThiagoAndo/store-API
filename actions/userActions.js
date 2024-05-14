@@ -22,7 +22,7 @@ async function getUser(user) {
       return user;
     } else {
       const isValid = await compare(user.password, userRet.password);
-      if (true) {
+      if (isValid) {
         changeAccess();
         return userRet;
       } else {
