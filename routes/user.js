@@ -16,7 +16,11 @@ router.post("/new", async (req, res) => {
   const data = req.body;
   const ret = await newUser(data);
   console.log(ret);
-  res.status(201).json(ret);
+  if (ret?.message) {
+    res.status(403).json(ret);
+  } else {
+    res.status(201).json(ret);
+  }
 });
 
 router.patch("/", async (req, res) => {

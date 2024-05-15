@@ -1,9 +1,14 @@
 const sql = require("better-sqlite3");
 const db = sql("e-comerce.db");
 const pkg = require("bcryptjs");
-const { compare } = pkg;
+const { hash, compare } = pkg;
+const uniqid = require("uniqid");
+const { currentDate } = require("../helpers/dateGenerator");
+const { isName, isPassword, isEmail } = require("../helpers/validate");
+
 require("../helpers/routeLock");
 const { createAction, readAction } = require("../CRUD/actions");
+let error = {};
 
 const changeAccess = (isSIgnIn) => {
   allowAccess = true;
@@ -18,16 +23,14 @@ async function getUser(user) {
     return userRet;
   } else {
     if (!userRet) {
-      user.message = "Could not find user";
-      return user;
+      return (error.message = "Could not find user");
     } else {
       const isValid = await compare(user.password, userRet.password);
       if (isValid) {
         changeAccess();
         return userRet;
       } else {
-        user.message = "Wrong Password";
-        return user;
+        return (error.message = "Wrong Password");
       }
     }
   }
@@ -40,11 +43,24 @@ async function newUser(user) {
     confUser: "yes",
   });
   if (!conf) {
+    if (!isName(user.first_name + " " + user.last_name)) {
+      error.message =
+        "Name is wrong. Make sure to enter first and last name only"
+      return error
+    } else if (!isEmail(user.email_address)) {
+      return (error.message = "Email is not valid ");
+    } else if (!isPassword(user.password)) {
+      return (error.message = "Password must contain at least eight character");
+    }
+
+    user.password = await hash(user.password, 12);
+    user.id = uniqid();
+    user.created_at = currentDate();
+    changeAccess();
     createAction("users", user);
     return user;
   } else {
-    user.message = "user already registered";
-    return user;
+    return (error.message = "user already registered");
   }
 }
 
