@@ -12,9 +12,9 @@ router.get("/:id", (req, res) => {
     return;
   }
   const id = req.params.id;
-  const add = readAction("orders", "user_id = ?", [id]);
+  const ret = readAction("orders", "user_id = ?", [id]);
   if (add) {
-    res.status(200).json(add);
+    res.status(200).json(ret);
   } else {
     res.status(404).json({ message: "No order found" });
   }
