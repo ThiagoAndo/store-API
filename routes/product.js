@@ -23,12 +23,9 @@ module.exports = router;
 
 router.get("/bycategorie", async (req, res) => {
   const { category } = req.query;
-  console.log(category)
-
-  const products = readAction("products", "category = ? OR category = ?", [
-    "mens-shoes"," womens-tops"
-  ]);
-
+  let queryLen = Array(category.length).fill("category = ?");
+  queryLen = queryLen.toString().replaceAll(",", " OR ");
+  const products = readAction("products", `${queryLen}`, category);
   res.status(200).json(products);
 });
 module.exports = router;
