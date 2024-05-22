@@ -23,6 +23,7 @@ module.exports = router;
 
 router.get("/bycategorie", async (req, res) => {
   const { category } = req.query;
+  console.log(category)
 
   const products = readAction("products", "category = ? OR category = ?", [
     "mens-shoes"," womens-tops"
