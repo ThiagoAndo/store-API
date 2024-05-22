@@ -1,53 +1,34 @@
-const { v4: generateId } = require("uuid");
+const express = require("express");
+const router = express.Router();
 const sql = require("better-sqlite3");
 const db = sql("e-comerce.db");
+const { readAction } = require("../CRUD/actions");
 
-function getAllProducts() {
-  const products = db.prepare(`SELECT * FROM products`).all();
-  return products;
-}
+router.get("/", async (req, res) => {
+  const products = readAction("products", "id != ?", ["-1"]);
+  const images = readAction("images", "item_id != ?", ["-1"]);
 
-exports.getAllProducts = getAllProducts;
+  res.status(200).json({ products, images });
+});
 
-// export function getProductById({ tableCol, productRows }) {
-//   let cols = tableCol || "*h";
-//   const products = db
-//     .prepare(`SELECT ${cols}  FROM products WHERE id= ?`)
-//     .all(productRows);
-//   if (!products) {
-//     return { message: "No products found" };
-//   } else {
-//     return products;
-//   }
-// }
+router.get("/categories", async (req, res) => {
+  const ret = db
+    .prepare(
+      `SELECT DISTINCT category FROM products`
+    )
+    .all();
+  res.status(200).json(ret);
+});
+module.exports = router;
 
-// export function updateProductQnt(carts) {
-//   carts.map((cart) => {
-//     let stmt = db.prepare(
-//       `UPDATE products  SET stock =((SELECT stock FROM products WHERE id =?)-?)  WHERE id  = ?`
-//     );
-//     let ret = stmt.run(cart.item_id, cart.qnt, cart.item_id);
-//   });
-// }
+router.get("/bycategorie", async (req, res) => {
+  const { category } = req.query;
 
-// export function getCategories() {
-//   const categories = db
-//     .prepare(
-//       `SELECT category, COUNT(DISTINCT category) AS qnt FROM products GROUP BY category`
-//     )
-//     .all();
+  const products = readAction("products", "category = ? OR category = ?", [
+    "mens-shoes"," womens-tops"
+  ]);
 
-//   return categories;
-// }
-
-// export function deleteProduct(id) {
-//   deleteImage(id);
-//   const stmt = db.prepare("DELETE  FROM  products WHERE id = ?");
-//   const ret = stmt.run(id);
-//   console.log("product======================================");
-//   console.log(ret);
-// }
-
-// export function newProduct(newProduct) {
-//   insertProduct(newProduct);
-// }
+  res.status(200).json(products);
+});
+module.exports = router;
+//
