@@ -46,7 +46,7 @@ function restoreProductTable() {
     deleteData("images");
     deleteData("products");
     insertProduct(products);
-  }, 8000);
+  }, 15*60*1000);
 }
 
 /* insertProduct(products); //this function call will populate the products table with ./data/productsData.js */

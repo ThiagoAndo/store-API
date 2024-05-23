@@ -26,11 +26,8 @@ router.get("/bycategorie", async (req, res) => {
 
 router.get("/byid/:id", async (req, res) => {
   const id = req.params.id;
-  console.log(id);
-
   const products = readAction("products", "id = ?", [id]);
   const images = readAction("images", "item_id = ?", [id]);
-
   products?.length
     ? res.status(200).json({ products, images })
     : res
