@@ -3,8 +3,7 @@ const router = express.Router();
 const sql = require("better-sqlite3");
 const db = sql("e-comerce.db");
 const { readAction, deleteAction } = require("../CRUD/actions");
-const { insertP } = require("../actions/productActions");
-const { products } = require("../data/productsData");
+const { insertP, restore } = require("../actions/productActions");
 router.get("/", async (req, res) => {
   const products = readAction("products", "id != ?", ["-1"]);
   const images = readAction("images", "item_id != ?", ["-1"]);
@@ -47,9 +46,12 @@ router.post("/", (req, res) => {
     return;
   }
   const ret = insertP([req.body]);
-  ret?.message
-    ? res.status(400).json(ret)
-    : res.status(201).json({ message: "Product created" });
+  if (ret?.message) {
+    res.status(400).json(ret);
+  } else {
+    restore();
+    res.status(201).json({ message: "Product created" });
+  }
 });
 
 router.delete("/:id", async (req, res) => {
@@ -59,16 +61,19 @@ router.delete("/:id", async (req, res) => {
     });
     return;
   }
-  
+
   deleteAction("images", "item_id=?", [req.params.id]);
   let ret = deleteAction("products", "id=?", [req.params.id]);
-  ret.changes > 0
-    ? res.status(200).json({
-        message: `Deleted product id ${req.params.id}`,
-      })
-    : res.status(404).json({
-        message: `Could not delete product id ${req.params.id}`,
-      });
+  if (ret.changes > 0) {
+    restore();
+    res.status(200).json({
+      message: `Deleted product id ${req.params.id}`,
+    });
+  } else {
+    res.status(404).json({
+      message: `Could not delete product id ${req.params.id}`,
+    });
+  }
 });
 
 module.exports = router;

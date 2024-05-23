@@ -1,5 +1,7 @@
 const sql = require("better-sqlite3");
 const db = sql("e-comerce.db");
+const { products } = require("./data/productsData");
+const { insertP } = require("./actions/productActions");
 
 db.prepare(
   `
@@ -29,7 +31,6 @@ db.prepare(
 `
 ).run();
 
-
 db.prepare(
   `
    CREATE TABLE IF NOT EXISTS users (
@@ -57,7 +58,6 @@ db.prepare(
 `
 ).run();
 
-
 db.prepare(
   `
    CREATE TABLE IF NOT EXISTS cart (
@@ -68,8 +68,6 @@ db.prepare(
       price   INTEGER NOT NULL,
       name   TEXT NOT NULL,
       creation_at TIMESTAMP NOT NULL,
-      FOREIGN KEY (item_id)
-      REFERENCES products (id),   
       FOREIGN KEY (user_id)
       REFERENCES users (id) 
          )
@@ -89,3 +87,4 @@ db.prepare(
 `
 ).run();
 
+insertP(products);
