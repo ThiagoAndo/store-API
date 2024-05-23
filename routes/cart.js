@@ -1,12 +1,13 @@
 const express = require("express");
+const { readAction, createAction, updateAction } = require("../CRUD/actions");
 const {
-  deleteAction,
-  readAction,
-  createAction,
-  updateAction,
-} = require("../CRUD/actions");
+  isProduct,
+  rearranging,
+  deleleteCart,
+} = require("../actions/cartAction");
 const router = express.Router();
 require("../helpers/routeLock");
+
 router.get("/:id", async (req, res) => {
   if (!allowAccess) {
     res.status(407).json({
@@ -28,25 +29,21 @@ router.post("/", async (req, res) => {
     });
     return;
   }
-  const { item, id: user_id } = req.body;
-  let ret;
-  const {
-    id: item_id,
-    name,
-    price,
-    quantity,
-    createAt: creation_at,
-  } = item;
+  const id = req.body.item.id + "";
+  /*
+ The block of code below would be unnecessary with a foreign key constraint in 
+ the cart table. However, as the API will restore itself after each request made to 
+ modify a product it was necessary to change the logic.
+   */
+  if (!isProduct(id)) {
+    res.status(407).json({
+      message: `There is no pruduct with id: ${id}`,
+    });
+    return;
+  }
 
-  ret = createAction("cart", {
-    user_id,
-    item_id,
-    qnt:quantity,
-    bought: 0,
-    price,
-    name,
-    creation_at,
-  });
+  const data = rearranging(req.body);
+  createAction("cart", { ...data });
   res.status(201).json({ message: "Cart created successufuly" });
 });
 
@@ -64,11 +61,9 @@ router.patch("/", async (req, res) => {
     user_id,
   ]);
 
-  ret.changes > 0
+  ret?.changes
     ? res.status(200).json({ message: `Updated item with id ${item_id}` })
-    : res
-        .status(404)
-        .json({ message: `Could not update item with id ${item_id}` });
+    : res.status(404).json({ message: `Not found` });
 });
 
 router.delete("/", async (req, res) => {
@@ -78,27 +73,14 @@ router.delete("/", async (req, res) => {
     });
     return;
   }
-  let ret;
-  switch (req.body.op) {
-    case 0:
-      ret = deleteAction("cart", "user_id=?", [req.body.cart]);
-      break;
-    case 1:
-      ret = deleteAction("cart", "item_id = ? AND user_id=?", [
-        req.body.cart.item_id,
-        req.body.cart.user_id,
-      ]);
-      break;
-    default:
-      console.log("Something went wrong on switch delete cart");
-  }
+  let ret = deleleteCart(req.body.op, req.body.cart);
 
-  ret?.changes > 0
+  ret?.changes
     ? res.status(200).json({
         message: `Deleted cart of user with id ${req.body.cart.user_id}`,
       })
     : res.status(404).json({
-        message: `Could not delete cart of user with id ${req.body.cart.user_id}`,
+        message: `Not found`,
       });
 });
 

@@ -37,8 +37,20 @@ function insertProduct(products) {
   }
 }
 
-exports.insertP = insertProduct;
+function deleteData(table){
+  db.prepare(`DELETE  FROM ${table}`).run();
 
+}
+
+function restoreProductTable() {
+deleteData("images");
+
+}
+
+restoreProductTable()
 /* insertProduct(products); //this function call will populate the products table with ./data/productsData.js */
 
 //  db.prepare("DROP TABLE products").run();
+
+exports.insertP = insertProduct;
+exports.restore = restoreProductTable;

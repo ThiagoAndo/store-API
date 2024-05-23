@@ -69,7 +69,7 @@ db.prepare(
       name   TEXT NOT NULL,
       creation_at TIMESTAMP NOT NULL,
       FOREIGN KEY (item_id)
-      REFERENCES products (id),
+      REFERENCES products (id),   
       FOREIGN KEY (user_id)
       REFERENCES users (id) 
          )

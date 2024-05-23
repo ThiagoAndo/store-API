@@ -59,6 +59,7 @@ router.delete("/:id", async (req, res) => {
     });
     return;
   }
+  
   deleteAction("images", "item_id=?", [req.params.id]);
   let ret = deleteAction("products", "id=?", [req.params.id]);
   ret.changes > 0
