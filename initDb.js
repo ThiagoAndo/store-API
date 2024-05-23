@@ -89,4 +89,3 @@ db.prepare(
 `
 ).run();
 
-// console.log(Object.values(products[0].images)[0]);
