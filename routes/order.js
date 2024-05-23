@@ -2,15 +2,11 @@ const express = require("express");
 const { readAction } = require("../CRUD/actions");
 const router = express.Router();
 const { insertOrder } = require("../actions/orderActions");
-require("../helpers/routeLock");
+// require("../helpers/routeLock");
+const { checkAuth } = require("../util/auth");
 
+router.use(checkAuth);
 router.get("/:id", (req, res) => {
-  if (!allowAccess) {
-    res.status(407).json({
-      message: "Client must first authenticate itself with the proxy.",
-    });
-    return;
-  }
   const id = req.params.id;
   const ret = readAction("orders", "user_id = ?", [id]);
   if (ret) {

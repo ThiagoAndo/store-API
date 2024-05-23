@@ -1,16 +1,12 @@
 const express = require("express");
 const { createAction, readAction, updateAction } = require("../CRUD/actions");
 const router = express.Router();
+const { checkAuth } = require("../util/auth");
+// require("../helpers/routeLock");
 
 //User Address===================================================
-
+router.use(checkAuth);
 router.get("/:id", (req, res) => {
- if (!allowAccess) {
-   res.status(407).json({
-     message: "Client must first authenticate itself with the proxy.",
-   });
-   return;
- }
   const id = req.params.id;
   const add = readAction("userAddress", "id = ?", [id]);
   if (add) {
@@ -21,13 +17,6 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  if (!allowAccess) {
-    res.status(407).json({
-      message: "Client must first authenticate itself with the proxy.",
-    });
-    return;
-  }
-
   const id = req.body.id;
   const add = readAction("userAddress", "id = ?", [id]);
   console.log(add);
@@ -41,12 +30,6 @@ router.post("/", (req, res) => {
 
 
 router.patch("/", async (req, res) => {
-  if (!allowAccess) {
-    res.status(407).json({
-      message: "Client must first authenticate itself with the proxy.",
-    });
-    return;
-  }
   const address = req.body;
   const ret = updateAction(
     "userAddress",

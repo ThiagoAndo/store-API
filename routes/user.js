@@ -4,6 +4,8 @@ const pkg = require("bcryptjs");
 const { hash } = pkg;
 const { newUser, getUser } = require("../actions/userActions");
 const { deleteAction, updateAction } = require("../CRUD/actions");
+const { checkAuth } = require("../util/auth");
+// require("../helpers/routeLock");
 
 router.post("/get", async (req, res) => {
   const user = await getUser({
@@ -25,13 +27,11 @@ router.post("/new", async (req, res) => {
   }
 });
 
+
+router.use(checkAuth);
+
 router.patch("/", async (req, res) => {
-  if (!allowAccess) {
-    res.status(407).json({
-      message: "Client must first authenticate itself with the proxy.",
-    });
-    return;
-  }
+ 
   const user = req.body;
   user.password = await hash(user.password, 12);
   const ret = updateAction("users", "password = ?", "id = ?", [
@@ -46,12 +46,6 @@ router.patch("/", async (req, res) => {
 });
 
 router.delete("/", async (req, res) => {
-  if (!allowAccess) {
-    res.status(407).json({
-      message: "Client must first authenticate itself with the proxy.",
-    });
-    return;
-  }
   const user = req.body;
   deleteAction("orders", "user_id = ?", [user.id]);
   deleteAction("cart", "user_id = ?", [user.id]);

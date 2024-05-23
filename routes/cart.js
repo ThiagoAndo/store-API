@@ -6,15 +6,11 @@ const {
   deleleteCart,
 } = require("../actions/cartAction");
 const router = express.Router();
-require("../helpers/routeLock");
+// require("../helpers/routeLock");
+const { checkAuth } = require("../util/auth");
 
+router.use(checkAuth);
 router.get("/:id", async (req, res) => {
-  if (!allowAccess) {
-    res.status(407).json({
-      message: "Client must first authenticate itself with the proxy.",
-    });
-    return;
-  }
   const user_id = req.params.id;
   const items = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
   items.length > 0
@@ -23,12 +19,6 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  if (!allowAccess) {
-    res.status(407).json({
-      message: "Client must first authenticate itself with the proxy.",
-    });
-    return;
-  }
   const id = req.body.item.id + "";
   /*
  The block of code below would be unnecessary with a foreign key constraint in 
@@ -49,12 +39,6 @@ router.post("/", async (req, res) => {
 
 router.patch("/", async (req, res) => {
   const { qnt, item_id, user_id } = req.body.cart;
-  if (!allowAccess) {
-    res.status(407).json({
-      message: "Client must first authenticate itself with the proxy.",
-    });
-    return;
-  }
   ret = updateAction("cart", "qnt = ?", "item_id = ? AND user_id=? ", [
     qnt,
     item_id,
@@ -67,12 +51,6 @@ router.patch("/", async (req, res) => {
 });
 
 router.delete("/", async (req, res) => {
-  if (!allowAccess) {
-    res.status(407).json({
-      message: "Client must first authenticate itself with the proxy.",
-    });
-    return;
-  }
   let ret = deleleteCart(req.body.op, req.body.cart);
 
   ret?.changes

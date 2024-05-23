@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const sql = require("better-sqlite3");
 const db = sql("e-comerce.db");
+const { checkAuth } = require("../util/auth");
 const { readAction, deleteAction } = require("../CRUD/actions");
 const { insertP, restore } = require("../actions/productActions");
 router.get("/", async (req, res) => {
@@ -35,13 +36,9 @@ router.get("/byid/:id", async (req, res) => {
         .json({ message: `Could not found product with id: ${id}` });
 });
 
+router.use(checkAuth);
+
 router.post("/", (req, res) => {
-  if (!allowAccess) {
-    res.status(407).json({
-      message: "Client must first authenticate itself with the proxy.",
-    });
-    return;
-  }
   const ret = insertP([req.body]);
   if (ret?.message) {
     res.status(400).json(ret);
@@ -52,13 +49,6 @@ router.post("/", (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-  if (!allowAccess) {
-    res.status(407).json({
-      message: "Client must first authenticate itself with the proxy.",
-    });
-    return;
-  }
-
   deleteAction("images", "item_id=?", [req.params.id]);
   let ret = deleteAction("products", "id=?", [req.params.id]);
   if (ret.changes > 0) {

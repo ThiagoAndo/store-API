@@ -4,6 +4,8 @@ const pkg = require("bcryptjs");
 const { hash, compare } = pkg;
 const uniqid = require("uniqid");
 const { currentDate } = require("../helpers/dateGenerator");
+const { createJSONToken } = require("../util/auth");
+
 const { isName, isPassword, isEmail } = require("../helpers/validate");
 
 require("../helpers/routeLock");
@@ -28,7 +30,8 @@ async function getUser(user) {
     } else {
       const isValid = await compare(user.password, userRet.password);
       if (isValid) {
-        changeAccess();
+        const authToken = createJSONToken(user.email_address);
+        userRet.token = authToken;
         return userRet;
       } else {
         error.message = "Wrong Password";
@@ -60,6 +63,8 @@ async function newUser(user) {
     user.created_at = currentDate();
     changeAccess();
     createAction("users", user);
+    const authToken = createJSONToken(user.email_address);
+    user.token = authToken;
     return user;
   } else {
     return (error.message = "user already registered");
