@@ -61,7 +61,7 @@ router.patch("/", async (req, res) => {
     ]
   );
   ret.changes > 0
-    ? res.status(204).json({ message: `Updated address with id ${address.id}` })
+    ? res.status(201).json({ message: `Updated address with id ${address.id}` })
     : res
         .status(404)
         .json({ message: `Could not update address with id ${address.id}` });

@@ -23,14 +23,16 @@ async function getUser(user) {
     return userRet;
   } else {
     if (!userRet) {
-      return (error.message = "Could not find user");
+      error.message = "Could not find user";
+      return error;
     } else {
       const isValid = await compare(user.password, userRet.password);
       if (isValid) {
         changeAccess();
         return userRet;
       } else {
-        return (error.message = "Wrong Password");
+        error.message = "Wrong Password";
+        return error;
       }
     }
   }
@@ -45,8 +47,8 @@ async function newUser(user) {
   if (!conf) {
     if (!isName(user.first_name + " " + user.last_name)) {
       error.message =
-        "Name is wrong. Make sure to enter first and last name only"
-      return error
+        "Name is wrong. Make sure to enter first and last name only";
+      return error;
     } else if (!isEmail(user.email_address)) {
       return (error.message = "Email is not valid ");
     } else if (!isPassword(user.password)) {

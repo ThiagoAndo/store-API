@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const pkg = require("bcryptjs");
+const { hash } = pkg;
 const { newUser, getUser } = require("../actions/userActions");
 const { deleteAction, updateAction } = require("../CRUD/actions");
 
@@ -31,6 +33,7 @@ router.patch("/", async (req, res) => {
     return;
   }
   const user = req.body;
+  user.password = await hash(user.password, 12);
   const ret = updateAction("users", "password = ?", "id = ?", [
     user.password,
     user.id,

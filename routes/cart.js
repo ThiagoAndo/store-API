@@ -28,7 +28,6 @@ router.post("/", async (req, res) => {
     });
     return;
   }
-
   const { item, id: user_id } = req.body;
   let ret;
   const {
@@ -94,8 +93,7 @@ router.delete("/", async (req, res) => {
       console.log("Something went wrong on switch delete cart");
   }
 
-  console.log(ret);
-  ret.changes > 0
+  ret?.changes > 0
     ? res.status(200).json({
         message: `Deleted cart of user with id ${req.body.cart.user_id}`,
       })
