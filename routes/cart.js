@@ -8,14 +8,14 @@ const {
 const router = express.Router();
 // require("../helpers/routeLock");
 const { checkAuth } = require("../util/auth");
-router.use(checkAuth);
 router.get("/:id", async (req, res) => {
   const user_id = req.params.id;
   const items = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
   items.length > 0
-    ? res.status(200).json({ items })
-    : res.status(404).json({ message: "Not found" });
+  ? res.status(200).json({ items })
+  : res.status(404).json({ message: "Not found" });
 });
+router.use(checkAuth);
 router.post("/", async (req, res) => {
   const id = req.body.item.id + "";
   /* 

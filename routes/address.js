@@ -3,7 +3,6 @@ const { createAction, readAction, updateAction } = require("../CRUD/actions");
 const router = express.Router();
 const { checkAuth } = require("../util/auth");
 // require("../helpers/routeLock");
-router.use(checkAuth);
 router.get("/:id", (req, res) => {
   const id = req.params.id;
   const add = readAction("userAddress", "id = ?", [id]);
@@ -13,6 +12,7 @@ router.get("/:id", (req, res) => {
     res.status(404).json({ message: "not registered" });
   }
 });
+router.use(checkAuth);
 router.post("/", (req, res) => {
   const id = req.body.id;
   const add = readAction("userAddress", "id = ?", [id]);
