@@ -5,20 +5,16 @@ const { hash, compare } = pkg;
 const uniqid = require("uniqid");
 const { currentDate } = require("../helpers/dateGenerator");
 const { createJSONToken } = require("../util/auth");
-
 const { isName, isPassword, isEmail } = require("../helpers/validate");
-
-require("../helpers/routeLock");
+// require("../helpers/routeLock");
 const { createAction, readAction } = require("../CRUD/actions");
 let error = {};
-
 const changeAccess = (isSIgnIn) => {
   allowAccess = true;
   setTimeout(() => {
     allowAccess = false;
   }, 5400000);
 };
-
 async function getUser(user) {
   const [userRet] = readAction("users", "email_address=?", [user.email]);
   if (user?.confUser) {
@@ -40,7 +36,6 @@ async function getUser(user) {
     }
   }
 }
-
 async function newUser(user) {
   const conf = await getUser({
     email: user.email_address,
@@ -57,7 +52,6 @@ async function newUser(user) {
     } else if (!isPassword(user.password)) {
       return (error.message = "Password must contain at least eight character");
     }
-
     user.password = await hash(user.password, 12);
     user.id = uniqid();
     user.created_at = currentDate();
@@ -70,6 +64,5 @@ async function newUser(user) {
     return (error.message = "user already registered");
   }
 }
-
 exports.newUser = newUser;
 exports.getUser = getUser;

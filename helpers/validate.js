@@ -6,7 +6,6 @@
     return false;
   }
 }
-
  function isNameValid(name) {
   let regName = /^[a-zA-Z]+ [a-zA-Z]+$/;
   if (regName.test(name)) {
@@ -15,7 +14,6 @@
     return false;
   }
 }
-
  function isPasswordValid(password) {
   if (password.trim().length >= 8) {
     return true;
@@ -23,8 +21,6 @@
     return false;
   }
 }
-
-
 exports.isName = isNameValid;
 exports.isPassword = isPasswordValid;
 exports.isEmail = isEmailValid;

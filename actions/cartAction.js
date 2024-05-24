@@ -1,15 +1,11 @@
 const { readAction, deleteAction } = require("../CRUD/actions");
-
 function isProduct(id) {
   const product = readAction("products", "id=?", [id]);
-  console.log(product)
   const ret = product.length > 0;
   return ret;
 }
-
 function rearranging(body) {
   const { item, id: user_id } = body;
-
   const { id: item_id, name, price, quantity, createAt: creation_at } = item;
   return {
     user_id,
@@ -21,7 +17,6 @@ function rearranging(body) {
     creation_at,
   };
 }
-
 function deleleteCart(option, cart) {
   let ret;
   switch (option) {
@@ -37,7 +32,6 @@ function deleleteCart(option, cart) {
     default:
       console.log("Something went wrong on switch delete cart");
   }
-
   return ret;
 }
 exports.isProduct = isProduct;

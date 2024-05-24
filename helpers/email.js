@@ -1,13 +1,11 @@
 const nodemailer = require("nodemailer");
 require("dotenv").config();
-
 function formatValue(value) {
   return new Intl.NumberFormat("de-DE", {
     style: "currency",
     currency: "EUR",
   }).format(value);
 }
-
 function buildMail(cart, name, value, email) {
   const mailMsg =
     `NEXT STORE
@@ -39,7 +37,6 @@ TOTAL INVOICE: ${formatValue(+value)}
 
   sendEmail(mailMsg.replaceAll(",", "  "), email);
 }
-
 function sendEmail(body, email) {
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -48,14 +45,12 @@ function sendEmail(body, email) {
       pass: process.env.PASSWORD,
     },
   });
-
   const mailOptions = {
     from: process.env.EMAIL,
     to: email,
     subject: "Sending Email using Node.js",
     text: body,
   };
-
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       console.log(error);
@@ -64,5 +59,4 @@ function sendEmail(body, email) {
     }
   });
 }
-
 exports.buildMail = buildMail;

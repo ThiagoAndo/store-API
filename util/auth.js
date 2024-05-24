@@ -1,5 +1,4 @@
 const { sign, verify } = require('jsonwebtoken');
-const { compare } = require('bcryptjs');
 const { NotAuthError } = require('./errors');
 
 const KEY = 'supersecret';
@@ -10,10 +9,6 @@ function createJSONToken(email) {
 
 function validateJSONToken(token) {
   return verify(token, KEY);
-}
-
-function isValidPassword(password, storedPassword) {
-  return compare(password, storedPassword);
 }
 
 function checkAuthMiddleware(req, res, next) {
@@ -43,16 +38,7 @@ function checkAuthMiddleware(req, res, next) {
 
 exports.createJSONToken = createJSONToken;
 exports.validateJSONToken = validateJSONToken;
-exports.isValidPassword = isValidPassword;
 exports.checkAuth = checkAuthMiddleware;
 
 
 
-  // const response = await fetch(url, {
-  //   method: method,
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     Authorization: "Bearer " + token,
-  //   },
-  //   body: JSON.stringify(eventData),
-  // });

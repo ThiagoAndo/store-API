@@ -12,26 +12,30 @@ router.post("/get", async (req, res) => {
     email: req.body.email,
     password: req.body.password,
   });
-
+  if (user?.message) {
+    switch (user.message[0]) {
+      case "W":
+        res.status(401).json(user);
+        break;
+      case "C":
+        res.status(404).json(user);
+        break;
+    }
+    return;
+  }
   res.status(200).json(user);
 });
-
 router.post("/new", async (req, res) => {
   const data = req.body;
   const ret = await newUser(data);
-  console.log(ret);
   if (ret?.message) {
-    res.status(403).json(ret);
+    res.status(401).json(ret);
   } else {
     res.status(201).json(ret);
   }
 });
-
-
 router.use(checkAuth);
-
 router.patch("/", async (req, res) => {
- 
   const user = req.body;
   user.password = await hash(user.password, 12);
   const ret = updateAction("users", "password = ?", "id = ?", [
@@ -41,10 +45,8 @@ router.patch("/", async (req, res) => {
   ret.changes > 0
     ? res.status(200).json({ message: `Updated user with id ${user.id}` })
     : res
-        .status(404)
-        .json({ message: `Could not update user with id ${user.id}` });
+        .status(404).json({ message: `Could not update user with id ${user.id}` });
 });
-
 router.delete("/", async (req, res) => {
   const user = req.body;
   deleteAction("orders", "user_id = ?", [user.id]);
@@ -53,9 +55,6 @@ router.delete("/", async (req, res) => {
   const ret = deleteAction("users", "id = ?", [user.id]);
   ret.changes > 0
     ? res.status(200).json({ message: `Deleted user with id ${user.id}` })
-    : res
-        .status(404)
-        .json({ message: `Could not delete user with id ${user.id}` });
+    : res.status(404).json({ message: `Could not delete user with id ${user.id}` });
 });
-
 module.exports = router;

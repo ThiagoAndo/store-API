@@ -30,9 +30,7 @@ const collNames = {
     "paid_at", 
     "total"
   ],
-    
 };
-
 function prepareNames(table) {
   return {
     coll: collNames[table].join(", "),

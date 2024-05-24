@@ -8,7 +8,6 @@ const {
 const router = express.Router();
 // require("../helpers/routeLock");
 const { checkAuth } = require("../util/auth");
-
 router.use(checkAuth);
 router.get("/:id", async (req, res) => {
   const user_id = req.params.id;
@@ -17,26 +16,23 @@ router.get("/:id", async (req, res) => {
     ? res.status(200).json({ items })
     : res.status(404).json({ message: "Not found" });
 });
-
 router.post("/", async (req, res) => {
   const id = req.body.item.id + "";
-  /*
- The block of code below would be unnecessary with a foreign key constraint in 
- the cart table. However, as the API will restore itself after each request made to 
- modify a product it was necessary to change the logic.
+  /* 
+     The function <isProduct> below would be unnecessary with a foreign key constraint in 
+     the cart table pointing out to product id. However, as the API will restore itself after
+     each request made to modify a product. It become necessary a logic changin in order to 
+     restore the product table with the original data.
    */
   if (!isProduct(id)) {
     res.status(407).json({
-      message: `There is no pruduct with id: ${id}`,
-    });
+      message: `There is no pruduct with id: ${id}`});
     return;
   }
-
   const data = rearranging(req.body);
   createAction("cart", { ...data });
-  res.status(201).json({ message: "Cart created successufuly" });
+  res.status(201).json({ message: "Cart created successufuly"});
 });
-
 router.patch("/", async (req, res) => {
   const { qnt, item_id, user_id } = req.body.cart;
   ret = updateAction("cart", "qnt = ?", "item_id = ? AND user_id=? ", [
@@ -44,22 +40,14 @@ router.patch("/", async (req, res) => {
     item_id,
     user_id,
   ]);
-
   ret?.changes
-    ? res.status(200).json({ message: `Updated item with id ${item_id}` })
+    ? res.status(200).json({ message: `Updated item with id ${item_id}`})
     : res.status(404).json({ message: `Not found` });
 });
-
 router.delete("/", async (req, res) => {
   let ret = deleleteCart(req.body.op, req.body.cart);
-
   ret?.changes
-    ? res.status(200).json({
-        message: `Deleted cart of user with id ${req.body.cart.user_id}`,
-      })
-    : res.status(404).json({
-        message: `Not found`,
-      });
+    ? res.status(200).json({message: `Cart deleted`})
+    : res.status(404).json({message: `Not found`});
 });
-
 module.exports = router;

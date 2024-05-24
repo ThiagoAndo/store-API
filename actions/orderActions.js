@@ -1,7 +1,6 @@
 const { createAction, updateAction, readAction } = require("../CRUD/actions");
 const { getCurrentDate } = require("../helpers/dateFunc");
 const { buildMail } = require("../helpers/email");
-
 function insertOrder(user_id, name, email, cart) {
   let thisCart;
   let ret={};
@@ -13,7 +12,6 @@ function insertOrder(user_id, name, email, cart) {
   const total = thisCart.reduce((sum, cart) => {
     return (sum += +cart.price * (+cart?.qnt || +cart?.quantity));
   }, 0);
-
   const invoice = {
     invoice_id: null,
     cart_id: thisCart[0].creation_at || null,
@@ -27,10 +25,8 @@ function insertOrder(user_id, name, email, cart) {
   } else {
     updateAction("cart", "bought = ?", "user_id=? ", [1, user_id]);
     const ret = createAction("orders", invoice);
-    console.log(ret);
     ret.changes > 0 ? buildMail(thisCart, name, total, email) : null;
     return ret;
   }
 }
-
 exports.insertOrder = insertOrder;

@@ -10,13 +10,11 @@ router.get("/", async (req, res) => {
   const images = readAction("images", "item_id != ?", ["-1"]);
   res.status(200).json({ products, images });
 });
-
 router.get("/categories", async (req, res) => {
   const ret = db.prepare(`SELECT DISTINCT category FROM products`).all();
   res.status(200).json(ret);
 });
 module.exports = router;
-
 router.get("/bycategorie", async (req, res) => {
   const { category } = req.query;
   let queryLen = Array(category.length).fill("category = ?");
@@ -24,20 +22,15 @@ router.get("/bycategorie", async (req, res) => {
   const products = readAction("products", `${queryLen}`, category);
   res.status(200).json(products);
 });
-
 router.get("/byid/:id", async (req, res) => {
   const id = req.params.id;
   const products = readAction("products", "id = ?", [id]);
   const images = readAction("images", "item_id = ?", [id]);
   products?.length
     ? res.status(200).json({ products, images })
-    : res
-        .status(404)
-        .json({ message: `Could not found product with id: ${id}` });
+    : res .status(404).json({ message: `Could not found product with id: ${id}` });
 });
-
 router.use(checkAuth);
-
 router.post("/", (req, res) => {
   const ret = insertP([req.body]);
   if (ret?.message) {
@@ -47,21 +40,15 @@ router.post("/", (req, res) => {
     res.status(201).json({ message: "Product created" });
   }
 });
-
 router.delete("/:id", async (req, res) => {
   deleteAction("images", "item_id=?", [req.params.id]);
   let ret = deleteAction("products", "id=?", [req.params.id]);
   if (ret.changes > 0) {
     restore();
-    res.status(200).json({
-      message: `Deleted product id ${req.params.id}`,
-    });
+    res.status(200).json({ message: `Deleted product id ${req.params.id}`});
   } else {
-    res.status(404).json({
-      message: `Could not delete product id ${req.params.id}`,
-    });
+    res.status(404).json({ message: `Could not delete product id ${req.params.id}`});
   }
 });
-
 module.exports = router;
-//
+

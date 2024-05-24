@@ -10,5 +10,4 @@ function getCurrentDate() {
 
   return currentDate;
 }
-
 exports.currentDate = getCurrentDate;

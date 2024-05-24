@@ -1,7 +1,6 @@
 const sql = require("better-sqlite3");
 const db = sql("e-comerce.db");
 const { products } = require("../data/productsData");
-
 function insertProduct(products) {
   const stmt = db.prepare(`
       INSERT INTO products VALUES (
@@ -17,14 +16,12 @@ function insertProduct(products) {
          @thumbnail
       )
    `);
-
   const stmt2 = db.prepare(`
       INSERT INTO images VALUES (
          @itemId,
          @image
       )
    `);
-
   for (const product of products) {
     product.id = String(product.id);
     stmt.run(product);
@@ -36,11 +33,9 @@ function insertProduct(products) {
     }
   }
 }
-
 function deleteData(table) {
   db.prepare(`DELETE  FROM ${table}`).run();
 }
-
 function restoreProductTable() {
   setTimeout(() => {
     deleteData("images");
@@ -48,8 +43,5 @@ function restoreProductTable() {
     insertProduct(products);
   }, 15*60*1000);
 }
-
-/* insertProduct(products); //this function call will populate the products table with ./data/productsData.js */
-
 exports.insertP = insertProduct;
 exports.restore = restoreProductTable;
