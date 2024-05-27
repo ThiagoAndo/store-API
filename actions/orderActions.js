@@ -3,7 +3,7 @@ const { getCurrentDate } = require("../helpers/dateFunc");
 const { buildMail } = require("../helpers/email");
 function insertOrder(user_id, name, email, cart) {
   let thisCart;
-  let ret={};
+  let ret = {};
   if (cart) {
     thisCart = cart;
   } else {
@@ -21,7 +21,8 @@ function insertOrder(user_id, name, email, cart) {
   };
   if (cart) {
     buildMail(thisCart, name, total, email);
-    return (ret.changes = 1);
+    ret.changes = 1;
+    return ret;
   } else {
     updateAction("cart", "bought = ?", "user_id=? ", [1, user_id]);
     const ret = createAction("orders", invoice);
