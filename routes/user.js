@@ -15,10 +15,10 @@ router.post("/get", async (req, res) => {
   if (user?.message) {
     switch (user.message[0]) {
       case "W":
-        res.status(401).json(user);
+        res.status(200).json(user);
         break;
       case "C":
-        res.status(404).json(user);
+        res.status(200).json(user);
         break;
     }
     return;
@@ -29,7 +29,7 @@ router.post("/new", async (req, res) => {
   const data = req.body;
   const ret = await newUser(data);
   if (ret?.message) {
-    res.status(401).json(ret);
+    res.status(201).json(ret);
   } else {
     res.status(201).json(ret);
   }
