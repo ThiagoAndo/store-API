@@ -44,13 +44,14 @@ async function newUser(user) {
   });
   if (!conf) {
     if (!isName(user.first_name + " " + user.last_name)) {
-      error.message =
-        "Name is wrong. Make sure to enter first and last name only";
+      error.message = "Name is wrong. Make sure to enter first and last name only";
       return error;
     } else if (!isEmail(user.email_address)) {
-      return (error.message = "Email is not valid ");
+      error.message = "Email is not valid "
+      return error;
     } else if (!isPassword(user.password)) {
-      return (error.message = "Password must contain at least eight character");
+      error.message = "Password must contain at least eight character"
+      return error;
     }
     user.password = await hash(user.password, 12);
     user.id = uniqid();
@@ -61,7 +62,8 @@ async function newUser(user) {
     user.token = authToken;
     return user;
   } else {
-    return (error.message = "user already registered");
+    error.message = "user already registered"
+    return error;
   }
 }
 exports.newUser = newUser;
