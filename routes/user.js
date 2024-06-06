@@ -31,19 +31,35 @@ router.post("/new", async (req, res) => {
   res.status(201).json(ret);
 });
 router.use(checkAuth);
+
 router.patch("/", async (req, res) => {
   const user = req.body;
-  user.password = await hash(user.password, 12);
-  const ret = updateAction("users", "password = ?", "id = ?", [
-    user.password,
-    user.id,
-  ]);
+  let ret = null;
+
+  if (user?.password) {
+    user.password = await hash(user.password, 12);
+    ret = updateAction("users", "password = ?", "id = ?", [
+      user.password,
+      user.id,
+    ]);
+  } else {
+    ret = updateAction(
+      "users",
+      "email_address = ? , first_name = ?, last_name = ?",
+      "id = ?",
+      [user.email_address, user.first_name, user.last_name, user.id]
+    );
+  }
+
   ret.changes > 0
-    ? res.status(200).json({ message: `Updated user with id ${user.id}` })
+    ? res
+        .status(200)
+        .json({ message: `Updated user detail with id ${user.id}` })
     : res
         .status(404)
-        .json({ message: `Could not update user with id ${user.id}` });
+        .json({ message: `Could not update user detail with id ${user.id}` });
 });
+
 router.delete("/", async (req, res) => {
   const user = req.body;
   deleteAction("orders", "user_id = ?", [user.id]);
