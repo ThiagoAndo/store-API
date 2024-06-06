@@ -3,7 +3,7 @@ const router = express.Router();
 const pkg = require("bcryptjs");
 const { hash } = pkg;
 const { newUser, getUser } = require("../actions/userActions");
-const { deleteAction, updateAction } = require("../CRUD/actions");
+const { deleteAction, updateAction, readAction } = require("../CRUD/actions");
 const { checkAuth } = require("../util/auth");
 // require("../helpers/routeLock");
 
@@ -43,6 +43,15 @@ router.patch("/", async (req, res) => {
       user.id,
     ]);
   } else {
+    const [userRet] = readAction("users", "email_address=?", [
+      user.email_address,
+    ]);
+    if (userRet?.email_address === user.email_address && userRet.id != user.id) {
+    console.log(userRet);
+      res.status(200).json({ error: `THIS EMAIL HAS BEEN USED BY OTHER USER` });
+      return;
+    }
+
     ret = updateAction(
       "users",
       "email_address = ? , first_name = ?, last_name = ?",
