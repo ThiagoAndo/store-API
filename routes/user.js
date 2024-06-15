@@ -35,7 +35,7 @@ router.use(checkAuth);
 router.patch("/", async (req, res) => {
   const user = req.body;
   let ret = null;
-
+  console.log(req.body);
   if (user?.password) {
     user.password = await hash(user.password, 12);
     ret = updateAction("users", "password = ?", "id = ?", [
@@ -46,15 +46,18 @@ router.patch("/", async (req, res) => {
     const [userRet] = readAction("users", "email_address=?", [
       user.email_address,
     ]);
-    if (
-      userRet?.email_address === user.email_address &&
-      userRet.id != user.id
-    ) {
-      console.log(userRet);
-      res.status(200).json({ error: `THIS EMAIL HAS BEEN USED BY OTHER USER` });
-      return;
-    }
 
+    if (user?.id) {
+      if (
+        userRet?.email_address === user.email_address &&
+        userRet?.id != user.id
+      ) {
+        res
+          .status(200)
+          .json({ error: `THIS EMAIL HAS BEEN USED BY OTHER USER` });
+        return;
+      }
+    }
     ret = updateAction(
       "users",
       "email_address = ? , first_name = ?, last_name = ?",
