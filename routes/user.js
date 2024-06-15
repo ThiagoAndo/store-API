@@ -46,8 +46,11 @@ router.patch("/", async (req, res) => {
     const [userRet] = readAction("users", "email_address=?", [
       user.email_address,
     ]);
-    if (userRet?.email_address === user.email_address && userRet.id != user.id) {
-    console.log(userRet);
+    if (
+      userRet?.email_address === user.email_address &&
+      userRet.id != user.id
+    ) {
+      console.log(userRet);
       res.status(200).json({ error: `THIS EMAIL HAS BEEN USED BY OTHER USER` });
       return;
     }
@@ -75,6 +78,19 @@ router.delete("/", async (req, res) => {
   deleteAction("cart", "user_id = ?", [user.id]);
   deleteAction("userAddress", "id = ?", [user.id]);
   const ret = deleteAction("users", "id = ?", [user.id]);
+  ret.changes > 0
+    ? res.status(200).json({ message: `Deleted user with id ${user.id}` })
+    : res
+        .status(404)
+        .json({ message: `Could not delete user with id ${user.id}` });
+});
+
+router.delete("/all", async (req, res) => {
+  const user = req.body;
+  deleteAction("orders", "user_id != ?", [user.id]);
+  deleteAction("cart", "user_id  != ?", [user.id]);
+  deleteAction("userAddress", "id != ?", [user.id]);
+  const ret = deleteAction("users", "id != ?", [user.id]);
   ret.changes > 0
     ? res.status(200).json({ message: `Deleted user with id ${user.id}` })
     : res

@@ -26,7 +26,7 @@ async function getUser(user) {
     } else {
       const isValid = await compare(user.password, userRet.password);
       if (isValid) {
-        const authToken = createJSONToken(user.email_address);
+        const authToken = createJSONToken(user.email_aditddress);
         userRet.token = authToken;
         return userRet;
       } else {
