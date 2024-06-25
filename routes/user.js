@@ -6,7 +6,6 @@ const { newUser, getUser } = require("../actions/userActions");
 const { deleteAction, updateAction, readAction } = require("../CRUD/actions");
 const { checkAuth } = require("../util/auth");
 // require("../helpers/routeLock");
-
 router.post("/get", async (req, res) => {
   const user = await getUser({
     email: req.body.email,
@@ -46,8 +45,7 @@ router.patch("/", async (req, res) => {
     const [userRet] = readAction("users", "email_address=?", [
       user.email_address,
     ]);
-
-    if (user?.id) {
+    if (userRet ===undefined) {
       if (
         userRet?.email_address === user.email_address &&
         userRet?.id != user.id
@@ -57,13 +55,14 @@ router.patch("/", async (req, res) => {
           .json({ error: `THIS EMAIL HAS BEEN USED BY OTHER USER` });
         return;
       }
+    } else {
+      ret = updateAction(
+        "users",
+        "email_address = ? , first_name = ?, last_name = ?",
+        "id = ?",
+        [user.email_address, user.first_name, user.last_name, user.id]
+      );
     }
-    ret = updateAction(
-      "users",
-      "email_address = ? , first_name = ?, last_name = ?",
-      "id = ?",
-      [user.email_address, user.first_name, user.last_name, user.id]
-    );
   }
 
   ret.changes > 0

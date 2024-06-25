@@ -22,9 +22,21 @@ function insertProduct(products) {
          @image
       )
    `);
+
   for (const product of products) {
-    product.id = String(product.id);
-    stmt.run(product);
+    const thisPro = {
+      id: product?.id,
+      title: product?.title,
+      description: product?.description,
+      price: product?.price,
+      discountPercentage: product?.discountPercentage,
+      rating: product?.rating,
+      stock: product?.stock || 45,
+      brand: product?.brand || "Store Excusive",
+      category: product?.category,
+      thumbnail: product?.thumbnail,
+    };
+    stmt.run(thisPro);
     for (const img in product.images) {
       stmt2.run({
         itemId: product.id,
@@ -33,6 +45,7 @@ function insertProduct(products) {
     }
   }
 }
+
 function deleteData(table) {
   db.prepare(`DELETE  FROM ${table}`).run();
 }
@@ -41,7 +54,7 @@ function restoreProductTable() {
     deleteData("images");
     deleteData("products");
     insertProduct(products);
-  }, 15*60*1000);
+  }, 15 * 60 * 1000);
 }
 exports.insertP = insertProduct;
 exports.restore = restoreProductTable;
