@@ -24,24 +24,26 @@ function insertProduct(products) {
    `);
 
   for (const product of products) {
-    const thisPro = {
-      id: product?.id,
-      title: product?.title,
-      description: product?.description,
-      price: product?.price,
-      discountPercentage: product?.discountPercentage,
-      rating: product?.rating,
-      stock: product?.stock || 45,
-      brand: product?.brand || "Store Excusive",
-      category: product?.category,
-      thumbnail: product?.thumbnail,
-    };
-    stmt.run(thisPro);
-    for (const img in product.images) {
-      stmt2.run({
-        itemId: product.id,
-        image: Object.values(product.images)[img],
-      });
+    if (product.images.length > 1) {
+      const thisPro = {
+        id: String(product?.id),
+        title: product?.title,
+        description: product?.description,
+        price: product?.price,
+        discountPercentage: product?.discountPercentage,
+        rating: product?.rating,
+        stock: product?.stock || 45,
+        brand: product?.brand || "Store Excusive",
+        category: product?.category,
+        thumbnail: product?.thumbnail,
+      };
+      stmt.run(thisPro);
+      for (const img in product.images) {
+        stmt2.run({
+          itemId: String(product?.id),
+          image: Object.values(product.images)[img],
+        });
+      }
     }
   }
 }

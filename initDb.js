@@ -5,7 +5,7 @@ const { insertP } = require("./actions/productActions");
 
 db.prepare(
   `CREATE TABLE IF NOT EXISTS products (
-       id INT NOT NULL  PRIMARY KEY,
+       id TEXT NOT NULL  PRIMARY KEY,
        title TEXT NOT NULL UNIQUE,
        description TEXT NOT NULL,
        price FLOAT NOT NULL,
