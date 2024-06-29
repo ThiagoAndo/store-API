@@ -2,6 +2,8 @@ const express = require("express");
 const { createAction, readAction, updateAction } = require("../CRUD/actions");
 const router = express.Router();
 const { checkAuth } = require("../util/auth");
+const { isValid } = require("../util/inputCheck");
+
 // require("../helpers/routeLock");
 router.get("/:id", (req, res) => {
   const id = req.params.id;
@@ -15,6 +17,12 @@ router.get("/:id", (req, res) => {
 router.use(checkAuth);
 router.post("/", (req, res) => {
   const id = req.body.id;
+  if (!isValid(id, null)) {
+    res.status(407).json({
+      message: `There is no user with id: ${id}`,
+    });
+    return;
+  }
   const add = readAction("userAddress", "id = ?", [id]);
   if (add.length === 0) {
     const ret = createAction("userAddress", { ...req.body });
