@@ -31,7 +31,6 @@ router.post("/new", async (req, res) => {
   res.status(201).json(ret);
 });
 router.use(checkAuth);
-
 router.patch("/", async (req, res) => {
   const user = req.body;
   let ret = null;

@@ -26,6 +26,7 @@ function createAction(table, data) {
   return ret;
 }
 
+
 function deleteAction(table, coll, valls) {
   const stmt = db.prepare(`DELETE  FROM  ${table} WHERE ${coll} `);
   const ret = stmt.run(... valls);

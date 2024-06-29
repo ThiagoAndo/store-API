@@ -1,12 +1,9 @@
-const { readAction, deleteAction } = require("../CRUD/actions");
-function isProduct(id) {
-  const product = readAction("products", "id=?", [id]);
-  const ret = product.length > 0;
-  return ret;
-}
+const {  deleteAction } = require("../CRUD/actions");
+
 function rearranging(body) {
   const { item, id: user_id } = body;
   const { id: item_id, name, price, quantity, createAt: creation_at } = item;
+  if(item_id, name )
   return {
     user_id,
     item_id,
@@ -34,6 +31,5 @@ function deleleteCart(option, cart) {
   }
   return ret;
 }
-exports.isProduct = isProduct;
 exports.rearranging = rearranging;
 exports.deleleteCart = deleleteCart;
