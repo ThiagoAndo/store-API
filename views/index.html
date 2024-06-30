@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Bored API Documentation</title>
+  <title>Next Store API Documentation</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -18,12 +18,12 @@
       color: #666;
     }
 
-    p {
+    li {
       margin-bottom: 10px;
     }
 
-     a {
-      color: #FF7F50;
+    p {
+      margin-bottom: 10px;
     }
 
     pre {
@@ -46,6 +46,10 @@
 
     .endpoint h2 {
       margin-bottom: 5px;
+      color: #FF7F50;
+    }
+
+    a {
       color: #FF7F50;
     }
 
@@ -79,112 +83,376 @@
       border: 1px solid #ddd;
       border-radius: 5px;
     }
+      #download {
+        margin: 10px 0px 10px 0px;
+      }
   </style>
 </head>
 
 <body>
-  <h1>Bored API Documentation</h1>
-  <p>Welcome to the Bored API by the App Brewery. This is a teaching tool for students of the App Brewery. API Requests
-    are rate limited to 100 requests every 15 minutes.</p>
+  <h1>Secrets API Documentation</h1>
+  <p> Welcome to the Next Store API. The products endpoint provides a comprehensive dataset of sample product information, 
+      including details like names, prices, descriptions, images, and categories, ideal for testing and prototyping 
+      e-commerce applicationsew. API Requests are rate limited to 100 requests every 15 minutes. This API allows you to manage and retrieve products, users, users' address, users' carts and users' purchases. Please refer to the
+    documentation below for details on how to interact with the API</p>
+    <p id="download"><a href="/download">Dowload postman collection</a></p>
+    documentation below for details on how to interact with the API.</p>
+  <li>The API is rate limited to 100 requests every 15 minutes. </li>
+  <li>User submitted Product are erased on a regular basis.</li>
+  
+
+  <h2>Authentication</h2>
+  <ul>
+    <li><strong>Basic Authentication</strong> is required for some endpoints. Use your email and password to
+      authenticate.</li>
+    
+    <li><strong>Bearer Token Authentication</strong> is required for some endpoints. Use your email and password to
+      get a token obtained from the
+      <code>/user/new</code> endpoint.
+    </li>
+  </ul>
+  </br>
   <div class="endpoint">
-    <h2>Get a Random Activity</h2>
-    <p>Returns a randomly selected activity from the available activities.</p>
+    <h2 class="get-method">POST /register</h2>
+    <p>Registers a new user. If the email is already taken, it will return an error. </p>
+    <p><strong>Request Body:</strong></p>
+    <pre><code>{
+  "first_name": "The first name of the new user.",
+  "last_name":"The last name of the new user",
+
+  "password": "The password of the new user."
+   "first_name": "Stephen",
+     "last_name":"King",
+     "email_address":"stephenking@lorem.com",
+     "password":"123456789"
+}</code></pre>
     <div class="example">
       <p><strong>Example Request:</strong></p>
       <div class="request">
-        <code><span class="get-method">GET</span> https://bored-api.appbrewery.com/random</code>
+        <code><span class="get-method">POST</span> https://secrets-api.appbrewery.com/register</code>
+        <pre><code>{
+     "first_name": "Stephen",
+     "last_name":"King",
+     "email_address":"stephenking@lorem.com",
+     "password":"123456789"
+}</code></pre>
       </div>
       <p><strong>Example Response:</strong></p>
       <div class="response">
         <pre><code>{
-  "activity": "Learn Express.js",
-  "availability": 0.25,
-  "type": "education",
-  "participants": 1,
-  "price": 0.1,
-  "accessibility": "Few to no challenges",
-  "duration": "hours",
-  "kidFriendly": true,
-  "link": "https://expressjs.com/",
-  "key": "3943506"
+  "success": "Successfully registered."
 }</code></pre>
       </div>
     </div>
   </div>
 
   <div class="endpoint">
-    <h2>Filter Activities</h2>
-    <p>Returns a list of activities filtered by type and/or participants.</p>
-    <p><strong>Query Parameters:</strong></p>
-    <ul>
-      <li><code>type</code> (optional): The type of activity to filter by. Choice of
-        <code>education, recreational, social, charity, cooking, relaxation, busywork</code>.
-      </li>
-      <li><code>participants</code> (optional): The number of participants to filter by. Choice of 1, 2, 3, 4, 5, 6, 8.
-      </li>
-    </ul>
+    <h2 class="get-method">GET /generate-api-key</h2>
+    <p>Generates a new API key.</p>
     <div class="example">
       <p><strong>Example Request:</strong></p>
       <div class="request">
-        <code><span class="get-method">GET</span> https://bored-api.appbrewery.com/filter?type=education</code>
+        <code><span class="get-method">GET</span> https://secrets-api.appbrewery.com/generate-api-key</code>
       </div>
       <p><strong>Example Response:</strong></p>
       <div class="response">
-        <pre><code>[
-  {
-    "activity": "Learn Express.js",
-    "availability": 0.25,
-    "type": "education",
-    "participants": 1,
-    "price": 0.1,
-    "accessibility": "Few to no challenges",
-    "duration": "hours",
-    "kidFriendly": true,
-    "link": "https://expressjs.com/",
-    "key": "3943506"
-  },
-  {
-    "activity": "Learn React.js",
-    "availability": 0.5,
-    "type": "education",
-    "participants": 1,
-    "price": 0.2,
-    "accessibility": "Some challenges",
-    "duration": "hours",
-    "kidFriendly": true,
-    "link": "https://reactjs.org/",
-    "key": "7890123"
-  }
-]</code></pre>
+        <pre><code>{
+  "apiKey": "generated-api-key"
+}</code></pre>
       </div>
     </div>
   </div>
 
   <div class="endpoint">
-    <h2>Get Activity by Key</h2>
-    <p>Returns the activity with the specified key.</p>
-    <p><strong>URL Parameters:</strong></p>
-    <ul>
-      <li><code>key</code>: The unique key of the activity.</li>
-    </ul>
+    <h2 class="get-method">POST /get-auth-token</h2>
+    <p>Generates an authentication token for a user. If the user does not exist or the password is incorrect, it will
+      return an error.</p>
+    <p><strong>Request Body:</strong></p>
+    <pre><code>{
+  "username": "The username of the registered user.",
+  "password": "The password of the registered user."
+}</code></pre>
     <div class="example">
       <p><strong>Example Request:</strong></p>
       <div class="request">
-        <code><span class="get-method">GET</span> https://bored-api.appbrewery.com/activity/3943506</code>
+        <code><span class="get-method">POST</span> https://secrets-api.appbrewery.com/get-auth-token</code>
+        <pre><code>{
+  "username": "jackbauer",
+  "password": "IAmTheBest"
+}</code></pre>
       </div>
       <p><strong>Example Response:</strong></p>
       <div class="response">
         <pre><code>{
-  "activity": "Learn Express.js",
-  "availability": 0.25,
-  "type": "education",
-  "participants": 1,
-  "price": 0.1,
-  "accessibility": "Few to no challenges",
-  "duration": "hours",
-  "kidFriendly": true,
-  "link": "https://expressjs.com/",
-  "key": "3943506"
+  "token": "generated-auth-token"
+}</code></pre>
+      </div>
+    </div>
+  </div>
+  </br>
+  <h2>REST API</h2>
+
+  <div class="endpoint">
+    <h2 class="get-method">GET /random</h2>
+    <p>Returns a random secret. No authentication is required.</p>
+    <div class="example">
+      <p><strong>Example Request:</strong></p>
+      <div class="request">
+        <code><span class="get-method">GET</span> https://secrets-api.appbrewery.com/random</code>
+      </div>
+      <p><strong>Example Response:</strong></p>
+      <div class="response">
+        <pre><code>{
+    "id": "random-id",
+    "secret": "This is a random secret.",
+    "emScore": 3,
+    "username": "user123",
+    "timestamp": "2022-10-01T12:34:56Z"
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint">
+    <h2 class="get-method">GET /all</h2>
+    <p>Returns all secrets, paginated. Basic authentication is required.</p>
+    <p><strong>Query Parameters:</strong></p>
+    <ul>
+      <li><code>page</code>: The page number to retrieve.</li>
+    </ul>
+    <div class="example">
+      <p><strong>Example Request:</strong></p>
+      <div class="request">
+        <code><span class="get-method">GET</span> https://secrets-api.appbrewery.com/all?page=1</code>
+      </div>
+      <p><strong>Example Response:</strong></p>
+      <div class="response">
+        <pre><code>[
+    {
+      "id": "1",
+      "secret": "This is a secret.",
+      "emScore": 3,
+      "username": "user123",
+      "timestamp": "2022-10-01T12:34:56Z"
+    },
+    {
+      "id": "2",
+      "secret": "Another secret.",
+      "emScore": 3,
+      "username": "user123",
+      "timestamp": "2022-10-02T10:11:12Z"
+    }
+    // ... more secrets ...
+  ]</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint">
+    <h2 class="get-method">GET /filter</h2>
+    <p>Returns a random secret with a particular embarrassment score or higher. API key authentication is required.</p>
+    <p><strong>Query Parameters:</strong></p>
+    <ul>
+      <li><code>apiKey</code>: Your API Key generated from the <code>/generate-api-key</code> endpoint.</li>
+      <li><code>score</code>: The minimum embarrassment score to filter by.</li>
+    </ul>
+    <div class="example">
+      <p><strong>Example Request:</strong></p>
+      <div class="request">
+        <code><span class="get-method">GET</span> https://secrets-api.appbrewery.com/filter?score=5&apiKey=b886c845-9989-43aa-8c60-ea4a669bb587</code>
+      </div>
+      <p><strong>Example Response:</strong></p>
+      <div class="response">
+        <pre><code>[
+    {
+      "id": "1",
+      "secret": "This is a secret with embarrassment score 5 or higher.",
+      "emScore": 5,
+      "username": "user123",
+      "timestamp": "2022-10-01T12:34:56Z"
+    },
+    {
+      "id": "2",
+      "secret": "Another secret with embarrassment score 5 or higher.",
+      "emScore": 7,
+      "username": "user123",
+      "timestamp": "2022-10-02T10:11:12Z"
+    }
+    // ... more secrets ...
+  ]</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint">
+    <h2 class="get-method">GET /user-secrets</h2>
+    <p>Returns all the secrets of the authenticated user. Bearer token authentication is required.</p>
+    <div class="example">
+      <p><strong>Example Request:</strong></p>
+      <div class="request">
+        <code><span class="get-method">GET</span> https://secrets-api.appbrewery.com/user-secrets</code>
+      </div>
+      <p><strong>Example Response:</strong></p>
+      <div class="response">
+        <pre><code>[
+    {
+      "id": "1",
+      "secret": "This is a secret of the user.",
+      "emScore": 3,
+      "username": "user123",
+      "timestamp": "2022-10-01T12:34:56Z"
+    },
+    {
+      "id": "2",
+      "secret": "Another secret of the user.",
+      "emScore": 3,
+      "username": "user123",
+      "timestamp": "2022-10-02T10:11:12Z"
+    }
+    // ... more secrets ...
+  ]</code></pre>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="endpoint">
+    <h2>GET /secrets/{id}</h2>
+    <p>Returns the secret with the specified ID. Bearer token authentication is required.</p>
+    <p><strong>URL Parameters:</strong></p>
+    <ul>
+      <li><code>id</code>: The ID of the secret to retrieve.</li>
+    </ul>
+    <div class="example">
+      <p><strong>Example Request:</strong></p>
+      <div class="request">
+        <code><span class="get-method">GET</span> https://secrets-api.appbrewery.com/secrets/1</code>
+      </div>
+      <p><strong>Example Response:</strong></p>
+      <div class="response">
+        <pre><code>{
+  "id": "1",
+  "secret": "This is a secret.",
+  "emScore": 3,
+  "username": "user123",
+  "timestamp": "2022-10-01T12:34:56Z"
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint">
+    <h2>POST /secrets</h2>
+    <p>Adds a new secret. Bearer token authentication is required.</p>
+    <p><strong>Request Body:</strong></p>
+    <pre><code>{
+  "secret": "This is a new secret.",
+  "score": "Embarrassment score"
+}</code></pre>
+    <div class="example">
+      <p><strong>Example Request:</strong></p>
+      <div class="request">
+        <code><span class="get-method">POST</span> https://secrets-api.appbrewery.com/secrets</code>
+        <pre><code>{
+  "secret": "This is a new secret.",
+  "score": "Updated embarrassment score"
+}</code></pre>
+      </div>
+      <p><strong>Example Response:</strong></p>
+      <div class="response">
+        <pre><code>{
+  "id": "3",
+  "secret": "This is a new secret.",
+  "emScore": 3,
+  "username": "user123",
+  "timestamp": "2022-10-03T08:15:00Z"
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint">
+    <h2>PUT /secrets/{id}</h2>
+    <p>Updates the content of the secret with the specified ID. Bearer token authentication is required.</p>
+    <p><strong>URL Parameters:</strong></p>
+    <ul>
+      <li><code>id</code>: The ID of the secret to update.</li>
+    </ul>
+    <p><strong>Request Body:</strong></p>
+    <pre><code>{
+  "secret": "Updated secret content.",
+  "score": 5
+}</code></pre>
+    <div class="example">
+      <p><strong>Example Request:</strong></p>
+      <div class="request">
+        <code><span class="get-method">PUT</span> https://secrets-api.appbrewery.com/secrets/1</code>
+        <pre><code>{
+  "secret": "Updated secret content",
+  "score": "Updated embarrassment score"
+}</code></pre>
+      </div>
+      <p><strong>Example Response:</strong></p>
+      <div class="response">
+        <pre><code>{
+  "id": "1",
+  "secret": "Updated secret content.",
+  "emScore": 3,
+  "username": "user123",
+  "timestamp": "2022-10-01T12:34:56Z"
+}</code></pre>
+      </div>
+    </div>
+  </div>
+  <div class="endpoint">
+    <h2>PATCH /secrets/{id}</h2>
+    <p>Partially updates the content of the secret with the specified ID. Bearer token authentication is required.</p>
+    <p><strong>URL Parameters:</strong></p>
+    <ul>
+      <li><code>id</code>: The ID of the secret to update.</li>
+    </ul>
+    <p><strong>Request Body:</strong></p>
+    <pre><code>{
+  "secret": "Updated secret content",
+  "score": "Updated embarrassment score"
+}</code></pre>
+    <div class="example">
+      <p><strong>Example Request:</strong></p>
+      <div class="request">
+        <code><span class="get-method">PATCH</span> https://secrets-api.appbrewery.com/secrets/1</code>
+        <pre><code>{
+  "score": 2
+}</code></pre>
+      </div>
+      <p><strong>Example Response:</strong></p>
+      <div class="response">
+        <pre><code>{
+  "id": "1",
+  "secret": "Partially updated secret content.",
+  "emScore": 3,
+  "username": "user123",
+  "timestamp": "2022-10-01T12:34:56Z"
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint">
+    <h2>DELETE /secrets/{id}</h2>
+    <p>Deletes the secret with the specified ID. Bearer token authentication is required.</p>
+    <p><strong>URL Parameters:</strong></p>
+    <ul>
+      <li><code>id</code>: The ID of the secret to delete.</li>
+    </ul>
+    <div class="example">
+      <p><strong>Example Request:</strong></p>
+      <div class="request">
+        <code><span class="get-method">DELETE</span> https://secrets-api.appbrewery.com/secrets/1</code>
+      </div>
+      <p><strong>Example Response:</strong></p>
+      <div class="response">
+        <pre><code>{
+  "message": "Secret with ID 1 has been deleted successfully."
 }</code></pre>
       </div>
     </div>
@@ -194,4 +462,5 @@
 <footer>
   Copyright © <a href="https://www.appbrewery.com">The App Brewery</a>
 </footer>
+
 </html>

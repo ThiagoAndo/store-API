@@ -1,6 +1,6 @@
 const express = require("express");
-const { readAction } = require("../CRUD/actions");
 const router = express.Router();
+const { readAction } = require("../CRUD/actions");
 const { insertOrder } = require("../actions/orderActions");
 // require("../helpers/routeLock");
 const { checkAuth } = require("../util/auth");
