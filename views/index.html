@@ -94,9 +94,9 @@
   <p> Welcome to the Next Store API. The products endpoint provides a comprehensive dataset of sample product information, 
       including details like names, prices, descriptions, images, and categories, ideal for testing and prototyping 
       e-commerce applicationsew. API Requests are rate limited to 100 requests every 15 minutes. This API allows you to manage and retrieve products, users, users' address, users' carts and users' purchases. Please refer to the
-    documentation below for details on how to interact with the API</p>
-    <p id="download"><a href="/download">Dowload postman collection</a></p>
     documentation below for details on how to interact with the API.</p>
+    <p id="download"><a href="/download">Dowload postman collection</a></p>
+    <p id="download"><a href="https://github.com/ThiagoAndo/store-API">Get the project code on the github repository</a></p>
   <li>The API is rate limited to 100 requests every 15 minutes. </li>
   <li>User submitted Product are erased on a regular basis.</li>
   
@@ -119,12 +119,8 @@
     <pre><code>{
   "first_name": "The first name of the new user.",
   "last_name":"The last name of the new user",
-
-  "password": "The password of the new user."
-   "first_name": "Stephen",
-     "last_name":"King",
-     "email_address":"stephenking@lorem.com",
-     "password":"123456789"
+  "password": "The password of the new user. It must contain at least eight character."
+  "email_address":"The email of the new user. It must be a valid email",
 }</code></pre>
     <div class="example">
       <p><strong>Example Request:</strong></p>
@@ -134,7 +130,7 @@
      "first_name": "Stephen",
      "last_name":"King",
      "email_address":"stephenking@lorem.com",
-     "password":"123456789"
+     "password":"12345678"
 }</code></pre>
       </div>
       <p><strong>Example Response:</strong></p>
