@@ -4,11 +4,23 @@ const { readAction } = require("../CRUD/actions");
 const { insertOrder } = require("../actions/orderActions");
 // require("../helpers/routeLock");
 const { checkAuth } = require("../util/auth");
+const { isName, isEmail } = require("../helpers/validate");
+
 router.post("/", (req, res) => {
+  let msn = ""
   const id = req.body.id;
   const name = req.body.name;
   const email = req.body.email;
   const cart = req.body?.cart || false;
+   if (!isName(name)) {
+     res.status(500).json({ message: "Name is wrong. Make sure to enter first and last name only" });
+     return ;
+   } else if (!isEmail(email)) {
+     res.status(500).json({ message: "Email is not valid" });
+     return error;
+   } else if (!isPassword(user.password)) {
+     return error;
+   }
   const ret = insertOrder(id, name, email, cart);
   ret.changes > 0
     ? res.status(201).json({ message: "Invoice created" })

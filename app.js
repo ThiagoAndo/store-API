@@ -1,5 +1,4 @@
 const express = require("express");
-const rateLimit = require("express-rate-limit");
 const bodyParser = require("body-parser");
 const products = require("./routes/product");
 const user = require("./routes/user");
@@ -9,17 +8,10 @@ const order = require("./routes/order");
 const doc = require("./routes/docs");
 const app = express();
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-});
 
 app.set("view engine", "html");
 app.set("views", __dirname + "/views");
 app.engine("html", require("ejs").renderFile);
-app.use(limiter);
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
