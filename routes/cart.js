@@ -1,5 +1,10 @@
 const express = require("express");
-const { readAction, createAction, updateAction } = require("../CRUD/actions");
+const {
+  readAction,
+  createAction,
+  updateAction,
+  deleteAction,
+} = require("../CRUD/actions");
 const { rearranging, deleleteCart } = require("../actions/cartAction");
 const { isValid } = require("../util/inputCheck");
 const router = express.Router();
@@ -10,17 +15,20 @@ const { isCorret } = require("../helpers/validate");
 router.get("/:id", async (req, res) => {
   let items;
   let user_id = req.params.id;
-  // if (user_id[user_id.length - 1] === "_") {
-  //   user_id = user_id.replace("_", "");
-  // res.status(200).json({ user_id });
+  if (user_id.includes("&")) {
+    let values = req.params.id;
+    user_id = values.split("&")[0];
+    const cart_id = values.split("&")[1];
+    items = readAction("cart", "user_id=? AND bought=? AND creation_at =?", [
+      user_id,
+      1,
+      cart_id,
+    ]);
+  } else {
+    console.log(user_id + " " + "entro");
 
-  //    items = readAction("cart", "user_id=? AND bought=?", [user_id, 1]);
-  // } else {
-  // console.log(user_id + " " + "entro");
-
-  //   items = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
-  // }
-  items = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
+    items = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
+  }
 
   items.length > 0
     ? res.status(200).json({ items })
@@ -72,6 +80,11 @@ router.patch("/", async (req, res) => {
   }
 });
 router.delete("/", async (req, res) => {
+  // deleteAction("orders", "user_id = ? and invoice_id = ?", [
+  //   "d1s76wwly8l9y8h",
+  //   3,
+  // ]);
+
   if (isCorret(2, req.body)) {
     let ret = deleleteCart(req.body.op, req.body.cart);
     ret?.changes

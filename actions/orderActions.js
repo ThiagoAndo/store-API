@@ -9,7 +9,6 @@ function insertOrder(user_id, name, email, cart) {
   } else {
     thisCart = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
   }
-  console.log(thisCart);
 
   if (thisCart.length > 0) {
     const total = thisCart.reduce((sum, cart) => {

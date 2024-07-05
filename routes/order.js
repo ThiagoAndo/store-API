@@ -9,7 +9,6 @@ const { isCorret } = require("../helpers/validate");
 
 router.post("/", (req, res) => {
   let bodylen;
-
   if (req.body?.cart) {
     bodylen = 4;
   } else {
