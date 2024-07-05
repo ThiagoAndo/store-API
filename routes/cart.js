@@ -6,8 +6,20 @@ const router = express.Router();
 // require("../helpers/routeLock");
 const { checkAuth } = require("../util/auth");
 router.get("/:id", async (req, res) => {
-  const user_id = req.params.id;
-  const items = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
+  let items;
+  let user_id = req.params.id;
+  // if (user_id[user_id.length - 1] === "_") {
+  //   user_id = user_id.replace("_", "");
+  // res.status(200).json({ user_id });
+
+  //    items = readAction("cart", "user_id=? AND bought=?", [user_id, 1]);
+  // } else {
+  // console.log(user_id + " " + "entro");
+
+  //   items = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
+  // }
+  items = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
+
   items.length > 0
     ? res.status(200).json({ items })
     : res.status(404).json({ message: "Not found" });
@@ -29,8 +41,15 @@ router.post("/", async (req, res) => {
     return;
   }
   const data = rearranging(req.body);
-  createAction("cart", { ...data });
-  res.status(201).json({ message: "Cart created successufuly" });
+  if (data) {
+    createAction("cart", { ...data });
+    res.status(201).json({ message: "Cart created successufuly" });
+    return;
+  } else {
+    res.status(407).json({
+      message: `There are missing cart information`,
+    });
+  }
 });
 router.patch("/", async (req, res) => {
   const { qnt, item_id, user_id } = req.body.cart;

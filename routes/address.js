@@ -34,6 +34,13 @@ router.post("/", (req, res) => {
 });
 router.patch("/", async (req, res) => {
   const address = req.body;
+  const id = req.body.id;
+  if (!isValid(id, null)) {
+    res.status(407).json({
+      message: `There is no user with id: ${id}`,
+    });
+    return;
+  }
   const ret = updateAction(
     "userAddress",
     "line_one = ? , line_two = ? , town_city = ?,  constry_state = ?",

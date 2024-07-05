@@ -6,16 +6,21 @@ function isProduct(id) {
 }
 function rearranging(body) {
   const { item, id: user_id } = body;
-  const { id: item_id, name, price, quantity, createAt: creation_at } = item;
-  return {
-    user_id,
-    item_id,
-    qnt: quantity,
-    bought: 0,
-    price,
-    name,
-    creation_at,
-  };
+  let { id: item_id, name, price, quantity: qnt, createAt: creation_at } = item;
+
+  if (user_id && item_id && qnt && price && name && creation_at) {
+    return {
+      user_id,
+      item_id,
+      qnt,
+      bought: 0,
+      price,
+      name,
+      creation_at,
+    };
+  } else {
+    return false;
+  }
 }
 function deleleteCart(option, cart) {
   let ret;
