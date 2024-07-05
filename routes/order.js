@@ -5,24 +5,41 @@ const { insertOrder } = require("../actions/orderActions");
 // require("../helpers/routeLock");
 const { checkAuth } = require("../util/auth");
 const { isName, isEmail } = require("../helpers/validate");
+const { isCorret } = require("../helpers/validate");
 
 router.post("/", (req, res) => {
-  let msn = ""
-  const id = req.body.id;
-  const name = req.body.name;
-  const email = req.body.email;
-  const cart = req.body?.cart || false;
-   if (!isName(name)) {
-     res.status(500).json({ message: "Name is wrong. Make sure to enter first and last name only" });
-     return ;
-   } else if (!isEmail(email)) {
-     res.status(500).json({ message: "Email is not valid" });
-     return error;
-   } 
-  const ret = insertOrder(id, name, email, cart);
-  ret.changes > 0
-    ? res.status(201).json({ message: "Invoice created" })
-    : res.status(500).json({ message: "An error has occurred" });
+  let bodylen;
+
+  if (req.body?.cart) {
+    bodylen = 4;
+  } else {
+    bodylen = 3;
+  }
+
+  if (isCorret(bodylen, req.body)) {
+    const id = req.body.id;
+    const name = req.body.name;
+    const email = req.body.email;
+    const cart = req.body?.cart || false;
+    if (!isName(name)) {
+      res.status(500).json({
+        message: "Name is wrong. Make sure to enter first and last name only",
+      });
+      return;
+    } else if (!isEmail(email)) {
+      res.status(500).json({ message: "Email is not valid" });
+      return error;
+    }
+    const ret = insertOrder(id, name, email, cart);
+    ret.changes > 0
+      ? res.status(201).json({ message: "Invoice created" })
+      : res.status(500).json({ message: "An error has occurred" });
+    return;
+  } else {
+    res.status(407).json({
+      message: `Incomplete Body`,
+    });
+  }
 });
 router.use(checkAuth);
 router.get("/:id", (req, res) => {
@@ -36,16 +53,23 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/detail", (req, res) => {
-  const cart_id = req.body.cart_id;
-  const user_id = req.body.user_id;
-  const ret = readAction("cart", "creation_at = ? AND user_id = ?", [
-    cart_id,
-    user_id,
-  ]);
-  if (ret) {
-    res.status(200).json(ret);
-  } else {
-    res.status(404).json({ message: "No product found" });
-  }
+    if (isCorret(2, req.body)) {
+      const cart_id = req.body.cart_id;
+      const user_id = req.body.user_id;
+      const ret = readAction("cart", "creation_at = ? AND user_id = ?", [
+        cart_id,
+        user_id,
+      ]);
+      if (ret) {
+        res.status(200).json(ret);
+      } else {
+        res.status(404).json({ message: "No product found" });
+      }
+      return;
+    } else {
+      res.status(407).json({
+        message: `Incomplete Body`,
+      });
+    }
 });
 module.exports = router;

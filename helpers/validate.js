@@ -21,6 +21,21 @@
     return false;
   }
 }
+function isCorret(exp, obj) {
+  const values = Object.values(obj).map((val) => {
+    if (val) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+  if (values.length === exp && values.indexOf(false) === -1) {
+    return true;
+  } else {
+    return false;
+  }
+}
 exports.isName = isNameValid;
 exports.isPassword = isPasswordValid;
 exports.isEmail = isEmailValid;
+exports.isCorret = isCorret;

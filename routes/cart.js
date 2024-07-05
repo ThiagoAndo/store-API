@@ -5,6 +5,8 @@ const { isValid } = require("../util/inputCheck");
 const router = express.Router();
 // require("../helpers/routeLock");
 const { checkAuth } = require("../util/auth");
+const { isCorret } = require("../helpers/validate");
+
 router.get("/:id", async (req, res) => {
   let items;
   let user_id = req.params.id;
@@ -29,11 +31,11 @@ router.post("/", async (req, res) => {
   const id = req.body.item.id + "";
   const uId = req.body.id + "";
   /* 
-     The function <isProduct> below would be unnecessary with a foreign key constraint in 
-     the cart table pointing out to product id. However, as the API will restore itself after
-     each request made to modify a product. It become necessary a logic changin in order to 
-     restore the product table with the original data.
-   */
+         The function <isProduct> below would be unnecessary with a foreign key constraint in 
+         the cart table pointing out to product id. However, as the API will restore itself after
+         each request made to modify a product. It become necessary a logic changin in order to 
+         restore the product table with the original data.
+       */
   if (!isValid(id, uId)) {
     res.status(407).json({
       message: `There is no pruduct with id: ${id} or User with id: ${uId}`,
@@ -47,25 +49,39 @@ router.post("/", async (req, res) => {
     return;
   } else {
     res.status(407).json({
-      message: `There are missing cart information`,
+      message: `Incomplete Body`,
     });
   }
 });
 router.patch("/", async (req, res) => {
-  const { qnt, item_id, user_id } = req.body.cart;
-  ret = updateAction("cart", "qnt = ?", "item_id = ? AND user_id=? ", [
-    qnt,
-    item_id,
-    user_id,
-  ]);
-  ret?.changes
-    ? res.status(200).json({ message: `Updated item with id ${item_id}` })
-    : res.status(404).json({ message: `Not found` });
+  if (isCorret(3, req.body)) {
+    const { qnt, item_id, user_id } = req.body.cart;
+    ret = updateAction("cart", "qnt = ?", "item_id = ? AND user_id=? ", [
+      qnt,
+      item_id,
+      user_id,
+    ]);
+    ret?.changes
+      ? res.status(200).json({ message: `Updated item with id ${item_id}` })
+      : res.status(404).json({ message: `Not found` });
+    return;
+  } else {
+    res.status(407).json({
+      message: `Incomplete Body`,
+    });
+  }
 });
 router.delete("/", async (req, res) => {
-  let ret = deleleteCart(req.body.op, req.body.cart);
-  ret?.changes
-    ? res.status(200).json({ message: `Cart deleted` })
-    : res.status(404).json({ message: `Not found` });
+  if (isCorret(2, req.body)) {
+    let ret = deleleteCart(req.body.op, req.body.cart);
+    ret?.changes
+      ? res.status(200).json({ message: `Cart deleted` })
+      : res.status(404).json({ message: `Not found` });
+    return;
+  } else {
+    res.status(407).json({
+      message: `Incomplete Body`,
+    });
+  }
 });
 module.exports = router;

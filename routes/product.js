@@ -5,6 +5,8 @@ const db = sql("e-comerce.db");
 const { checkAuth } = require("../util/auth");
 const { readAction, deleteAction } = require("../CRUD/actions");
 const { insertP, restore } = require("../actions/productActions");
+const { isCorret } = require("../helpers/validate");
+
 router.get("/", async (req, res) => {
   const products = readAction("products", "id != ?", ["-1"]);
   const images = readAction("images", "item_id != ?", ["-1"]);
@@ -28,16 +30,25 @@ router.get("/byid/:id", async (req, res) => {
   const images = readAction("images", "item_id = ?", [id]);
   products?.length
     ? res.status(200).json({ products, images })
-    : res .status(404).json({ message: `Could not found product with id: ${id}` });
+    : res
+        .status(404)
+        .json({ message: `Could not found product with id: ${id}` });
 });
 router.use(checkAuth);
 router.post("/", (req, res) => {
-  const ret = insertP([req.body]);
-  if (ret?.message) {
-    res.status(400).json(ret);
+  if (isCorret(11, req.body) && req.body?.images.length > 2) {
+    const ret = insertP([req.body]);
+    if (ret?.message) {
+      res.status(400).json(ret);
+    } else {
+      restore();
+      res.status(201).json({ message: "Product created" });
+    }
+    return;
   } else {
-    restore();
-    res.status(201).json({ message: "Product created" });
+    res.status(407).json({
+      message: `Incomplete Body`,
+    });
   }
 });
 router.delete("/:id", async (req, res) => {
@@ -45,10 +56,11 @@ router.delete("/:id", async (req, res) => {
   let ret = deleteAction("products", "id=?", [req.params.id]);
   if (ret.changes > 0) {
     restore();
-    res.status(200).json({ message: `Deleted product id ${req.params.id}`});
+    res.status(200).json({ message: `Deleted product id ${req.params.id}` });
   } else {
-    res.status(404).json({ message: `Could not delete product id ${req.params.id}`});
+    res
+      .status(404)
+      .json({ message: `Could not delete product id ${req.params.id}` });
   }
 });
 module.exports = router;
-

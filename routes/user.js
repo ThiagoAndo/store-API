@@ -5,47 +5,52 @@ const { hash } = pkg;
 const { newUser, getUser } = require("../actions/userActions");
 const { deleteAction, updateAction, readAction } = require("../CRUD/actions");
 const { checkAuth } = require("../util/auth");
+const { isCorret } = require("../helpers/validate");
 // require("../helpers/routeLock");
+
 router.post("/get", async (req, res) => {
-  const user = await getUser({
-    email: req.body.email,
-    password: req.body.password,
-  });
-  if (user?.message) {
-    switch (user.message[0]) {
-      case "W":
-        res.status(200).json(user);
-        break;
-      case "C":
-        res.status(200).json(user);
-        break;
-    }
+  if (isCorret(2, req.body)) {
+    const user = await getUser({
+      email: req.body.email,
+      password: req.body.password,
+    });
+
+    res.status(200).json(user);
     return;
+  } else {
+    res.status(407).json({
+      message: `Incomplete Body`,
+    });
   }
-  res.status(200).json(user);
 });
+
 router.post("/new", async (req, res) => {
-  const data = req.body;
-  const ret = await newUser(data);
-  res.status(201).json(ret);
+  if (isCorret(4, req.body)) {
+    const data = req.body;
+    const ret = await newUser(data);
+    res.status(201).json(ret);
+    return;
+  } else {
+    res.status(407).json({
+      message: `Incomplete Body`,
+    });
+  }
 });
 router.use(checkAuth);
-
 router.patch("/", async (req, res) => {
   const user = req.body;
   let ret = null;
-  console.log(req.body);
-  if (user?.password) {
+  if (user?.password && isCorret(2, req.body)) {
     user.password = await hash(user.password, 12);
     ret = updateAction("users", "password = ?", "id = ?", [
       user.password,
       user.id,
     ]);
-  } else {
+  } else if (isCorret(4, req.body)) {
     const [userRet] = readAction("users", "email_address=?", [
       user.email_address,
     ]);
-    if (userRet ===undefined) {
+    if (userRet === undefined) {
       if (
         userRet?.email_address === user.email_address &&
         userRet?.id != user.id
@@ -63,6 +68,11 @@ router.patch("/", async (req, res) => {
         [user.email_address, user.first_name, user.last_name, user.id]
       );
     }
+  } else {
+    res.status(407).json({
+      message: `Incomplete Body`,
+    });
+    return;
   }
 
   ret.changes > 0
@@ -75,28 +85,35 @@ router.patch("/", async (req, res) => {
 });
 
 router.delete("/", async (req, res) => {
-  const user = req.body;
-  deleteAction("orders", "user_id = ?", [user.id]);
-  deleteAction("cart", "user_id = ?", [user.id]);
-  deleteAction("userAddress", "id = ?", [user.id]);
-  const ret = deleteAction("users", "id = ?", [user.id]);
-  ret.changes > 0
-    ? res.status(200).json({ message: `Deleted user with id ${user.id}` })
-    : res
-        .status(404)
-        .json({ message: `Could not delete user with id ${user.id}` });
+  if (isCorret(1, req.body)) {
+    const user = req.body;
+    deleteAction("orders", "user_id = ?", [user.id]);
+    deleteAction("cart", "user_id = ?", [user.id]);
+    deleteAction("userAddress", "id = ?", [user.id]);
+    const ret = deleteAction("users", "id = ?", [user.id]);
+    ret.changes > 0
+      ? res.status(200).json({ message: `Deleted user with id ${user.id}` })
+      : res
+          .status(404)
+          .json({ message: `Could not delete user with id ${user.id}` });
+    return;
+  } else {
+    res.status(407).json({
+      message: `Incomplete Body`,
+    });
+  }
 });
 
-router.delete("/all", async (req, res) => {
-  const user = req.body;
-  deleteAction("orders", "user_id != ?", [user.id]);
-  deleteAction("cart", "user_id  != ?", [user.id]);
-  deleteAction("userAddress", "id != ?", [user.id]);
-  const ret = deleteAction("users", "id != ?", [user.id]);
-  ret.changes > 0
-    ? res.status(200).json({ message: `Deleted user with id ${user.id}` })
-    : res
-        .status(404)
-        .json({ message: `Could not delete user with id ${user.id}` });
-});
+// router.delete("/all", async (req, res) => {
+//   const user = req.body;
+//   deleteAction("orders", "user_id != ?", [user.id]);
+//   deleteAction("cart", "user_id  != ?", [user.id]);
+//   deleteAction("userAddress", "id != ?", [user.id]);
+//   const ret = deleteAction("users", "id != ?", [user.id]);
+//   ret.changes > 0
+//     ? res.status(200).json({ message: `Deleted user with id ${user.id}` })
+//     : res
+//         .status(404)
+//         .json({ message: `Could not delete user with id ${user.id}` });
+// });
 module.exports = router;
