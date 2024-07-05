@@ -18,9 +18,7 @@ router.post("/", (req, res) => {
    } else if (!isEmail(email)) {
      res.status(500).json({ message: "Email is not valid" });
      return error;
-   } else if (!isPassword(user.password)) {
-     return error;
-   }
+   } 
   const ret = insertOrder(id, name, email, cart);
   ret.changes > 0
     ? res.status(201).json({ message: "Invoice created" })
