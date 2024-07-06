@@ -51,33 +51,41 @@ router.patch("/", async (req, res) => {
       user.email_address,
     ]);
 
-    if (userRet != undefined) {
-      if (
-        userRet?.email_address === user.email_address &&
-        userRet?.id != user.id
-      ) {
-        res
-          .status(200)
-          .json({
-            error: `This email has been used by an other user or id is incorrect.`,
+    if (
+      userRet != undefined &&
+      userRet?.email_address === user.email_address &&
+      userRet?.id != user.id
+    ) {
+      res.status(200).json({
+        error: `This email has been used by an other user or id is incorrect.`,
+      });
+      return;
+    } else if (userRet === undefined) {
+      HTTPresponse();
+    } else if (
+      userRet != undefined &&
+      userRet?.email_address === user.email_address &&
+      userRet?.id === user.id
+    ) {
+      console.log("ntro")
+      HTTPresponse();
+    }
+
+    function HTTPresponse() {
+      ret = updateAction(
+        "users",
+        "email_address=?, first_name = ?, last_name = ?",
+        "id = ?",
+        [user.email_address, user.first_name, user.last_name, user.id]
+      );
+      ret.changes > 0
+        ? res
+            .status(200)
+            .json({ message: `Updated user detail with id ${user.id}` })
+        : res.status(404).json({
+            message: `Could not update user detail with id ${user.id}`,
           });
-        return;
-      } else {
-        ret = updateAction(
-          "users",
-          "email_address=?, first_name = ?, last_name = ?",
-          "id = ?",
-          [user.email_address, user.first_name, user.last_name, user.id]
-        );
-        ret.changes > 0
-          ? res
-              .status(200)
-              .json({ message: `Updated user detail with id ${user.id}` })
-          : res.status(404).json({
-              message: `Could not update user detail with id ${user.id}`,
-            });
-        return;
-      }
+      return;
     }
   } else {
     res.status(407).json({
