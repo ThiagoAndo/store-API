@@ -59,7 +59,7 @@ router.patch("/", async (req, res) => {
       const isOk = isDataOk(user);
       if (isOk) {
         res.status(404).json({
-          message: isOk.message,
+          message: isOk,
         });
         return;
       }
@@ -72,7 +72,7 @@ router.patch("/", async (req, res) => {
       const isOk = isDataOk(user);
       if (isOk) {
         res.status(404).json({
-          message: isOk.message,
+          message: isOk,
         });
         return;
       }
@@ -107,13 +107,7 @@ router.patch("/password", async (req, res) => {
   const user = req.body;
   let ret = null;
   if (isCorret(2, req.body)) {
-    const isOk = isDataOk(user);
-    if (isOk) {
-      res.status(404).json({
-        message: isOk.message,
-      });
-      return;
-    }
+    console.log("patch");
     user.password = await hash(user.password, 12);
     ret = updateAction("users", "password = ?", "id = ?", [
       user.password,
@@ -121,7 +115,7 @@ router.patch("/password", async (req, res) => {
     ]);
     ret.changes > 0
       ? res.status(200).json({
-          message: `Updated user\`s password  with id ${user.id}`,
+          message: `Updated user\`s password detail with id ${user.id}`,
         })
       : res.status(404).json({
           message: `Could not update user\`s password with id ${user.id}`,
