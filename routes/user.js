@@ -6,6 +6,7 @@ const { newUser, getUser } = require("../actions/userActions");
 const { deleteAction, updateAction, readAction } = require("../CRUD/actions");
 const { checkAuth } = require("../util/auth");
 const { isCorret } = require("../helpers/validate");
+const { isDataOk } = require("../actions/userActions");
 // require("../helpers/routeLock");
 
 router.post("/get", async (req, res) => {
@@ -55,12 +56,26 @@ router.patch("/", async (req, res) => {
       });
       return;
     } else if (userRet === undefined) {
+      const isOk = isDataOk(user);
+      if (isOk) {
+        res.status(404).json({
+          message: isOk,
+        });
+        return;
+      }
       HTTPresponse();
     } else if (
       userRet != undefined &&
       userRet?.email_address === user.email_address &&
       userRet?.id === user.id
     ) {
+      const isOk = isDataOk(user);
+      if (isOk) {
+        res.status(404).json({
+          message: isOk,
+        });
+        return;
+      }
       HTTPresponse();
     }
 
@@ -99,9 +114,9 @@ router.patch("/password", async (req, res) => {
       user.id,
     ]);
     ret.changes > 0
-      ? res
-          .status(200)
-          .json({ message: `Updated user\`s password detail with id ${user.id}` })
+      ? res.status(200).json({
+          message: `Updated user\`s password detail with id ${user.id}`,
+        })
       : res.status(404).json({
           message: `Could not update user\`s password with id ${user.id}`,
         });

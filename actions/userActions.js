@@ -62,14 +62,18 @@ async function newUser(user) {
 }
 
 function isDataOk(user) {
-  if (!isName(user.first_name + " " + user.last_name)) {
+  if (
+    user?.first_name &&
+    user?.last_name &&
+    !isName(user?.first_name + " " + user?.last_name)
+  ) {
     error.message =
       "Name is wrong. Make sure to enter first and last name only";
     return error;
-  } else if (!isEmail(user.email_address)) {
+  } else if (user?.email_address && !isEmail(user?.email_address)) {
     error.message = "Email is not valid ";
     return error;
-  } else if (!isPassword(user.password)) {
+  } else if (user?.password && !isPassword(user?.password)) {
     error.message = "Password must contain at least eight character";
     return error;
   } else {
