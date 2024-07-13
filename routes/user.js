@@ -40,13 +40,7 @@ router.use(checkAuth);
 router.patch("/", async (req, res) => {
   const user = req.body;
   let ret = null;
-  if (user?.password && isCorret(2, req.body)) {
-    user.password = await hash(user.password, 12);
-    ret = updateAction("users", "password = ?", "id = ?", [
-      user.password,
-      user.id,
-    ]);
-  } else if (isCorret(4, req.body)) {
+  if (isCorret(4, req.body)) {
     const [userRet] = readAction("users", "email_address=?", [
       user.email_address,
     ]);
@@ -67,7 +61,6 @@ router.patch("/", async (req, res) => {
       userRet?.email_address === user.email_address &&
       userRet?.id === user.id
     ) {
-      console.log("ntro")
       HTTPresponse();
     }
 
@@ -81,12 +74,37 @@ router.patch("/", async (req, res) => {
       ret.changes > 0
         ? res
             .status(200)
-            .json({ message: `Updated user detail with id ${user.id}` })
+            .json({ message: `Updated user\`s detail with id ${user.id}` })
         : res.status(404).json({
-            message: `Could not update user detail with id ${user.id}`,
+            message: `Could not update user\`s detail with id ${user.id}`,
           });
       return;
     }
+  } else {
+    res.status(407).json({
+      message: `Incomplete Body`,
+    });
+    return;
+  }
+});
+
+router.patch("/password", async (req, res) => {
+  const user = req.body;
+  let ret = null;
+  if (isCorret(2, req.body)) {
+    console.log("patch");
+    user.password = await hash(user.password, 12);
+    ret = updateAction("users", "password = ?", "id = ?", [
+      user.password,
+      user.id,
+    ]);
+    ret.changes > 0
+      ? res
+          .status(200)
+          .json({ message: `Updated user\`s password detail with id ${user.id}` })
+      : res.status(404).json({
+          message: `Could not update user\`s password with id ${user.id}`,
+        });
   } else {
     res.status(407).json({
       message: `Incomplete Body`,
