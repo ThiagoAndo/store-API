@@ -10,7 +10,11 @@ const { isCorret } = require("../helpers/validate");
 router.get("/", async (req, res) => {
   const products = readAction("products", "id != ?", ["-1"]);
   const images = readAction("images", "item_id != ?", ["-1"]);
-  res.status(200).json({ products, images });
+  const buildData = products.map((prt) => {
+    prt.images = images.filter((img) => prt.id === img.item_id);
+    return prt;
+  });
+  res.status(200).json(buildData);
 });
 router.get("/categories", async (req, res) => {
   const ret = db.prepare(`SELECT DISTINCT category FROM products`).all();
