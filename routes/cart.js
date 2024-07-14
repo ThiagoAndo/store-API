@@ -21,7 +21,6 @@ router.get("/:id", async (req, res) => {
     ]);
   } else {
     console.log(user_id + " " + "entro");
-
     items = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
   }
 

@@ -3,6 +3,7 @@ const { getCurrentDate } = require("../helpers/dateFunc");
 const { buildMail } = require("../helpers/email");
 function insertOrder(user_id, name, email, cart) {
   let thisCart = false;
+
   let thisRet = {};
   if (cart) {
     thisCart = cart;
@@ -14,6 +15,7 @@ function insertOrder(user_id, name, email, cart) {
     const total = thisCart.reduce((sum, cart) => {
       return (sum += +cart.price * (+cart?.qnt || +cart?.quantity));
     }, 0);
+
     const invoice = {
       invoice_id: null,
       cart_id: (thisCart && thisCart[0].creation_at) || null,
