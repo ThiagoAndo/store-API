@@ -19,14 +19,18 @@ router.use(checkAuth);
 router.get("/purchased/params", async (req, res) => {
   let items;
   const { user_id, cart_id } = req.query;
-  items = readAction("cart", "user_id=? AND bought=? AND creation_at =?", [
-    user_id,
-    1,
-    cart_id,
-  ]);
-  items.length > 0
-    ? res.status(200).json({ items })
-    : res.status(404).json({ message: "Not found" });
+  if (user_id && cart_id) {
+    items = readAction("cart", "user_id=? AND bought=? AND creation_at =?", [
+      user_id,
+      1,
+      cart_id,
+    ]);
+    items.length > 0
+      ? res.status(200).json({ items })
+      : res.status(404).json({ message: "Not found" });
+    return;
+  }
+  res.status(404).json({ message: "Not found" });
 });
 router.post("/", async (req, res) => {
   const id = req.body.item.id + "";
