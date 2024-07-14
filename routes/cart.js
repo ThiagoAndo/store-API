@@ -1,10 +1,5 @@
 const express = require("express");
-const {
-  readAction,
-  createAction,
-  updateAction,
-  deleteAction,
-} = require("../CRUD/actions");
+const { readAction, createAction, updateAction } = require("../CRUD/actions");
 const { rearranging, deleleteCart } = require("../actions/cartAction");
 const { isValid } = require("../util/inputCheck");
 const router = express.Router();
@@ -43,7 +38,7 @@ router.post("/", async (req, res) => {
          the cart table pointing out to product id. However, as the API will restore itself after
          each request made to modify a product. It become necessary a logic changin in order to 
          restore the product table with the original data.
-       */
+   */
   if (!isValid(id, uId)) {
     res.status(407).json({
       message: `There is no pruduct with id: ${id} or User with id: ${uId}`,
@@ -62,7 +57,7 @@ router.post("/", async (req, res) => {
   }
 });
 router.patch("/", async (req, res) => {
-  if (isCorret(3, req.body)) {
+  if (isCorret(3, req.body.cart)) {
     const { qnt, item_id, user_id } = req.body.cart;
     ret = updateAction("cart", "qnt = ?", "item_id = ? AND user_id=? ", [
       qnt,
@@ -80,11 +75,8 @@ router.patch("/", async (req, res) => {
   }
 });
 router.delete("/", async (req, res) => {
-  // deleteAction("orders", "user_id = ? and invoice_id = ?", [
-  //   "d1s76wwly8l9y8h",
-  //   3,
-  // ]);
-
+console.log(req.body);
+console.log("req.body");
   if (isCorret(2, req.body)) {
     let ret = deleleteCart(req.body.op, req.body.cart);
     ret?.changes

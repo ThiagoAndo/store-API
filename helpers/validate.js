@@ -1,4 +1,4 @@
- function isEmailValid(email) {
+function isEmailValid(email) {
   let match = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   if (email.match(match)) {
     return true;
@@ -6,7 +6,7 @@
     return false;
   }
 }
- function isNameValid(name) {
+function isNameValid(name) {
   let regName = /^[a-zA-Z]+ [a-zA-Z]+$/;
   if (regName.test(name)) {
     return true;
@@ -14,7 +14,7 @@
     return false;
   }
 }
- function isPasswordValid(password) {
+function isPasswordValid(password) {
   if (password.trim().length >= 8) {
     return true;
   } else {
@@ -23,7 +23,7 @@
 }
 function isCorret(exp, obj) {
   const values = Object.values(obj).map((val) => {
-    if (val) {
+    if (val || val === 0) {
       return true;
     } else {
       return false;
