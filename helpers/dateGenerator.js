@@ -3,11 +3,11 @@ function getCurrentDate() {
   const day = date.getDate();
   const month = date.getMonth() + 1;
   const year = date.getFullYear();
-
   let currentDate = `${Number(day) < 10 ? 0 : ""}${day}-${
     Number(month) < 10 ? 0 : ""
-  }${month}-${year}  ${new String(new Date(Date.now())).slice(15, 24)}`;
-
+  }${month}-${year}h${new String(new Date(Date.now()))
+    .slice(15, 24)
+    .replaceAll(" ", "")}`;
   return currentDate;
 }
-exports.currentDate = getCurrentDate;
+exports.getCurrentDate = getCurrentDate;

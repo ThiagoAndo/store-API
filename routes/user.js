@@ -59,7 +59,7 @@ router.patch("/", async (req, res) => {
       const isOk = isDataOk(user);
       if (isOk) {
         res.status(404).json({
-          message: isOk,
+          message: isOk.message,
         });
         return;
       }

@@ -3,7 +3,7 @@ const db = sql("e-comerce.db");
 const pkg = require("bcryptjs");
 const { hash, compare } = pkg;
 const uniqid = require("uniqid");
-const { currentDate } = require("../helpers/dateGenerator");
+const { getCurrentDate } = require("../helpers/dateGenerator");
 const { createJSONToken } = require("../util/auth");
 const { isName, isPassword, isEmail } = require("../helpers/validate");
 // require("../helpers/routeLock");
@@ -49,7 +49,7 @@ async function newUser(user) {
     }
     user.password = await hash(user.password, 12);
     user.id = uniqid();
-    user.created_at = currentDate();
+    user.created_at = getCurrentDate();
     changeAccess();
     createAction("users", user);
     const authToken = createJSONToken(user.email_address);

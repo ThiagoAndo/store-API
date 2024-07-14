@@ -1,5 +1,5 @@
 const { createAction, updateAction, readAction } = require("../CRUD/actions");
-const { getCurrentDate } = require("../helpers/dateFunc");
+const { getCurrentDate } = require("../helpers/dateGenerator");
 const { buildMail } = require("../helpers/email");
 function insertOrder(user_id, name, email, cart) {
   let thisCart = false;
