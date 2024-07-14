@@ -56,7 +56,7 @@ function restoreProductTable() {
     deleteData("images");
     deleteData("products");
     insertProduct(products);
-  }, 15 * 60 * 1000);
+  }, 60 * 60 * 1000);
 }
 exports.insertP = insertProduct;
 exports.restore = restoreProductTable;
