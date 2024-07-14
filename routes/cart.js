@@ -20,7 +20,6 @@ router.get("/:id", async (req, res) => {
       cart_id,
     ]);
   } else {
-    console.log(user_id + " " + "entro");
     items = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
   }
 
@@ -29,12 +28,24 @@ router.get("/:id", async (req, res) => {
     : res.status(404).json({ message: "Not found" });
 });
 router.use(checkAuth);
+router.get("/purchased/params", async (req, res) => {
+  let items;
+  const { user_id, cart_id } = req.query;
+  items = readAction("cart", "user_id=? AND bought=? AND creation_at =?", [
+    user_id,
+    1,
+    cart_id,
+  ]);
+  items.length > 0
+    ? res.status(200).json({ items })
+    : res.status(404).json({ message: "Not found" });
+});
 router.post("/", async (req, res) => {
   const id = req.body.item.id + "";
   const uId = req.body.id + "";
   /* 
-         The function <isProduct> below would be unnecessary with a foreign key constraint in 
-         the cart table pointing out to product id. However, as the API will restore itself after
+  The function <isProduct> below would be unnecessary with a foreign key constraint in 
+  the cart table pointing out to product id. However, as the API will restore itself after
          each request made to modify a product. It become necessary a logic changin in order to 
          restore the product table with the original data.
    */
@@ -74,8 +85,6 @@ router.patch("/", async (req, res) => {
   }
 });
 router.delete("/", async (req, res) => {
-console.log(req.body);
-console.log("req.body");
   if (isCorret(2, req.body)) {
     let ret = deleleteCart(req.body.op, req.body.cart);
     ret?.changes
