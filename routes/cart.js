@@ -10,19 +10,7 @@ const { isCorret } = require("../helpers/validate");
 router.get("/:id", async (req, res) => {
   let items;
   let user_id = req.params.id;
-  if (user_id.includes("&")) {
-    let values = req.params.id;
-    user_id = values.split("&")[0];
-    const cart_id = values.split("&")[1];
-    items = readAction("cart", "user_id=? AND bought=? AND creation_at =?", [
-      user_id,
-      1,
-      cart_id,
-    ]);
-  } else {
-    items = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
-  }
-
+  items = readAction("cart", "user_id=? AND bought=?", [user_id, 0]);
   items.length > 0
     ? res.status(200).json({ items })
     : res.status(404).json({ message: "Not found" });
