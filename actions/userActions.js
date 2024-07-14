@@ -56,7 +56,7 @@ async function newUser(user) {
     user.token = authToken;
     return user;
   } else {
-    error.message = "user already registered";
+    error.message = "Email already registered";
     return error;
   }
 }

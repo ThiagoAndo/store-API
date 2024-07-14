@@ -19,10 +19,15 @@ router.get("/categories", async (req, res) => {
 module.exports = router;
 router.get("/bycategorie", async (req, res) => {
   const { category } = req.query;
-  let queryLen = Array(category.length).fill("category = ?");
-  queryLen = queryLen.toString().replaceAll(",", " OR ");
-  const products = readAction("products", `${queryLen}`, category);
-  res.status(200).json(products);
+  if (category?.length) {
+    let queryLen = Array(category.length).fill("category = ?");
+    queryLen = queryLen.toString().replaceAll(",", " OR ");
+    const products = readAction("products", `${queryLen}`, category);
+    res.status(200).json(products);
+    return;
+  }
+
+  res.status(404).json({ message: `No category choose` });
 });
 router.get("/byid/:id", async (req, res) => {
   const id = req.params.id;
