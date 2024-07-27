@@ -5,7 +5,6 @@ const db = sql("e-comerce.db");
 const { checkAuth } = require("../util/auth");
 const { readAction, deleteAction } = require("../CRUD/actions");
 const { insertP, restore } = require("../actions/productActions");
-const { isCorret } = require("../helpers/validate");
 
 router.get("/", async (req, res) => {
   const products = readAction("products", "id != ?", ["-1"]);

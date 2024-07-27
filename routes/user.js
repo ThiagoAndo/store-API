@@ -5,43 +5,28 @@ const { hash } = pkg;
 const { newUser, getUser } = require("../actions/userActions");
 const { deleteAction, updateAction, readAction } = require("../CRUD/actions");
 const { checkAuth } = require("../util/auth");
-const { isCorret } = require("../helpers/validate");
 const { isDataOk } = require("../actions/userActions");
 // require("../helpers/routeLock");
 
 router.post("/get", async (req, res) => {
-  if (isCorret(2, req.body)) {
     const user = await getUser({
       email: req.body.email,
       password: req.body.password,
     });
 
     res.status(200).json(user);
-    return;
-  } else {
-    res.status(407).json({
-      message: `Incomplete Body`,
-    });
-  }
 });
 
 router.post("/new", async (req, res) => {
-  if (isCorret(4, req.body)) {
     const data = req.body;
     const ret = await newUser(data);
     res.status(201).json(ret);
     return;
-  } else {
-    res.status(407).json({
-      message: `Incomplete Body`,
-    });
-  }
 });
 router.use(checkAuth);
 router.patch("/", async (req, res) => {
   const user = req.body;
   let ret = null;
-  if (isCorret(4, req.body)) {
     const [userRet] = readAction("users", "email_address=?", [
       user.email_address,
     ]);
@@ -93,20 +78,12 @@ router.patch("/", async (req, res) => {
         : res.status(404).json({
             message: `Could not update user\`s detail with id ${user.id}`,
           });
-      return;
     }
-  } else {
-    res.status(407).json({
-      message: `Incomplete Body`,
-    });
-    return;
-  }
 });
 
 router.patch("/password", async (req, res) => {
   const user = req.body;
   let ret = null;
-  if (isCorret(2, req.body)) {
     console.log("patch");
     user.password = await hash(user.password, 12);
     ret = updateAction("users", "password = ?", "id = ?", [
@@ -120,16 +97,9 @@ router.patch("/password", async (req, res) => {
       : res.status(404).json({
           message: `Could not update user\`s password with id ${user.id}`,
         });
-  } else {
-    res.status(407).json({
-      message: `Incomplete Body`,
-    });
-    return;
-  }
 });
 
 router.delete("/", async (req, res) => {
-  if (isCorret(1, req.body)) {
     const user = req.body;
     deleteAction("orders", "user_id = ?", [user.id]);
     deleteAction("cart", "user_id = ?", [user.id]);
@@ -141,11 +111,6 @@ router.delete("/", async (req, res) => {
           .status(404)
           .json({ message: `Could not delete user with id ${user.id}` });
     return;
-  } else {
-    res.status(407).json({
-      message: `Incomplete Body`,
-    });
-  }
 });
 
 // router.delete("/all", async (req, res) => {

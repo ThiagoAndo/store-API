@@ -4,7 +4,6 @@ const router = express.Router();
 const { checkAuth } = require("../util/auth");
 const { isValid } = require("../util/inputCheck");
 
-// require("../helpers/routeLock");
 router.get("/:id", (req, res) => {
   const id = req.params.id;
   const add = readAction("userAddress", "id = ?", [id]);

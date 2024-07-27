@@ -5,7 +5,6 @@ const { isValid } = require("../util/inputCheck");
 const router = express.Router();
 // require("../helpers/routeLock");
 const { checkAuth } = require("../util/auth");
-const { isCorret } = require("../helpers/validate");
 
 router.get("/:id", async (req, res) => {
   let items;
@@ -59,7 +58,6 @@ router.post("/", async (req, res) => {
   }
 });
 router.patch("/", async (req, res) => {
-  if (isCorret(3, req.body.cart)) {
     const { qnt, item_id, user_id } = req.body.cart;
     ret = updateAction("cart", "qnt = ?", "item_id = ? AND user_id=? ", [
       qnt,
@@ -69,24 +67,12 @@ router.patch("/", async (req, res) => {
     ret?.changes
       ? res.status(200).json({ message: `Updated item with id ${item_id}` })
       : res.status(404).json({ message: `Not found` });
-    return;
-  } else {
-    res.status(407).json({
-      message: `Incomplete Body`,
-    });
-  }
 });
 router.delete("/", async (req, res) => {
-  if (isCorret(2, req.body)) {
     let ret = deleleteCart(req.body.op, req.body.cart);
     ret?.changes
       ? res.status(200).json({ message: `Cart deleted` })
       : res.status(404).json({ message: `Not found` });
     return;
-  } else {
-    res.status(407).json({
-      message: `Incomplete Body`,
-    });
-  }
 });
 module.exports = router;
