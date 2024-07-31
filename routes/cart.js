@@ -18,6 +18,8 @@ router.use(checkAuth);
 router.get("/purchased/params", async (req, res) => {
   let items;
   const { user_id, cart_id } = req.query;
+  console.log(user_id + " " + cart_id);
+  console.log("user_id  cart_id");
   if (user_id && cart_id) {
     items = readAction("cart", "user_id=? AND bought=? AND creation_at =?", [
       user_id,
@@ -29,7 +31,7 @@ router.get("/purchased/params", async (req, res) => {
       : res.status(404).json({ message: "Not found" });
     return;
   }
-  res.status(404).json({ message: "Not found" });
+  res.status(404).json({ message: "NÃo entro" });
 });
 router.post("/", async (req, res) => {
   const id = req.body.item.id + "";
