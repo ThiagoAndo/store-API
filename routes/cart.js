@@ -38,7 +38,7 @@ router.post("/", async (req, res) => {
   The function <isProduct> below would be unnecessary with a foreign key constraint in 
   the cart table pointing out to product id. However, as the API will restore itself after
          each request made to modify a product. It become necessary a logic changin in order to 
-         restore the product table with the original data.
+         restore the product table with the original data..
    */
   if (!isValid(id, uId)) {
     res.status(407).json({
