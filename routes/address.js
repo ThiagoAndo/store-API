@@ -16,7 +16,7 @@ router.get("/:id", (req, res) => {
 router.use(checkAuth);
 router.post("/", (req, res) => {
   const id = req.body.id;
-  if (!isValid(id, null)) {
+  if (!isValid(null, id)) {
     res.status(407).json({
       message: `There is no user with id: ${id}`,
     });
