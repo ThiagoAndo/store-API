@@ -18,9 +18,6 @@ router.use(checkAuth);
 router.get("/purchased/params", async (req, res) => {
   let items;
   const { user_id, cart_id } = req.query;
-  console.log(user_id + " " + cart_id);
-  console.log("user_id  cart_id");
-  if (user_id && cart_id) {
     items = readAction("cart", "user_id=? AND bought=? AND creation_at =?", [
       user_id,
       1,
@@ -29,9 +26,6 @@ router.get("/purchased/params", async (req, res) => {
     items.length > 0
       ? res.status(200).json({ items })
       : res.status(404).json({ message: "Not found" });
-    return;
-  }
-  res.status(404).json({ message: "NÃo entro" });
 });
 router.post("/", async (req, res) => {
   const id = req.body.item.id + "";
@@ -60,21 +54,21 @@ router.post("/", async (req, res) => {
   }
 });
 router.patch("/", async (req, res) => {
-    const { qnt, item_id, user_id } = req.body.cart;
-    ret = updateAction("cart", "qnt = ?", "item_id = ? AND user_id=? ", [
-      qnt,
-      item_id,
-      user_id,
-    ]);
-    ret?.changes
-      ? res.status(200).json({ message: `Updated item with id ${item_id}` })
-      : res.status(404).json({ message: `Not found` });
+  const { qnt, item_id, user_id } = req.body.cart;
+  ret = updateAction("cart", "qnt = ?", "item_id = ? AND user_id=? ", [
+    qnt,
+    item_id,
+    user_id,
+  ]);
+  ret?.changes
+    ? res.status(200).json({ message: `Updated item with id ${item_id}` })
+    : res.status(404).json({ message: `Not found` });
 });
 router.delete("/", async (req, res) => {
-    let ret = deleleteCart(req.body.op, req.body.cart);
-    ret?.changes
-      ? res.status(200).json({ message: `Cart deleted` })
-      : res.status(404).json({ message: `Not found` });
-    return;
+  let ret = deleleteCart(req.body.op, req.body.cart);
+  ret?.changes
+    ? res.status(200).json({ message: `Cart deleted` })
+    : res.status(404).json({ message: `Not found` });
+  return;
 });
 module.exports = router;
