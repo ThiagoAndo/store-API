@@ -18,7 +18,7 @@ router.use(checkAuth);
 router.get("/purchased/params", async (req, res) => {
   let items;
   const { user_id, cart_id } = req.query;
-    items = readAction("cart", "user_id=? AND bought=? AND creation_at =?", [
+    items = readAction("cart", "user_id=? AND bought=?", [
       user_id,
       1,
       cart_id,
