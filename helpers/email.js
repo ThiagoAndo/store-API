@@ -21,7 +21,7 @@ function buildMail(cart, name, value, email) {
   ` +
     cart.map(
       (item) =>
-        `NAME: ${item.name}
+        `PRODUCT: ${item.name}
       
   PRICE:  ${formatValue(+item.price)}
     
