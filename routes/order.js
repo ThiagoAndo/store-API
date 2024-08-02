@@ -6,12 +6,6 @@ const { insertOrder } = require("../actions/orderActions");
 const { checkAuth } = require("../util/auth");
 
 router.post("/", (req, res) => {
-  let bodylen;
-  if (req.body?.cart) {
-    bodylen = 4;
-  } else {
-    bodylen = 3;
-  }
 
   const id = req.body.id;
   const name = req.body.name;
@@ -34,18 +28,4 @@ router.get("/:id", (req, res) => {
   }
 });
 
-router.post("/detail", (req, res) => {
-    const cart_id = req.body.cart_id;
-    const user_id = req.body.user_id;
-    const ret = readAction("cart", "creation_at = ? AND user_id = ?", [
-      cart_id,
-      user_id,
-    ]);
-    if (ret) {
-      res.status(200).json(ret);
-    } else {
-      res.status(404).json({ message: "No product found" });
-    }
-    return;
-});
 module.exports = router;
