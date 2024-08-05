@@ -37,11 +37,7 @@ router.use(checkAuth);
 router.get("/:id", (req, res) => {
   const id = req.params.id;
   const ret = readAction("orders", "user_id = ?", [id]);
-  if (ret.length > 0) {
     res.status(200).json(ret);
-  } else {
-    res.status(404).json({ message: "No order found" });
-  }
 });
 
 module.exports = router;
