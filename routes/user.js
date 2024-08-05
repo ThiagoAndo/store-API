@@ -5,6 +5,7 @@ const { hash } = pkg;
 const { newUser, getUser } = require("../actions/userActions");
 const { deleteAction, updateAction, readAction } = require("../CRUD/actions");
 const { checkAuth } = require("../util/auth");
+const { isCorret } = require("../helpers/validate");
 const { isDataOk } = require("../actions/userActions");
 // require("../helpers/routeLock");
 
@@ -21,7 +22,6 @@ router.post("/new", async (req, res) => {
     const data = req.body;
     const ret = await newUser(data);
     res.status(201).json(ret);
-    return;
 });
 router.use(checkAuth);
 router.patch("/", async (req, res) => {
@@ -110,7 +110,6 @@ router.delete("/", async (req, res) => {
       : res
           .status(404)
           .json({ message: `Could not delete user with id ${user.id}` });
-    return;
 });
 
 // router.delete("/all", async (req, res) => {

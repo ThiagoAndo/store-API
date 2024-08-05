@@ -1,0 +1,148 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background-color: #6c757d;
+  color: white;
+}
+.container {
+  width: 80%;
+  margin: auto;
+}
+.my_nav {
+  background-color: black;
+}
+
+h1 {
+  color: black;
+  margin-top: 8rem;
+  font-weight: 900;
+}
+
+h2,
+h3 {
+  color: black;
+}
+
+.margin {
+  margin-top: 2rem;
+}
+
+li::marker {
+  color: black;
+}
+
+.li_end::marker {
+  color: white;
+}
+li {
+  margin-bottom: 5px;
+}
+.auth {
+  color: white;
+}
+p {
+  margin-bottom: 10px;
+  text-align: justify;
+}
+
+pre {
+  padding: 10px;
+  background-color: #4d5154;
+  margin-bottom: 0px !important;
+}
+
+pre code {
+  color: white;
+}
+
+code {
+  font-family: Consolas, monospace;
+  font-size: 14px;
+  color: black;
+}
+.filter {
+  color: #4d5154;
+}
+
+.endpoint {
+  margin-bottom: 20px;
+  background-color: #212529;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.endpoint h2 {
+  margin-bottom: 5px;
+}
+
+a {
+  color: black;
+}
+.link {
+  color: black;
+}
+
+.endpoint p {
+  color: white;
+}
+
+.example {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.get-method {
+  color: #228b22;
+}
+
+.request {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: #f9f9f9;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.request code {
+  color: white;
+}
+
+.response {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #4d5154;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  color: white;
+}
+
+#download {
+  margin: 10px 0px 10px 0px;
+}
+
+.get {
+  color: rgb(11, 202, 11) !important;
+  font-weight: 600;
+}
+
+.post {
+  color: rgb(222, 198, 10) !important;
+  font-weight: 600;
+}
+
+.ctr {
+  text-align: center;
+}
+
+.patch {
+  color: rgb(85, 99, 204) !important;
+  font-weight: 600;
+}
+
+.delete {
+  color: rgb(205, 81, 81) !important;
+  font-weight: 600;
+}

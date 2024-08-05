@@ -7,9 +7,6 @@ const add = require("./routes/address");
 const order = require("./routes/order");
 const app = express();
 
-app.set("view engine", "html");
-app.set("views", __dirname + "/views");
-app.engine("html", require("ejs").renderFile);
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {

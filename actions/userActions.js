@@ -68,7 +68,7 @@ function isDataOk(user) {
     !isName(user?.first_name + " " + user?.last_name)
   ) {
     error.message =
-      "Name is wrong. Make sure to enter first and last name only";
+      "Name is not valid. Make sure to enter first and last name only";
     return error;
   } else if (user?.email_address && !isEmail(user?.email_address)) {
     error.message = "Email is not valid ";
